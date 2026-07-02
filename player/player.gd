@@ -6,8 +6,6 @@ signal weapon_switched(weapon_name: String)
 const BULLET_SCENE := preload("bullet.tscn")
 const COIN_SCENE := preload("coin/coin.tscn")
 
-enum WEAPON_TYPE { DEFAULT, GRENADE }
-
 ## Character maximum run speed on the ground.
 @export var move_speed := 8.0
 ## Speed of shot bullets.
@@ -29,21 +27,17 @@ enum WEAPON_TYPE { DEFAULT, GRENADE }
 @export var max_throwback_force := 15.0
 ## Projectile cooldown
 @export var shoot_cooldown := 0.5
-## Grenade cooldown
-@export var grenade_cooldown := 0.5
 
 @onready var _rotation_root: Node3D = $CharacterRotationRoot
 @onready var _camera_controller: CameraController = $CameraController
 @onready var _attack_animation_player: AnimationPlayer = $CharacterRotationRoot/MeleeAnchor/AnimationPlayer
 @onready var _ground_shapecast: ShapeCast3D = $GroundShapeCast
-@onready var _grenade_aim_controller: GrenadeLauncher = $GrenadeLauncher
 @onready var _character_skin: CharacterSkin = $CharacterRotationRoot/CharacterSkin
 @onready var _ui_aim_reticle: ColorRect = %AimReticle
 @onready var _ui_coins_container: HBoxContainer = %CoinsContainer
 @onready var _step_sound: AudioStreamPlayer3D = $StepSound
 @onready var _landing_sound: AudioStreamPlayer3D = $LandingSound
 
-@onready var _equipped_weapon: WEAPON_TYPE = WEAPON_TYPE.DEFAULT
 @onready var _move_direction := Vector3.ZERO
 @onready var _last_strong_direction := Vector3.FORWARD
 @onready var _gravity: float = -30.0
@@ -53,14 +47,12 @@ enum WEAPON_TYPE { DEFAULT, GRENADE }
 @onready var _is_on_floor_buffer := false
 
 @onready var _shoot_cooldown_tick := shoot_cooldown
-@onready var _grenade_cooldown_tick := grenade_cooldown
 
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_camera_controller.setup(self)
-	_grenade_aim_controller.visible = false
-	weapon_switched.emit(WEAPON_TYPE.keys()[0])
+	weapon_switched.emit("DEFAULT")
 
 	# When copying this character to a new project, the project may lack required input actions.
 	# In that case, we register input actions for the user at runtime.
@@ -79,12 +71,6 @@ func _physics_process(delta: float) -> void:
 		_ground_height = global_position.y + _ground_shapecast.target_position.y
 	if global_position.y < _ground_height:
 		_ground_height = global_position.y
-
-	# Swap weapons
-	if Input.is_action_just_pressed("swap_weapons"):
-		_equipped_weapon = WEAPON_TYPE.DEFAULT if _equipped_weapon == WEAPON_TYPE.GRENADE else WEAPON_TYPE.GRENADE
-		_grenade_aim_controller.visible = _equipped_weapon == WEAPON_TYPE.GRENADE
-		weapon_switched.emit(WEAPON_TYPE.keys()[_equipped_weapon])
 
 	# Get input and movement state
 	var is_attacking := Input.is_action_pressed("attack") and not _attack_animation_player.is_playing()
@@ -117,33 +103,22 @@ func _physics_process(delta: float) -> void:
 	# Set aiming camera and UI
 	if is_aiming:
 		_camera_controller.set_pivot(_camera_controller.CAMERA_PIVOT.OVER_SHOULDER)
-		_grenade_aim_controller.throw_direction = _camera_controller.camera.quaternion * Vector3.FORWARD
-		_grenade_aim_controller.from_look_position = _camera_controller.camera.global_position
 		_ui_aim_reticle.visible = true
 	else:
 		_camera_controller.set_pivot(_camera_controller.CAMERA_PIVOT.THIRD_PERSON)
-		_grenade_aim_controller.throw_direction = _last_strong_direction
-		_grenade_aim_controller.from_look_position = global_position
 		_ui_aim_reticle.visible = false
 
 	# Update attack state and position
 
 	_shoot_cooldown_tick += delta
-	_grenade_cooldown_tick += delta
 
 	if is_attacking:
-		match _equipped_weapon:
-			WEAPON_TYPE.DEFAULT:
-				if is_aiming and is_on_floor():
-					if _shoot_cooldown_tick > shoot_cooldown:
-						_shoot_cooldown_tick = 0.0
-						shoot()
-				elif is_just_attacking:
-					attack()
-			WEAPON_TYPE.GRENADE:
-				if _grenade_cooldown_tick > grenade_cooldown:
-					_grenade_cooldown_tick = 0.0
-					_grenade_aim_controller.throw_grenade()
+		if is_aiming and is_on_floor():
+			if _shoot_cooldown_tick > shoot_cooldown:
+				_shoot_cooldown_tick = 0.0
+				shoot()
+		elif is_just_attacking:
+			attack()
 
 	velocity.y += _gravity * delta
 
@@ -265,7 +240,6 @@ func _register_input_actions() -> void:
 		"jump": KEY_SPACE,
 		"attack": MOUSE_BUTTON_LEFT,
 		"aim": MOUSE_BUTTON_RIGHT,
-		"swap_weapons": KEY_TAB,
 		"pause": KEY_ESCAPE,
 		"camera_left": KEY_Q,
 		"camera_right": KEY_E,

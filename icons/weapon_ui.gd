@@ -1,14 +1,15 @@
 extends PanelContainer
 
 @onready var nodes := {
-	"DEFAULT" : %Flash,
-	"GRENADE" : %Grenade
+	"DEFAULT" : %Flash
 }
 
 var selected_node: String = ""
 
 
 func switch_to(node_name : String):
+	if not nodes.has(node_name):
+		return
 	# Return if same node
 	if node_name == selected_node: return
 	if selected_node != "":
