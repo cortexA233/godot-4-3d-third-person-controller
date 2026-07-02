@@ -1,0 +1,10 @@
+[mcp_servers.godot]
+command = 'C:\Program Files\nodejs\node.exe'
+args = ['C:\Program Files\nodejs\node_modules\npm\bin\npx-cli.js', '-y', '@coding-solo/godot-mcp']
+cwd = 'C:\recent_project\godot-4-3d-third-person-controller'
+startup_timeout_sec = 60
+tool_timeout_sec = 120
+enabled = true
+
+[mcp_servers.godot.env]
+GODOT_PATH = 'C:\Godot_v4.7-stable_mono_win64\Godot_v4.7-stable_mono_win64_console.exe'
