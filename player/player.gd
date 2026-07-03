@@ -5,6 +5,9 @@ signal weapon_switched(weapon_name: String)
 
 const BULLET_SCENE := preload("bullet.tscn")
 const COIN_SCENE := preload("coin/coin.tscn")
+const GRENADE_SCENE := preload("grenade_visuals/grenade/thrown_grenade.tscn")
+
+enum WEAPON { DEFAULT, GRENADE }
 
 ## Character maximum run speed on the ground.
 @export var move_speed := 8.0
@@ -27,6 +30,17 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @export var max_throwback_force := 15.0
 ## Projectile cooldown
 @export var shoot_cooldown := 0.5
+## Cooldown between grenade throws
+@export var grenade_cooldown := 1.5
+## Gravity used to plan the grenade's ballistic arc (should match the grenade's own gravity_scale)
+@export var grenade_gravity := 16.0
+## Launch angle used for every grenade throw, in degrees
+@export var grenade_throw_angle := 40.0
+## Horizontal distance a grenade travels when thrown without holding aim
+@export var grenade_default_range := 9.0
+## Minimum/maximum horizontal distance a grenade can be aimed to when holding aim
+@export var grenade_min_aim_range := 4.0
+@export var grenade_max_aim_range := 16.0
 
 @onready var _rotation_root: Node3D = $CharacterRotationRoot
 @onready var _camera_controller: CameraController = $CameraController
@@ -37,6 +51,7 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @onready var _ui_coins_container: HBoxContainer = %CoinsContainer
 @onready var _step_sound: AudioStreamPlayer3D = $StepSound
 @onready var _landing_sound: AudioStreamPlayer3D = $LandingSound
+@onready var _grenade_aim_preview: Node3D = %GrenadeAimPreview
 
 @onready var _move_direction := Vector3.ZERO
 @onready var _last_strong_direction := Vector3.FORWARD
@@ -47,6 +62,9 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @onready var _is_on_floor_buffer := false
 
 @onready var _shoot_cooldown_tick := shoot_cooldown
+@onready var _grenade_cooldown_tick := grenade_cooldown
+
+var _current_weapon := WEAPON.DEFAULT
 
 
 func _ready() -> void:
@@ -60,6 +78,7 @@ func _ready() -> void:
 		_register_input_actions()
 
 	_character_skin.stepped.connect(play_foot_step_sound)
+	_grenade_aim_preview.hide_preview()
 
 
 func _physics_process(delta: float) -> void:
@@ -82,6 +101,9 @@ func _physics_process(delta: float) -> void:
 
 	_is_on_floor_buffer = is_on_floor()
 	_move_direction = _get_camera_oriented_input()
+
+	if Input.is_action_just_pressed("switch_weapon"):
+		_switch_weapon()
 
 	# To not orient quickly to the last input, we save a last strong direction,
 	# this also ensures a good normalized value for the rotation basis.
@@ -111,8 +133,15 @@ func _physics_process(delta: float) -> void:
 	# Update attack state and position
 
 	_shoot_cooldown_tick += delta
+	_grenade_cooldown_tick += delta
 
-	if is_attacking:
+	if _current_weapon == WEAPON.GRENADE:
+		if is_just_attacking:
+			throw_grenade()
+		var launch_velocity := _compute_grenade_launch_velocity(is_aiming)
+		_grenade_aim_preview.update_preview(_get_grenade_origin(), launch_velocity, grenade_gravity, get_world_3d().direct_space_state, get_rid())
+		_grenade_aim_preview.set_ready_state(_grenade_cooldown_tick > grenade_cooldown)
+	elif is_attacking:
 		if is_aiming and is_on_floor():
 			if _shoot_cooldown_tick > shoot_cooldown:
 				_shoot_cooldown_tick = 0.0
@@ -171,6 +200,60 @@ func shoot() -> void:
 	bullet.distance_limit = 14.0
 	get_parent().add_child(bullet)
 	bullet.global_position = origin
+
+
+func _switch_weapon() -> void:
+	if _current_weapon == WEAPON.DEFAULT:
+		_current_weapon = WEAPON.GRENADE
+		weapon_switched.emit("GRENADE")
+		_grenade_aim_preview.show_preview()
+	else:
+		_current_weapon = WEAPON.DEFAULT
+		weapon_switched.emit("DEFAULT")
+		_grenade_aim_preview.hide_preview()
+
+
+## Where thrown grenades spawn from: slightly above and in front of the player so they
+## don't immediately overlap the player's own collision shape.
+func _get_grenade_origin() -> Vector3:
+	return global_position + Vector3.UP * 1.2 + _rotation_root.transform.basis * Vector3.BACK * 0.6
+
+
+## Computes the initial velocity of a thrown grenade using a fixed launch angle and a
+## horizontal range derived from the current aim. Shared by the real throw and the aim preview
+## so what the player sees always matches what actually happens.
+func _compute_grenade_launch_velocity(is_aiming: bool) -> Vector3:
+	var forward: Vector3
+	var range_distance: float
+
+	if is_aiming:
+		var aim_target := _camera_controller.get_aim_target()
+		var to_target := aim_target - _get_grenade_origin()
+		var horizontal_target := Vector3(to_target.x, 0.0, to_target.z)
+		if horizontal_target.length() > 0.01:
+			forward = horizontal_target.normalized()
+		else:
+			forward = _last_strong_direction
+		range_distance = clamp(horizontal_target.length(), grenade_min_aim_range, grenade_max_aim_range)
+	else:
+		forward = _last_strong_direction
+		range_distance = grenade_default_range
+
+	var angle := deg_to_rad(grenade_throw_angle)
+	var speed := sqrt(range_distance * grenade_gravity / sin(2.0 * angle))
+	return forward * speed * cos(angle) + Vector3.UP * speed * sin(angle)
+
+
+func throw_grenade() -> void:
+	if _grenade_cooldown_tick <= grenade_cooldown:
+		return
+	_grenade_cooldown_tick = 0.0
+
+	var is_aiming := Input.is_action_pressed("aim") and is_on_floor()
+	var grenade := GRENADE_SCENE.instantiate()
+	get_parent().add_child(grenade)
+	grenade.global_position = _get_grenade_origin()
+	grenade.launch(_compute_grenade_launch_velocity(is_aiming), self)
 
 
 func reset_position() -> void:
@@ -241,6 +324,7 @@ func _register_input_actions() -> void:
 		"attack": MOUSE_BUTTON_LEFT,
 		"aim": MOUSE_BUTTON_RIGHT,
 		"pause": KEY_ESCAPE,
+		"switch_weapon": KEY_TAB,
 		"camera_left": KEY_Q,
 		"camera_right": KEY_E,
 		"camera_up": KEY_R,
