@@ -8,6 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://cqw64w6kb0fyg" path="res://player/coin/coin_visuals/coin_model.tscn" id="8_6qxxt"]
 [ext_resource type="AudioStream" uid="uid://bx0t7f2nuk2lr" path="res://player/sounds/03_step_grass_03.wav" id="10_wx4h4"]
 [ext_resource type="AudioStream" uid="uid://cbcb2d63weegs" path="res://player/sounds/45_landing_01.wav" id="11_3s4i7"]
+[ext_resource type="Script" path="res://player/grenade_aim_indicator.gd" id="20_aimind"]
+[ext_resource type="Material" uid="uid://b6h7p7jogt6ep" path="res://player/grenade_visuals/trajectory_material.tres" id="21_trajmat"]
+[ext_resource type="Material" uid="uid://dus6jtbfyqwj8" path="res://player/grenade_visuals/aim_material.tres" id="22_aimmat"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8x2xm"]
 
@@ -119,6 +122,19 @@ fov = 50.0
 transform = Transform3D(1, 0, -7.10543e-15, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 target_position = Vector3(0, 0, -100)
 debug_shape_custom_color = Color(0, 0, 0, 0)
+
+[node name="GrenadeAimIndicator" type="Node3D" parent="." unique_id=1900000001]
+script = ExtResource("20_aimind")
+
+[node name="TrajectoryPreview" type="MeshInstance3D" parent="GrenadeAimIndicator" unique_id=1900000002]
+top_level = true
+material_override = ExtResource("21_trajmat")
+visible = false
+
+[node name="LandingMarker" type="MeshInstance3D" parent="GrenadeAimIndicator" unique_id=1900000003]
+top_level = true
+material_override = ExtResource("22_aimmat")
+visible = false
 
 [node name="GroundShapeCast" type="ShapeCast3D" parent="." unique_id=1807857851]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

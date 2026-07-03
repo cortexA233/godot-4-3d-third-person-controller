@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://player/grenade_thrown.gd" id="1_thrown"]
+[ext_resource type="PackedScene" uid="uid://d3765dge2xh0" path="res://player/grenade_visuals/grenade/grenade.tscn" id="2_visuals"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_thrown"]
+radius = 0.35
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_thrown"]
+friction = 0.8
+bounce = 0.3
+
+[node name="ThrownGrenade" type="RigidBody3D"]
+collision_layer = 0
+collision_mask = 2
+continuous_cd = true
+physics_material_override = SubResource("PhysicsMaterial_thrown")
+script = ExtResource("1_thrown")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_thrown")
+
+[node name="GrenadeVisuals" parent="." instance=ExtResource("2_visuals")]
+
+[node name="FuseTimer" type="Timer" parent="."]
+one_shot = true

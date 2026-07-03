@@ -3,8 +3,11 @@ extends CharacterBody3D
 
 signal weapon_switched(weapon_name: String)
 
+enum WeaponMode { DEFAULT, GRENADE }
+
 const BULLET_SCENE := preload("bullet.tscn")
 const COIN_SCENE := preload("coin/coin.tscn")
+const GRENADE_SCENE := preload("grenade_thrown.tscn")
 
 ## Character maximum run speed on the ground.
 @export var move_speed := 8.0
@@ -27,6 +30,16 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @export var max_throwback_force := 15.0
 ## Projectile cooldown
 @export var shoot_cooldown := 0.5
+## Gravity used for both the grenade trajectory preview and the thrown grenade's flight.
+@export var grenade_gravity := 30.0
+## Forward distance a grenade lands at when thrown without holding aim.
+@export var grenade_default_range := 9.0
+## Controls how flight time scales with throw distance (higher = faster/flatter arcs).
+@export var grenade_speed_reference := 9.0
+@export var grenade_min_flight_time := 0.5
+@export var grenade_max_flight_time := 2.5
+## Grenade throw cooldown.
+@export var grenade_cooldown := 1.6
 
 @onready var _rotation_root: Node3D = $CharacterRotationRoot
 @onready var _camera_controller: CameraController = $CameraController
@@ -35,6 +48,7 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @onready var _character_skin: CharacterSkin = $CharacterRotationRoot/CharacterSkin
 @onready var _ui_aim_reticle: ColorRect = %AimReticle
 @onready var _ui_coins_container: HBoxContainer = %CoinsContainer
+@onready var _grenade_aim_indicator: Node3D = $GrenadeAimIndicator
 @onready var _step_sound: AudioStreamPlayer3D = $StepSound
 @onready var _landing_sound: AudioStreamPlayer3D = $LandingSound
 
@@ -47,6 +61,9 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @onready var _is_on_floor_buffer := false
 
 @onready var _shoot_cooldown_tick := shoot_cooldown
+@onready var _grenade_cooldown_tick := grenade_cooldown
+
+var _weapon_mode := WeaponMode.DEFAULT
 
 
 func _ready() -> void:
@@ -80,6 +97,9 @@ func _physics_process(delta: float) -> void:
 	var is_air_boosting := Input.is_action_pressed("jump") and not is_on_floor() and velocity.y > 0.0
 	var is_just_on_floor := is_on_floor() and not _is_on_floor_buffer
 
+	if Input.is_action_just_pressed("switch_weapon"):
+		_toggle_weapon_mode()
+
 	_is_on_floor_buffer = is_on_floor()
 	_move_direction = _get_camera_oriented_input()
 
@@ -111,8 +131,14 @@ func _physics_process(delta: float) -> void:
 	# Update attack state and position
 
 	_shoot_cooldown_tick += delta
+	_grenade_cooldown_tick += delta
 
-	if is_attacking:
+	if _weapon_mode == WeaponMode.GRENADE:
+		_update_grenade_aim(is_aiming)
+		if is_just_attacking and _grenade_cooldown_tick > grenade_cooldown:
+			_grenade_cooldown_tick = 0.0
+			_throw_grenade(is_aiming)
+	elif is_attacking:
 		if is_aiming and is_on_floor():
 			if _shoot_cooldown_tick > shoot_cooldown:
 				_shoot_cooldown_tick = 0.0
@@ -171,6 +197,59 @@ func shoot() -> void:
 	bullet.distance_limit = 14.0
 	get_parent().add_child(bullet)
 	bullet.global_position = origin
+
+
+func _toggle_weapon_mode() -> void:
+	if _weapon_mode == WeaponMode.DEFAULT:
+		_weapon_mode = WeaponMode.GRENADE
+		weapon_switched.emit("GRENADE")
+	else:
+		_weapon_mode = WeaponMode.DEFAULT
+		weapon_switched.emit("DEFAULT")
+		_grenade_aim_indicator.hide_aim()
+
+
+func _update_grenade_aim(is_aiming: bool) -> void:
+	var origin := global_position + Vector3.UP
+	var target := _get_grenade_target(origin, is_aiming)
+	var flight_time := _get_grenade_flight_time(origin, target)
+	var throw_velocity := _compute_grenade_velocity(origin, target, flight_time)
+
+	_grenade_aim_indicator.show_aim()
+	_grenade_aim_indicator.update_aim(origin, throw_velocity, grenade_gravity, flight_time)
+
+
+func _throw_grenade(is_aiming: bool) -> void:
+	var origin := global_position + Vector3.UP
+	var target := _get_grenade_target(origin, is_aiming)
+	var flight_time := _get_grenade_flight_time(origin, target)
+	var throw_velocity := _compute_grenade_velocity(origin, target, flight_time)
+
+	var grenade := GRENADE_SCENE.instantiate()
+	grenade.thrower = self
+	grenade.gravity = grenade_gravity
+	get_parent().add_child(grenade)
+	grenade.global_position = origin
+	grenade.linear_velocity = throw_velocity
+
+
+func _get_grenade_target(origin: Vector3, is_aiming: bool) -> Vector3:
+	if is_aiming:
+		return _camera_controller.get_aim_target()
+	var forward := (_rotation_root.transform.basis * Vector3.BACK).normalized()
+	return origin + forward * grenade_default_range
+
+
+func _get_grenade_flight_time(origin: Vector3, target: Vector3) -> float:
+	var horizontal_distance := Vector2(target.x - origin.x, target.z - origin.z).length()
+	return clampf(horizontal_distance / grenade_speed_reference, grenade_min_flight_time, grenade_max_flight_time)
+
+
+func _compute_grenade_velocity(origin: Vector3, target: Vector3, flight_time: float) -> Vector3:
+	var displacement := target - origin
+	var velocity_xz := Vector3(displacement.x, 0.0, displacement.z) / flight_time
+	var velocity_y := (displacement.y + 0.5 * grenade_gravity * flight_time * flight_time) / flight_time
+	return Vector3(velocity_xz.x, velocity_y, velocity_xz.z)
 
 
 func reset_position() -> void:
@@ -238,6 +317,7 @@ func _register_input_actions() -> void:
 		"move_up": KEY_W,
 		"move_down": KEY_S,
 		"jump": KEY_SPACE,
+		"switch_weapon": KEY_TAB,
 		"attack": MOUSE_BUTTON_LEFT,
 		"aim": MOUSE_BUTTON_RIGHT,
 		"pause": KEY_ESCAPE,
