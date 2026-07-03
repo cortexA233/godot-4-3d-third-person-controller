@@ -5,6 +5,7 @@ signal weapon_switched(weapon_name: String)
 
 const BULLET_SCENE := preload("bullet.tscn")
 const COIN_SCENE := preload("coin/coin.tscn")
+const EXPLOSION_SCENE := preload("res://player/explosion_visuals/explosion_scene.tscn")
 
 enum WEAPON_TYPE { DEFAULT, GRENADE }
 
@@ -83,7 +84,7 @@ func _physics_process(delta: float) -> void:
 	# Swap weapons
 	if Input.is_action_just_pressed("swap_weapons"):
 		_equipped_weapon = WEAPON_TYPE.DEFAULT if _equipped_weapon == WEAPON_TYPE.GRENADE else WEAPON_TYPE.GRENADE
-		_grenade_aim_controller.visible = _equipped_weapon == WEAPON_TYPE.GRENADE
+		_grenade_aim_controller.visible = false
 		weapon_switched.emit(WEAPON_TYPE.keys()[_equipped_weapon])
 
 	# Get input and movement state
@@ -143,7 +144,7 @@ func _physics_process(delta: float) -> void:
 			WEAPON_TYPE.GRENADE:
 				if _grenade_cooldown_tick > grenade_cooldown:
 					_grenade_cooldown_tick = 0.0
-					_grenade_aim_controller.throw_grenade()
+					_spawn_visual_only_explosion()
 
 	velocity.y += _gravity * delta
 
@@ -196,6 +197,12 @@ func shoot() -> void:
 	bullet.distance_limit = 14.0
 	get_parent().add_child(bullet)
 	bullet.global_position = origin
+
+
+func _spawn_visual_only_explosion() -> void:
+	var explosion: Node3D = EXPLOSION_SCENE.instantiate()
+	get_parent().add_child(explosion)
+	explosion.global_position = global_position + _last_strong_direction.normalized() * 8.5
 
 
 func reset_position() -> void:
