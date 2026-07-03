@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://player/grenade_visuals/grenade_aim.gd" id="1_aim01"]
+[ext_resource type="Material" uid="uid://b6h7p7jogt6ep" path="res://player/grenade_visuals/trajectory_material.tres" id="2_traj1"]
+[ext_resource type="Material" uid="uid://dus6jtbfyqwj8" path="res://player/grenade_visuals/aim_material.tres" id="3_targ1"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_marker"]
+size = Vector2(1, 1)
+
+[node name="GrenadeAim" type="Node3D"]
+script = ExtResource("1_aim01")
+
+[node name="TrajectoryMesh" type="MeshInstance3D" parent="."]
+material_override = ExtResource("2_traj1")
+
+[node name="LandingMarker" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_marker")
+material_override = ExtResource("3_targ1")

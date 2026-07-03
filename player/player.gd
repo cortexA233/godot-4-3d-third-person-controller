@@ -3,8 +3,11 @@ extends CharacterBody3D
 
 signal weapon_switched(weapon_name: String)
 
+enum WeaponMode { DEFAULT, GRENADE }
+
 const BULLET_SCENE := preload("bullet.tscn")
 const COIN_SCENE := preload("coin/coin.tscn")
+const GRENADE_SCENE := preload("grenade_visuals/grenade_projectile.tscn")
 
 ## Character maximum run speed on the ground.
 @export var move_speed := 8.0
@@ -27,6 +30,16 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @export var max_throwback_force := 15.0
 ## Projectile cooldown
 @export var shoot_cooldown := 0.5
+## Cooldown between grenade throws
+@export var grenade_cooldown := 1.4
+## Default throw distance used when the aim button isn't held
+@export var grenade_default_range := 9.0
+## Closest a grenade can be aimed to land while aiming
+@export var grenade_min_range := 4.0
+## Farthest a grenade can be aimed to land while aiming
+@export var grenade_max_range := 14.0
+## Launch angle used for every grenade throw
+@export var grenade_launch_angle := deg_to_rad(45.0)
 
 @onready var _rotation_root: Node3D = $CharacterRotationRoot
 @onready var _camera_controller: CameraController = $CameraController
@@ -37,6 +50,7 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @onready var _ui_coins_container: HBoxContainer = %CoinsContainer
 @onready var _step_sound: AudioStreamPlayer3D = $StepSound
 @onready var _landing_sound: AudioStreamPlayer3D = $LandingSound
+@onready var _grenade_aim: Node3D = $GrenadeAim
 
 @onready var _move_direction := Vector3.ZERO
 @onready var _last_strong_direction := Vector3.FORWARD
@@ -47,11 +61,14 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @onready var _is_on_floor_buffer := false
 
 @onready var _shoot_cooldown_tick := shoot_cooldown
+@onready var _grenade_cooldown_tick := grenade_cooldown
+@onready var _weapon_mode := WeaponMode.DEFAULT
 
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_camera_controller.setup(self)
+	_grenade_aim.hide()
 	weapon_switched.emit("DEFAULT")
 
 	# When copying this character to a new project, the project may lack required input actions.
@@ -111,14 +128,28 @@ func _physics_process(delta: float) -> void:
 	# Update attack state and position
 
 	_shoot_cooldown_tick += delta
+	_grenade_cooldown_tick += delta
 
-	if is_attacking:
-		if is_aiming and is_on_floor():
-			if _shoot_cooldown_tick > shoot_cooldown:
-				_shoot_cooldown_tick = 0.0
-				shoot()
-		elif is_just_attacking:
-			attack()
+	if Input.is_action_just_pressed("weapon_switch"):
+		_toggle_weapon_mode()
+
+	if _weapon_mode == WeaponMode.DEFAULT:
+		_grenade_aim.hide()
+		if is_attacking:
+			if is_aiming and is_on_floor():
+				if _shoot_cooldown_tick > shoot_cooldown:
+					_shoot_cooldown_tick = 0.0
+					shoot()
+			elif is_just_attacking:
+				attack()
+	else:
+		var grenade_launch := _compute_grenade_launch(is_aiming)
+		var grenade_trajectory := _simulate_grenade_trajectory(grenade_launch)
+		var grenade_on_cooldown := _grenade_cooldown_tick <= grenade_cooldown
+		_grenade_aim.update_aim(grenade_trajectory.points, grenade_trajectory.landing, grenade_on_cooldown)
+		if is_just_attacking and not grenade_on_cooldown:
+			_grenade_cooldown_tick = 0.0
+			throw_grenade(grenade_launch)
 
 	velocity.y += _gravity * delta
 
@@ -171,6 +202,90 @@ func shoot() -> void:
 	bullet.distance_limit = 14.0
 	get_parent().add_child(bullet)
 	bullet.global_position = origin
+
+
+func throw_grenade(launch: Dictionary) -> void:
+	var grenade := GRENADE_SCENE.instantiate()
+	grenade.shooter = self
+	get_parent().add_child(grenade)
+	grenade.global_position = launch.origin
+	grenade.linear_velocity = launch.velocity
+	_character_skin.punch()
+
+
+func _toggle_weapon_mode() -> void:
+	if _weapon_mode == WeaponMode.DEFAULT:
+		_weapon_mode = WeaponMode.GRENADE
+		weapon_switched.emit("GRENADE")
+	else:
+		_weapon_mode = WeaponMode.DEFAULT
+		_grenade_aim.hide()
+		weapon_switched.emit("DEFAULT")
+
+
+## Computes the throw origin/velocity for the current aim state.
+## Without aim held, throws use a stable default forward arc.
+## While aiming, direction and distance follow the camera's aim target.
+func _compute_grenade_launch(is_aiming_now: bool) -> Dictionary:
+	var origin := global_position + Vector3.UP * 1.2 + _last_strong_direction * 0.6
+	var direction := _last_strong_direction
+	var target_distance := grenade_default_range
+
+	if is_aiming_now:
+		var aim_target := _camera_controller.get_aim_target()
+		var to_target := aim_target - origin
+		to_target.y = 0.0
+		if to_target.length() > 0.1:
+			direction = to_target.normalized()
+		target_distance = clamp(to_target.length(), grenade_min_range, grenade_max_range)
+
+	var gravity_magnitude: float = abs(ProjectSettings.get_setting("physics/3d/default_gravity", 9.8))
+	# At a fixed launch angle, range R = speed^2 * sin(2*angle) / gravity.
+	var speed := sqrt(target_distance * gravity_magnitude / sin(2.0 * grenade_launch_angle))
+	var horizontal_speed := speed * cos(grenade_launch_angle)
+	var vertical_speed := speed * sin(grenade_launch_angle)
+
+	return {
+		"origin": origin,
+		"velocity": direction * horizontal_speed + Vector3.UP * vertical_speed,
+		"gravity": gravity_magnitude,
+	}
+
+
+## Simulates the ballistic arc for the aiming aid, stopping early at the first
+## world collision so the landing marker matches where the grenade will actually land.
+func _simulate_grenade_trajectory(launch: Dictionary) -> Dictionary:
+	const STEP_TIME := 0.03
+	const MAX_STEPS := 150
+	const LEVEL_COLLISION_MASK := 2
+
+	var space_state := get_world_3d().direct_space_state
+	var sim_position: Vector3 = launch.origin
+	var velocity_sim: Vector3 = launch.velocity
+	var gravity_magnitude: float = launch.gravity
+
+	var points := PackedVector3Array([sim_position])
+	var landing_point := sim_position
+
+	for _step in MAX_STEPS:
+		var previous_position := sim_position
+		velocity_sim.y -= gravity_magnitude * STEP_TIME
+		sim_position += velocity_sim * STEP_TIME
+
+		var query := PhysicsRayQueryParameters3D.create(previous_position, sim_position)
+		query.collision_mask = LEVEL_COLLISION_MASK
+		var result := space_state.intersect_ray(query)
+		if result:
+			landing_point = result.position
+			points.append(landing_point)
+			return {"points": points, "landing": landing_point}
+
+		points.append(sim_position)
+		landing_point = sim_position
+		if sim_position.y < previous_position.y - 40.0:
+			break
+
+	return {"points": points, "landing": landing_point}
 
 
 func reset_position() -> void:
@@ -241,6 +356,7 @@ func _register_input_actions() -> void:
 		"attack": MOUSE_BUTTON_LEFT,
 		"aim": MOUSE_BUTTON_RIGHT,
 		"pause": KEY_ESCAPE,
+		"weapon_switch": KEY_TAB,
 		"camera_left": KEY_Q,
 		"camera_right": KEY_E,
 		"camera_up": KEY_R,
