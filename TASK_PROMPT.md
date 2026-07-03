@@ -85,6 +85,17 @@ The explosion should affect nearby damageable game objects.
 - The explosion should not globally damage every target in the scene.
 - Damage should be spatially based around the detonation point.
 
+## Gameplay Tuning Expectations
+
+The grenade should have sensible default tuning for normal third-person combat.
+
+- A default forward throw should be useful at ordinary combat range, not only at point-blank range and not only at very long range.
+- On flat ground, when the player faces a target area and attacks in grenade mode without holding aim, the grenade should land in a medium-distance area in front of the player, roughly 6-12 Godot units away.
+- The explosion should affect targets within a few units of the detonation point.
+- Targets clearly separated from the detonation point, such as targets well over ten units away, far to the side, behind the player, or the player themselves, should remain safe.
+- Cooldown and fuse timing should allow repeated throws to be observed during normal play without producing an uncontrolled stream of grenades.
+- Implementations may expose tuning values for throw range, explosion radius, cooldown, fuse, or gravity, but a specific configuration API is not required.
+
 ## Visual And Audio Feedback
 
 - The thrown grenade should have a visible in-world representation.
