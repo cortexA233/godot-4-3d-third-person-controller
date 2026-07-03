@@ -16,9 +16,9 @@ This branch is the final viewable submission for the agent-coding evaluation tas
 - Agent-facing task prompt: `TASK_PROMPT.md`
 - Ablated task source branch: `codex/grenade-rollout-task` at `fb0fd4f`
 - Rollout evidence branches:
-  - `codex/agent-run-01-cc-sonnet`, `codex/agent-run-02-cc-sonnet`, `codex/agent-run-03-cc-sonnet`
-  - `codex/agent-run-01-cc-opus`, `codex/agent-run-02-cc-opus`, `codex/agent-run-03-cc-opus`
-  - `codex/agent-run-01-codex`, `codex/agent-run-02-codex`, `codex/agent-run-03-codex`
+  - `agent-run/01-cc-sonnet`, `agent-run/02-cc-sonnet`, `agent-run/03-cc-sonnet`
+  - `agent-run/01-cc-opus`, `agent-run/02-cc-opus`, `agent-run/03-cc-opus`
+  - `agent-run/01-codex`, `agent-run/02-codex`, `agent-run/03-codex`
 - Anti-cheat probe branches:
   - `fake/hud-only`, `fake/visual-no-damage`, `fake/damage-no-preview`
   - `fake/single-use`, `fake/fixed-trajectory`, `fake/bad-distance`

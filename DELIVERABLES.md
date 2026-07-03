@@ -11,9 +11,9 @@ anti-cheat probes, and report.
 - `codex/grenade-rollout-task`: agent-facing ablated task branch. This is the
   branch supplied to rollout agents with the behavioral prompt, without the
   verifier or hidden scoring notes.
-- `codex/agent-run-*`: recorded rollout attempts and their branch-local
+- `agent-run/*`: recorded rollout attempts and their branch-local
   evidence.
-- `codex/final-deliverable`: this branch, collecting the verifier and report for
+- `submission/final-deliverable`: this branch, collecting the verifier and report for
   review after rollout runs are complete.
 
 ## Reviewer Entry Points
