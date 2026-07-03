@@ -30,8 +30,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func throw_grenade() -> bool:
-	if not visible:
-		return false
+	_update_throw_velocity()
 
 	var grenade: CharacterBody3D = GRENADE_SCENE.instantiate()
 	get_parent().add_child(grenade)

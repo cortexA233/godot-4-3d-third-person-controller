@@ -83,7 +83,7 @@ func _physics_process(delta: float) -> void:
 	# Swap weapons
 	if Input.is_action_just_pressed("swap_weapons"):
 		_equipped_weapon = WEAPON_TYPE.DEFAULT if _equipped_weapon == WEAPON_TYPE.GRENADE else WEAPON_TYPE.GRENADE
-		_grenade_aim_controller.visible = _equipped_weapon == WEAPON_TYPE.GRENADE
+		_grenade_aim_controller.visible = false
 		weapon_switched.emit(WEAPON_TYPE.keys()[_equipped_weapon])
 
 	# Get input and movement state
