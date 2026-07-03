@@ -7,6 +7,28 @@ description: "A 3D Third Person Shooter Controller Demo"
 
 # RoboBlast: Third-Person Shooter demo (Godot 4, 3D)
 
+## Take-home evaluation submission
+
+This branch is the final viewable submission for the agent-coding evaluation task.
+
+- Report: `evaluation/verifier/evaluation/writeup.html`
+- Verifier: `evaluation/verifier/`
+- Agent-facing task prompt: `TASK_PROMPT.md`
+- Ablated task source branch: `codex/grenade-rollout-task` at `fb0fd4f`
+- Rollout evidence branches:
+  - `codex/agent-run-01-cc-sonnet`, `codex/agent-run-02-cc-sonnet`, `codex/agent-run-03-cc-sonnet`
+  - `codex/agent-run-01-cc-opus`, `codex/agent-run-02-cc-opus`, `codex/agent-run-03-cc-opus`
+  - `codex/agent-run-01-codex`, `codex/agent-run-02-codex`, `codex/agent-run-03-codex`
+- Anti-cheat probe branches:
+  - `fake/hud-only`, `fake/visual-no-damage`, `fake/damage-no-preview`
+  - `fake/single-use`, `fake/fixed-trajectory`, `fake/bad-distance`
+  - `codex/grenade-global-enemy-damage`
+
+Rollout agents were not run directly from a raw branch checkout. Each agent was
+given an exporter-produced, history-stripped clean workspace generated from the
+ablated task, with verifier files, local git history, generated artifacts,
+assignment notes, and hidden scoring/probe material excluded.
+
 ![](static/third-person-shooter-demo.webp)
 
 This open-source Godot 4 demo shows how to create a 3D character controller inspired by games like Ratchet and Clank or Jak and Daxter. You can copy the character to your project as a plug-and-play asset to prototype 3D games with and build upon.
