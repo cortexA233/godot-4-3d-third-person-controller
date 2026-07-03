@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://player/grenade_visuals/grenade/grenade.tscn" id="1_h5s0x"]
+[ext_resource type="Script" path="res://player/grenade_projectile.gd" id="2_2mvei"]
+[ext_resource type="AudioStream" uid="uid://c5w63eo8flpfy" path="res://player/sounds/musket-explosion-6383.wav" id="3_3p56t"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_s8ptk"]
+friction = 0.8
+bounce = 0.35
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_q2tfx"]
+radius = 0.25
+
+[node name="GrenadeProjectile" type="RigidBody3D"]
+collision_mask = 3
+physics_material_override = SubResource("PhysicsMaterial_s8ptk")
+continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 4
+linear_damp = 0.25
+angular_damp = 0.2
+script = ExtResource("2_2mvei")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_q2tfx")
+
+[node name="Visual" parent="." instance=ExtResource("1_h5s0x")]
+
+[node name="FuseTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_3p56t")
+volume_db = 6.0

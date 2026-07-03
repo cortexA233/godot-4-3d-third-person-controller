@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://player/grenade_aim_assist.gd" id="1_xj30f"]
+[ext_resource type="Material" uid="uid://b6h7p7jogt6ep" path="res://player/grenade_visuals/trajectory_material.tres" id="2_2kq4y"]
+[ext_resource type="Material" uid="uid://bvekasx4wt5x7" path="res://player/grenade_visuals/aim_material.tres" id="3_i6qrf"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6p2ab"]
+top_radius = 0.65
+bottom_radius = 0.65
+height = 0.04
+radial_segments = 48
+rings = 1
+
+[node name="GrenadeAimAssist" type="Node3D"]
+top_level = true
+script = ExtResource("1_xj30f")
+
+[node name="TrajectoryLine" type="MeshInstance3D" parent="."]
+material_override = ExtResource("2_2kq4y")
+cast_shadow = 0
+
+[node name="TrajectoryDots" type="Node3D" parent="."]
+
+[node name="LandingMarker" type="MeshInstance3D" parent="."]
+material_override = ExtResource("3_i6qrf")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_6p2ab")
