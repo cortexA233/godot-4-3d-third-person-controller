@@ -55,6 +55,8 @@ enum WEAPON_TYPE { DEFAULT, GRENADE }
 @onready var _shoot_cooldown_tick := shoot_cooldown
 @onready var _grenade_cooldown_tick := grenade_cooldown
 
+var _grenade_used := false
+
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -66,6 +68,7 @@ func _ready() -> void:
 	# In that case, we register input actions for the user at runtime.
 	if not InputMap.has_action("move_left"):
 		_register_input_actions()
+	_remove_weapon_switch_controller_bindings()
 
 	_character_skin.stepped.connect(play_foot_step_sound)
 
@@ -141,8 +144,9 @@ func _physics_process(delta: float) -> void:
 				elif is_just_attacking:
 					attack()
 			WEAPON_TYPE.GRENADE:
-				if _grenade_cooldown_tick > grenade_cooldown:
+				if _grenade_cooldown_tick > grenade_cooldown and not _grenade_used:
 					_grenade_cooldown_tick = 0.0
+					_grenade_used = true
 					_grenade_aim_controller.throw_grenade()
 
 	velocity.y += _gravity * delta
@@ -279,3 +283,11 @@ func _register_input_actions() -> void:
 		var input_key = InputEventKey.new()
 		input_key.keycode = INPUT_ACTIONS[action]
 		InputMap.action_add_event(action, input_key)
+
+
+func _remove_weapon_switch_controller_bindings() -> void:
+	if not InputMap.has_action("swap_weapons"):
+		return
+	for event in InputMap.action_get_events("swap_weapons"):
+		if event is InputEventJoypadButton or event is InputEventJoypadMotion:
+			InputMap.action_erase_event("swap_weapons", event)
