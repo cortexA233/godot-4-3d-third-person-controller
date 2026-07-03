@@ -3,6 +3,8 @@ extends CharacterBody3D
 
 signal weapon_switched(weapon_name: String)
 
+enum Weapon { DEFAULT, GRENADE }
+
 const BULLET_SCENE := preload("bullet.tscn")
 const COIN_SCENE := preload("coin/coin.tscn")
 
@@ -28,6 +30,24 @@ const COIN_SCENE := preload("coin/coin.tscn")
 ## Projectile cooldown
 @export var shoot_cooldown := 0.5
 
+@export_group("Grenade")
+## Gravity applied to thrown grenades and used to predict their arc.
+@export var grenade_gravity := 24.0
+## Time of flight used to solve the throw arc toward the target point.
+@export var grenade_flight_time := 0.85
+## Landing distance of a default (non-aimed) forward throw, in world units.
+@export var grenade_default_range := 9.0
+## Closest a grenade can be aimed when holding the aim button.
+@export var grenade_min_range := 3.0
+## Farthest a grenade can be aimed when holding the aim button.
+@export var grenade_max_range := 16.0
+## Minimum time between grenade throws.
+@export var grenade_cooldown := 1.1
+## Blast radius of a grenade explosion.
+@export var grenade_explosion_radius := 4.0
+## Fuse before a grenade self-detonates if it never collides.
+@export var grenade_fuse_time := 2.5
+
 @onready var _rotation_root: Node3D = $CharacterRotationRoot
 @onready var _camera_controller: CameraController = $CameraController
 @onready var _attack_animation_player: AnimationPlayer = $CharacterRotationRoot/MeleeAnchor/AnimationPlayer
@@ -47,11 +67,20 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @onready var _is_on_floor_buffer := false
 
 @onready var _shoot_cooldown_tick := shoot_cooldown
+@onready var _grenade_cooldown_tick := grenade_cooldown
+
+var _current_weapon := Weapon.DEFAULT
+var _grenade_aim: GrenadeAim
 
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_camera_controller.setup(self)
+
+	# The aiming aid lives on the player but draws in world space (top_level).
+	_grenade_aim = GrenadeAim.new()
+	add_child(_grenade_aim)
+
 	weapon_switched.emit("DEFAULT")
 
 	# When copying this character to a new project, the project may lack required input actions.
@@ -108,11 +137,32 @@ func _physics_process(delta: float) -> void:
 		_camera_controller.set_pivot(_camera_controller.CAMERA_PIVOT.THIRD_PERSON)
 		_ui_aim_reticle.visible = false
 
+	# Weapon switching (Tab / controller button) toggles default <-> grenade.
+	if Input.is_action_just_pressed("switch_weapon"):
+		_toggle_weapon()
+
 	# Update attack state and position
 
 	_shoot_cooldown_tick += delta
+	_grenade_cooldown_tick += delta
 
-	if is_attacking:
+	if _current_weapon == Weapon.GRENADE:
+		# Grenade mode keeps the aiming aid visible whether or not the aim button is
+		# held and throws an arcing grenade on attack (never melee or default shots).
+		var launch := _get_grenade_launch(is_aiming)
+		_grenade_aim.update_preview(
+			launch.origin,
+			launch.velocity,
+			grenade_gravity,
+			get_rid(),
+			get_world_3d().direct_space_state,
+			_camera_controller.camera,
+		)
+		_grenade_aim.set_ready(_grenade_cooldown_tick >= grenade_cooldown)
+		if is_just_attacking and _grenade_cooldown_tick >= grenade_cooldown:
+			_grenade_cooldown_tick = 0.0
+			_throw_grenade(launch.origin, launch.velocity)
+	elif is_attacking:
 		if is_aiming and is_on_floor():
 			if _shoot_cooldown_tick > shoot_cooldown:
 				_shoot_cooldown_tick = 0.0
@@ -171,6 +221,66 @@ func shoot() -> void:
 	bullet.distance_limit = 14.0
 	get_parent().add_child(bullet)
 	bullet.global_position = origin
+
+
+func _toggle_weapon() -> void:
+	if _current_weapon == Weapon.DEFAULT:
+		_current_weapon = Weapon.GRENADE
+		weapon_switched.emit("GRENADE")
+	else:
+		_current_weapon = Weapon.DEFAULT
+		weapon_switched.emit("DEFAULT")
+		_grenade_aim.hide_preview()
+
+
+## Compute the grenade spawn point and launch velocity for the current aim state.
+## Without aiming: a stable medium-range forward arc. While aiming: the throw
+## follows the camera aim, letting the player control direction and distance.
+func _get_grenade_launch(is_aiming: bool) -> Dictionary:
+	var forward := _camera_controller.global_transform.basis * Vector3.BACK
+	forward.y = 0.0
+	if forward.length() < 0.001:
+		forward = _last_strong_direction
+	forward = forward.normalized()
+
+	var origin := global_position + Vector3.UP * 1.3 + forward * 0.6
+
+	var target: Vector3
+	if is_aiming:
+		var aim_point := _camera_controller.get_aim_target()
+		var flat := aim_point - global_position
+		flat.y = 0.0
+		var flat_distance := flat.length()
+		var direction := flat.normalized() if flat_distance > 0.001 else forward
+		var distance := clampf(flat_distance, grenade_min_range, grenade_max_range)
+		target = global_position + direction * distance
+		# Keep vertical target sane even when aiming at the sky or steep terrain.
+		target.y = clampf(aim_point.y, global_position.y - 6.0, global_position.y + 4.0)
+	else:
+		target = global_position + forward * grenade_default_range
+		target.y = global_position.y
+
+	var launch_velocity := _solve_launch_velocity(origin, target, grenade_gravity, grenade_flight_time)
+	return {"origin": origin, "velocity": launch_velocity}
+
+
+## Velocity that carries a projectile from origin to target in flight_time under gravity.
+func _solve_launch_velocity(origin: Vector3, target: Vector3, arc_gravity: float, flight_time: float) -> Vector3:
+	var grav_accel := Vector3(0.0, -arc_gravity, 0.0)
+	return (target - origin) / flight_time - 0.5 * grav_accel * flight_time
+
+
+func _throw_grenade(origin: Vector3, launch_velocity: Vector3) -> void:
+	var grenade := GrenadeProjectile.new()
+	grenade.thrower = self
+	grenade.gravity = grenade_gravity
+	grenade.explosion_radius = grenade_explosion_radius
+	grenade.fuse_time = grenade_fuse_time
+	get_parent().add_child(grenade)
+	grenade.global_position = origin
+	grenade.add_collision_exception_with(self)
+	grenade.linear_velocity = launch_velocity
+	_character_skin.punch()
 
 
 func reset_position() -> void:
@@ -240,6 +350,7 @@ func _register_input_actions() -> void:
 		"jump": KEY_SPACE,
 		"attack": MOUSE_BUTTON_LEFT,
 		"aim": MOUSE_BUTTON_RIGHT,
+		"switch_weapon": KEY_TAB,
 		"pause": KEY_ESCAPE,
 		"camera_left": KEY_Q,
 		"camera_right": KEY_E,

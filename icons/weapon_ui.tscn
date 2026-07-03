@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://df4v2xav53hfi" path="res://icons/weapon_ui.gd" id="1_vteie"]
 [ext_resource type="PackedScene" uid="uid://b1fed4rxaa3qj" path="res://icons/icone.tscn" id="2_etwmu"]
+[ext_resource type="Texture2D" uid="uid://cj4npx16cmso7" path="res://icons/bomb_icon.png" id="3_bomb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmqom"]
 bg_color = Color(0, 0, 0, 0.392157)
@@ -43,3 +44,14 @@ theme_override_constants/margin_bottom = 2
 
 [node name="Flash" parent="Control/MarginContainer" unique_id=784886255 instance=ExtResource("2_etwmu")]
 layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control" unique_id=141859044]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 2
+
+[node name="Bomb" parent="Control/MarginContainer2" unique_id=784886256 instance=ExtResource("2_etwmu")]
+layout_mode = 2
+texture = ExtResource("3_bomb")
