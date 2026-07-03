@@ -5,6 +5,14 @@ signal weapon_switched(weapon_name: String)
 
 const BULLET_SCENE := preload("bullet.tscn")
 const COIN_SCENE := preload("coin/coin.tscn")
+const GRENADE_PROJECTILE_SCENE := preload("res://player/grenade_projectile.tscn")
+const GRENADE_PREVIEW_SCRIPT := preload("res://player/grenade_trajectory_preview.gd")
+const GRENADE_TRAJECTORY_SCRIPT := preload("res://player/grenade_trajectory.gd")
+
+enum WeaponMode { DEFAULT, GRENADE }
+
+const WEAPON_NAME_DEFAULT := "DEFAULT"
+const WEAPON_NAME_GRENADE := "GRENADE"
 
 ## Character maximum run speed on the ground.
 @export var move_speed := 8.0
@@ -27,6 +35,20 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @export var max_throwback_force := 15.0
 ## Projectile cooldown
 @export var shoot_cooldown := 0.5
+## Grenade cooldown
+@export var grenade_cooldown := 1.0
+## Forward speed used by default non-aimed grenade throws.
+@export var grenade_default_horizontal_speed := 10.0
+## Upward speed used by default non-aimed grenade throws.
+@export var grenade_default_vertical_speed := 5.2
+## Gravity value used by grenade preview and aimed throw calculation.
+@export var grenade_gravity := 16.0
+## Extra height used to calculate the aimed grenade arc.
+@export var grenade_aim_arc_height := 6.0
+## Minimum aimed grenade landing distance.
+@export var grenade_min_aim_distance := 4.0
+## Maximum aimed grenade landing distance.
+@export var grenade_max_aim_distance := 16.0
 
 @onready var _rotation_root: Node3D = $CharacterRotationRoot
 @onready var _camera_controller: CameraController = $CameraController
@@ -47,17 +69,23 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @onready var _is_on_floor_buffer := false
 
 @onready var _shoot_cooldown_tick := shoot_cooldown
+@onready var _grenade_cooldown_tick := grenade_cooldown
+
+var _current_weapon := -1
+var _grenade_preview = null
 
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_camera_controller.setup(self)
-	weapon_switched.emit("DEFAULT")
 
 	# When copying this character to a new project, the project may lack required input actions.
 	# In that case, we register input actions for the user at runtime.
 	if not InputMap.has_action("move_left"):
 		_register_input_actions()
+	_ensure_weapon_switch_action()
+	_setup_grenade_preview()
+	_select_weapon(WeaponMode.DEFAULT)
 
 	_character_skin.stepped.connect(play_foot_step_sound)
 
@@ -79,6 +107,9 @@ func _physics_process(delta: float) -> void:
 	var is_aiming := Input.is_action_pressed("aim") and is_on_floor()
 	var is_air_boosting := Input.is_action_pressed("jump") and not is_on_floor() and velocity.y > 0.0
 	var is_just_on_floor := is_on_floor() and not _is_on_floor_buffer
+
+	if Input.is_action_just_pressed("weapon_switch"):
+		_toggle_weapon()
 
 	_is_on_floor_buffer = is_on_floor()
 	_move_direction = _get_camera_oriented_input()
@@ -111,8 +142,18 @@ func _physics_process(delta: float) -> void:
 	# Update attack state and position
 
 	_shoot_cooldown_tick += delta
+	_grenade_cooldown_tick += delta
 
-	if is_attacking:
+	if _current_weapon == WeaponMode.GRENADE:
+		_update_grenade_preview(is_aiming)
+		if is_just_attacking and _grenade_cooldown_tick >= grenade_cooldown:
+			_grenade_cooldown_tick = 0.0
+			throw_grenade(is_aiming)
+	else:
+		if _grenade_preview != null:
+			_grenade_preview.hide()
+
+	if _current_weapon == WeaponMode.DEFAULT and is_attacking:
 		if is_aiming and is_on_floor():
 			if _shoot_cooldown_tick > shoot_cooldown:
 				_shoot_cooldown_tick = 0.0
@@ -173,6 +214,17 @@ func shoot() -> void:
 	bullet.global_position = origin
 
 
+func throw_grenade(is_aiming: bool) -> void:
+	var origin := _get_grenade_throw_origin()
+	var throw_velocity := _get_grenade_throw_velocity(origin, is_aiming)
+	var grenade := GRENADE_PROJECTILE_SCENE.instantiate()
+	grenade.shooter = self
+	grenade.initial_velocity = throw_velocity
+	grenade.global_position = origin
+	get_parent().add_child(grenade)
+	grenade.throw(origin, throw_velocity, self)
+
+
 func reset_position() -> void:
 	transform.origin = _start_position
 
@@ -209,6 +261,65 @@ func _get_camera_oriented_input() -> Vector3:
 	return input
 
 
+func _toggle_weapon() -> void:
+	if _current_weapon == WeaponMode.DEFAULT:
+		_select_weapon(WeaponMode.GRENADE)
+	else:
+		_select_weapon(WeaponMode.DEFAULT)
+
+
+func _select_weapon(weapon: int) -> void:
+	if _current_weapon == weapon:
+		return
+
+	_current_weapon = weapon
+	weapon_switched.emit(_get_weapon_name(weapon))
+	if _grenade_preview != null and weapon != WeaponMode.GRENADE:
+		_grenade_preview.hide()
+
+
+func _get_weapon_name(weapon: int) -> String:
+	match weapon:
+		WeaponMode.GRENADE:
+			return WEAPON_NAME_GRENADE
+		_:
+			return WEAPON_NAME_DEFAULT
+
+
+func _setup_grenade_preview() -> void:
+	_grenade_preview = GRENADE_PREVIEW_SCRIPT.new()
+	get_parent().add_child(_grenade_preview)
+	_grenade_preview.set_excluded_body(self)
+
+
+func _update_grenade_preview(is_aiming: bool) -> void:
+	if _grenade_preview == null:
+		return
+
+	var origin := _get_grenade_throw_origin()
+	var throw_velocity := _get_grenade_throw_velocity(origin, is_aiming)
+	_grenade_preview.update_preview(origin, throw_velocity, grenade_gravity)
+
+
+func _get_grenade_throw_origin() -> Vector3:
+	return global_position + Vector3.UP * 1.35 + _last_strong_direction.normalized() * 0.75
+
+
+func _get_grenade_throw_velocity(origin: Vector3, is_aiming: bool) -> Vector3:
+	if is_aiming:
+		var camera_forward := (_camera_controller.global_transform.basis * Vector3.BACK).normalized()
+		return GRENADE_TRAJECTORY_SCRIPT.get_aimed_velocity(
+			origin,
+			_camera_controller.get_aim_target(),
+			camera_forward,
+			grenade_gravity,
+			grenade_aim_arc_height,
+			grenade_min_aim_distance,
+			grenade_max_aim_distance,
+		)
+	return GRENADE_TRAJECTORY_SCRIPT.get_default_velocity(_last_strong_direction, grenade_default_horizontal_speed, grenade_default_vertical_speed)
+
+
 func play_foot_step_sound() -> void:
 	_step_sound.pitch_scale = randfn(1.2, 0.2)
 	_step_sound.play()
@@ -241,6 +352,7 @@ func _register_input_actions() -> void:
 		"attack": MOUSE_BUTTON_LEFT,
 		"aim": MOUSE_BUTTON_RIGHT,
 		"pause": KEY_ESCAPE,
+		"weapon_switch": KEY_TAB,
 		"camera_left": KEY_Q,
 		"camera_right": KEY_E,
 		"camera_up": KEY_R,
@@ -253,3 +365,17 @@ func _register_input_actions() -> void:
 		var input_key = InputEventKey.new()
 		input_key.keycode = INPUT_ACTIONS[action]
 		InputMap.action_add_event(action, input_key)
+
+
+func _ensure_weapon_switch_action() -> void:
+	if InputMap.has_action("weapon_switch"):
+		return
+
+	InputMap.add_action("weapon_switch")
+	var input_key := InputEventKey.new()
+	input_key.keycode = KEY_TAB
+	InputMap.action_add_event("weapon_switch", input_key)
+
+	var input_button := InputEventJoypadButton.new()
+	input_button.button_index = 9
+	InputMap.action_add_event("weapon_switch", input_button)
