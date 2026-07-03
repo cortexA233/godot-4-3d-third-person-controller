@@ -100,17 +100,20 @@ Run:
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\recent_project\roboblast-grenade-verifier\run_calibration.ps1
 ```
 
-Latest local calibration (2026-07-03, `score >= 85` pass line):
+Official retained rollout score set (2026-07-03, `score >= 85` pass line):
 
 - Godot executable: `C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe`
 - Godot version: `4.6.stable.official.89cea1439`
-- Ablated task branch `codex/grenade-rollout-task` commit `fb0fd4f`: `13/100`, `passed: false`; no grenade projectile is available, so explosion calibration falls back, trajectory preview scores 0, and explosion gameplay scores 0.
+- Score source: `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656`
+- Verifier SHA recorded by that score summary: `bfa6d5f060b25b427209c15f95448f03532147ab`
 - Reference `main` commit `1cf08f7`: `91/100`, `passed: true`, with localized explosion gameplay at `17/20`.
+- Ablated task branch `codex/grenade-rollout-task` commit `fb0fd4f`: `13/100`, `passed: false`; no grenade projectile is available, so explosion calibration falls back, trajectory preview scores 0, and explosion gameplay scores 0.
+- Three Claude Code Opus 4.8 rollout candidates score `74/100`, `88/100`, and `80/100`; the second Opus run passes.
+- Three Claude Code Sonnet rollout candidates score `77/100`, `82/100`, and `59/100`.
+- Three Codex rollout candidates score `6/100`, `28/100`, and `28/100`.
 - Global targetable sweep probe branch `codex/grenade-global-enemy-damage` commit `14310ca`: `78/100`, `passed: false`, with `explosion_gameplay` capped to `4/20` after global damage sweep detection.
-- Three Claude Code Sonnet 5 medium rollout candidates score `80/100`, `78/100`, and `13/100` under the refreshed calibration verifier; see `evaluation/writeup.html`.
-- Additional published rollout branches record three Claude Code Opus 4.8 max attempts (`74/100`, `88/100`, `80/100` in branch-captured score JSONs) and three Codex GPT-5.5 xhigh attempts (`6/100`, `28/100`, `28/100` in branch-captured score JSONs).
 - Seven representative anti-cheat fake candidates now have committed score JSONs: HUD-only `19/100`, visual-only/no-damage `34/100`, damage-without-preview `54/100`, single-use `75/100`, fixed-trajectory `65/100`, bad-distance `50/100`, and global damage `78/100`.
-- Committed score JSONs for these runs live under `evaluation/evidence/`.
+- Retained official run evidence lives under `evaluation/evidence/agent-runs-20260703-151656/`; retained probe score JSONs live under `evaluation/evidence/probes/`. Older score results and unrelated artifact outputs are intentionally not retained.
 
 The ablated score is low because the grenade weapon behavior is absent. The
 trajectory-preview gates, fixed-seed radial target variants, adaptive calibration,

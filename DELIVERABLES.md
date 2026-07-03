@@ -20,9 +20,14 @@ anti-cheat probes, and report.
 
 - `report.html`: browser entry point for the HTML writeup.
 - `evaluation/verifier/`: self-contained verifier snapshot copied from the
-  private verifier workspace at commit `950e626`.
-- `evaluation/verifier/evaluation/evidence/`: curated score JSONs for the
-  reference, ablated task, rollout attempts, and anti-cheat probes.
+  private verifier workspace. The retained official rollout scores were
+  generated with verifier SHA `bfa6d5f060b25b427209c15f95448f03532147ab`; this
+  snapshot also includes the later materialized probe fixtures used for review.
+- `evaluation/verifier/evaluation/evidence/agent-runs-20260703-151656/`: the
+  official retained reference, ablated, and rollout-attempt evidence from
+  `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656`.
+- `evaluation/verifier/evaluation/evidence/probes/`: retained anti-cheat probe
+  score JSONs.
 - `evaluation/verifier/evaluation/probes/`: materialized fake near-miss
   solutions used to check reward-hacking resistance.
 - `evaluation/verifier/BENCHMARK.md`: benchmark objective, protocol, scoring,

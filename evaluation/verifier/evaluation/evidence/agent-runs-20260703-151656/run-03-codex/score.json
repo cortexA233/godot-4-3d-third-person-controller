@@ -1,6 +1,6 @@
 {
   "artifacts": {
-    "log": "C:\\recent_project\\roboblast-grenade-verifier\\artifacts\\calibration-20260703-sonnet-3-score.log",
+    "log": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-codex\\evidence\\godot-verifier.log",
     "screenshots": []
   },
   "breakdown": [
@@ -9,14 +9,14 @@
         {
           "label": "Controller weapon-switch binding",
           "max": 2,
-          "notes": "no weapon-switch input route carries a controller binding",
-          "score": 0,
-          "status": "missed"
+          "notes": "a weapon-switch input route also carries a controller binding",
+          "score": 2,
+          "status": "earned"
         },
         {
           "label": "Weapon switch input responds",
           "max": 2,
-          "notes": "weapon mode did not observably switch through Tab key fallback",
+          "notes": "weapon mode did not observably switch through weapon_switch action",
           "score": 0,
           "status": "missed"
         },
@@ -44,8 +44,8 @@
       ],
       "max": 15,
       "name": "weapon_controls",
-      "notes": "no weapon-switch input route carries a controller binding; weapon mode did not observably switch through Tab key fallback; attack after weapon switch did not create observable runtime nodes; rate limit not credited because no grenade attack was observed; default aimed attack still creates runtime nodes",
-      "score": 3
+      "notes": "a weapon-switch input route also carries a controller binding; weapon mode did not observably switch through weapon_switch action; attack after weapon switch did not create observable runtime nodes; rate limit not credited because no grenade attack was observed; default aimed attack still creates runtime nodes",
+      "score": 5
     },
     {
       "details": [
@@ -59,9 +59,9 @@
         {
           "label": "Weapon-switch UI state",
           "max": 4,
-          "notes": "UI did not visibly change after weapon switch",
-          "score": 0,
-          "status": "missed"
+          "notes": "UI control state changed after weapon switch",
+          "score": 4,
+          "status": "earned"
         },
         {
           "label": "Aiming UI feedback",
@@ -73,51 +73,51 @@
       ],
       "max": 10,
       "name": "hud_feedback",
-      "notes": "player has visible UI controls; UI did not visibly change after weapon switch; aiming changes UI feedback",
-      "score": 6
+      "notes": "player has visible UI controls; UI control state changed after weapon switch; aiming changes UI feedback",
+      "score": 10
     },
     {
       "details": [
         {
           "label": "Visible grenade aiming aid",
           "max": 5,
-          "notes": "no visible grenade trajectory, landing marker, or equivalent aiming aid detected",
-          "score": 0,
-          "status": "missed"
+          "notes": "visible grenade aiming aid appears in grenade mode",
+          "score": 5,
+          "status": "earned"
         },
         {
           "label": "Communicates arcing throw",
           "max": 6,
-          "notes": "trajectory details gated because no visible aiming aid was observed",
+          "notes": "aiming aid does not clearly communicate an arcing grenade throw",
           "score": 0,
           "status": "missed"
         },
         {
           "label": "Updates with aim/camera direction",
           "max": 8,
-          "notes": "trajectory details gated because no visible aiming aid was observed",
+          "notes": "aiming aid did not update after aim or camera direction changed",
           "score": 0,
           "status": "missed"
         },
         {
           "label": "Preview matches projectile direction",
           "max": 7,
-          "notes": "trajectory details gated because no visible aiming aid was observed",
+          "notes": "consistency not credited because aiming aid did not update",
           "score": 0,
           "status": "missed"
         },
         {
           "label": "Visibility lifecycle/cooldown behavior",
           "max": 4,
-          "notes": "trajectory details gated because no visible aiming aid was observed",
-          "score": 0,
-          "status": "missed"
+          "notes": "aiming aid remains available in grenade mode and hides after leaving grenade mode",
+          "score": 4,
+          "status": "earned"
         }
       ],
       "max": 30,
       "name": "trajectory_preview",
-      "notes": "no visible grenade trajectory, landing marker, or equivalent aiming aid detected; trajectory details gated because no visible aiming aid was observed; trajectory details gated because no visible aiming aid was observed; trajectory details gated because no visible aiming aid was observed; trajectory details gated because no visible aiming aid was observed",
-      "score": 0
+      "notes": "visible grenade aiming aid appears in grenade mode; aiming aid does not clearly communicate an arcing grenade throw; aiming aid did not update after aim or camera direction changed; consistency not credited because aiming aid did not update; aiming aid remains available in grenade mode and hides after leaving grenade mode",
+      "score": 9
     },
     {
       "details": [
@@ -271,16 +271,8 @@
       "score": 4
     }
   ],
-  "category_floor_failures": [
-    "trajectory_preview below pass floor 15",
-    "projectile_physics below pass floor 8",
-    "explosion_gameplay below pass floor 10"
-  ],
   "godot_version": "4.6-stable (official)",
   "max_score": 100,
-  "pass_threshold": 85,
   "passed": false,
-  "score": 13,
-  "suspect": false,
-  "suspect_reasons": []
+  "score": 28
 }

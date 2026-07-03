@@ -1,6 +1,6 @@
 {
   "artifacts": {
-    "log": "C:\\recent_project\\roboblast-grenade-verifier\\artifacts\\calibration-20260703-ablated-score.log",
+    "log": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\godot-verifier.log",
     "screenshots": []
   },
   "breakdown": [
@@ -9,14 +9,14 @@
         {
           "label": "Controller weapon-switch binding",
           "max": 2,
-          "notes": "no weapon-switch input route carries a controller binding",
-          "score": 0,
-          "status": "missed"
+          "notes": "a weapon-switch input route also carries a controller binding",
+          "score": 2,
+          "status": "earned"
         },
         {
           "label": "Weapon switch input responds",
           "max": 2,
-          "notes": "weapon mode did not observably switch through Tab key fallback",
+          "notes": "weapon mode did not observably switch through weapon_switch action",
           "score": 0,
           "status": "missed"
         },
@@ -37,15 +37,15 @@
         {
           "label": "Default weapon still works",
           "max": 3,
-          "notes": "default aimed attack still creates runtime nodes",
-          "score": 3,
-          "status": "earned"
+          "notes": "default aimed attack created no observable nodes after switching back",
+          "score": 0,
+          "status": "missed"
         }
       ],
       "max": 15,
       "name": "weapon_controls",
-      "notes": "no weapon-switch input route carries a controller binding; weapon mode did not observably switch through Tab key fallback; attack after weapon switch did not create observable runtime nodes; rate limit not credited because no grenade attack was observed; default aimed attack still creates runtime nodes",
-      "score": 3
+      "notes": "a weapon-switch input route also carries a controller binding; weapon mode did not observably switch through weapon_switch action; attack after weapon switch did not create observable runtime nodes; rate limit not credited because no grenade attack was observed; default aimed attack created no observable nodes after switching back",
+      "score": 2
     },
     {
       "details": [
@@ -66,15 +66,15 @@
         {
           "label": "Aiming UI feedback",
           "max": 3,
-          "notes": "aiming changes UI feedback",
-          "score": 3,
-          "status": "earned"
+          "notes": "aiming did not change UI feedback",
+          "score": 0,
+          "status": "missed"
         }
       ],
       "max": 10,
       "name": "hud_feedback",
-      "notes": "player has visible UI controls; UI did not visibly change after weapon switch; aiming changes UI feedback",
-      "score": 6
+      "notes": "player has visible UI controls; UI did not visibly change after weapon switch; aiming did not change UI feedback",
+      "score": 3
     },
     {
       "details": [
@@ -239,9 +239,9 @@
         {
           "label": "Default attack after grenade use",
           "max": 1,
-          "notes": "default aimed attack still works after grenade use",
-          "score": 1,
-          "status": "earned"
+          "notes": "default aimed attack did not produce runtime behavior after grenade use",
+          "score": 0,
+          "status": "missed"
         },
         {
           "label": "Main scene loads",
@@ -253,34 +253,26 @@
         {
           "label": "Main scene default attacks",
           "max": 1,
-          "notes": "main scene default shooting and melee both produced runtime behavior",
-          "score": 1,
-          "status": "earned"
+          "notes": "main scene default attack observation was incomplete: shoot_nodes=0, melee_animation=false, melee_velocity_delta=0.00, melee_position_delta=0.00",
+          "score": 0,
+          "status": "missed"
         },
         {
           "label": "Main scene actors and pickups",
           "max": 1,
-          "notes": "main scene kept targeteables, damageables, collect_coin, and damage-spawned pickup behavior",
-          "score": 1,
-          "status": "earned"
+          "notes": "main scene actors, crates, enemies, or coin pickup behavior appeared incomplete",
+          "score": 0,
+          "status": "missed"
         }
       ],
       "max": 5,
       "name": "stability_repeatability",
-      "notes": "repeated grenade attacks did not both produce runtime behavior; default aimed attack still works after grenade use; main scene loaded with a playable player; main scene default shooting and melee both produced runtime behavior; main scene kept targeteables, damageables, collect_coin, and damage-spawned pickup behavior",
-      "score": 4
+      "notes": "repeated grenade attacks did not both produce runtime behavior; default aimed attack did not produce runtime behavior after grenade use; main scene loaded with a playable player; main scene default attack observation was incomplete: shoot_nodes=0, melee_animation=false, melee_velocity_delta=0.00, melee_position_delta=0.00; main scene actors, crates, enemies, or coin pickup behavior appeared incomplete",
+      "score": 1
     }
-  ],
-  "category_floor_failures": [
-    "trajectory_preview below pass floor 15",
-    "projectile_physics below pass floor 8",
-    "explosion_gameplay below pass floor 10"
   ],
   "godot_version": "4.6-stable (official)",
   "max_score": 100,
-  "pass_threshold": 85,
   "passed": false,
-  "score": 13,
-  "suspect": false,
-  "suspect_reasons": []
+  "score": 6
 }
