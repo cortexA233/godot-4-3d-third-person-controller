@@ -47,6 +47,13 @@ feature change is less important than an honest, reproducible grader.
   files, when assets or scripts require them.
 - Do not introduce broad refactors while building the eval task. The assignment
   rewards a clean, understandable slice.
+- When making any changes to the verifier repository at
+  `C:\recent_project\roboblast-grenade-verifier`, also commit those changes in
+  that verifier repository.
+- Chinese-language documents added or updated after the English source docs,
+  including `AGENTS.zh.md`, are personal preview translations for the user.
+  Unless the user explicitly asks for them to be committed, do not commit those
+  Chinese preview documents.
 - Use typed GDScript where practical and follow local style: `@export` for
   tunables, `@onready` for node references, signals for gameplay events, and
   `res://` paths for project resources.
