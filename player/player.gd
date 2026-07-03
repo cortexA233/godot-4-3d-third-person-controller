@@ -117,12 +117,12 @@ func _physics_process(delta: float) -> void:
 	# Set aiming camera and UI
 	if is_aiming:
 		_camera_controller.set_pivot(_camera_controller.CAMERA_PIVOT.OVER_SHOULDER)
-		_grenade_aim_controller.throw_direction = _camera_controller.camera.quaternion * Vector3.FORWARD
+		_grenade_aim_controller.throw_direction = Vector3.FORWARD
 		_grenade_aim_controller.from_look_position = _camera_controller.camera.global_position
 		_ui_aim_reticle.visible = true
 	else:
 		_camera_controller.set_pivot(_camera_controller.CAMERA_PIVOT.THIRD_PERSON)
-		_grenade_aim_controller.throw_direction = _last_strong_direction
+		_grenade_aim_controller.throw_direction = Vector3.FORWARD
 		_grenade_aim_controller.from_look_position = global_position
 		_ui_aim_reticle.visible = false
 

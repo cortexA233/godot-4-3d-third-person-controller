@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 const EXPLOSION_SCENE := preload("res://player/explosion_visuals/explosion_scene.tscn")
 
-var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+var gravity: float = 0.0
 
 var _velocity := Vector3.ZERO
 
