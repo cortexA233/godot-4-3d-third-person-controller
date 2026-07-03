@@ -1,7 +1,8 @@
 extends PanelContainer
 
 @onready var nodes := {
-	"DEFAULT" : %Flash
+	"DEFAULT" : %Flash,
+	"GRENADE" : %Bomb
 }
 
 var selected_node: String = ""

@@ -4,6 +4,7 @@
 [ext_resource type="Material" uid="uid://8qp4bf0yp6ry" path="res://player/explosion_visuals/materials/blast_mat.tres" id="3_buqr0"]
 [ext_resource type="ArrayMesh" uid="uid://bw14c1iaac2sq" path="res://player/explosion_visuals/objects/disk.obj" id="4_5ir1b"]
 [ext_resource type="Material" uid="uid://ben1qjmc14yjq" path="res://player/explosion_visuals/materials/particles_mat.tres" id="5_id1fu"]
+[ext_resource type="AudioStream" uid="uid://csou1m38pk3m4" path="res://player/sounds/musket-explosion-6383.wav" id="6_boom"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_vfl0d"]
 radial_segments = 32
@@ -326,3 +327,10 @@ draw_pass_1 = SubResource("RibbonTrailMesh_cl4kc")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=897536991]
 libraries/ = SubResource("AnimationLibrary_ystop")
 autoplay = &"explosion"
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_boom")
+volume_db = 6.0
+unit_size = 14.0
+max_distance = 120.0
+autoplay = true

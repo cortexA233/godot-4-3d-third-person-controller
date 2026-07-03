@@ -5,6 +5,9 @@ signal weapon_switched(weapon_name: String)
 
 const BULLET_SCENE := preload("bullet.tscn")
 const COIN_SCENE := preload("coin/coin.tscn")
+const GRENADE_SCENE := preload("grenade_projectile.tscn")
+
+enum Weapon { DEFAULT, GRENADE }
 
 ## Character maximum run speed on the ground.
 @export var move_speed := 8.0
@@ -28,6 +31,26 @@ const COIN_SCENE := preload("coin/coin.tscn")
 ## Projectile cooldown
 @export var shoot_cooldown := 0.5
 
+@export_group("Grenade")
+## Grenade throw cooldown (seconds). Prevents an uncontrolled stream of grenades.
+@export var grenade_cooldown := 1.0
+## Downward acceleration applied to thrown grenades (also used for the trajectory preview).
+@export var grenade_gravity := 20.0
+## Launch angle of thrown grenades, in degrees (higher = steeper, shorter arc).
+@export var grenade_launch_angle_degrees := 45.0
+## Default forward throw distance when the aim button is not held.
+@export var grenade_default_distance := 9.0
+## Minimum aim-controlled throw distance.
+@export var grenade_min_distance := 4.0
+## Maximum aim-controlled throw distance.
+@export var grenade_max_distance := 16.0
+## Upper bound on grenade launch speed.
+@export var grenade_max_speed := 24.0
+## Height above the player origin where grenades spawn.
+@export var grenade_spawn_height := 1.3
+## Forward offset from the player origin where grenades spawn.
+@export var grenade_spawn_forward := 0.7
+
 @onready var _rotation_root: Node3D = $CharacterRotationRoot
 @onready var _camera_controller: CameraController = $CameraController
 @onready var _attack_animation_player: AnimationPlayer = $CharacterRotationRoot/MeleeAnchor/AnimationPlayer
@@ -47,6 +70,10 @@ const COIN_SCENE := preload("coin/coin.tscn")
 @onready var _is_on_floor_buffer := false
 
 @onready var _shoot_cooldown_tick := shoot_cooldown
+@onready var _grenade_cooldown_tick := grenade_cooldown
+
+var _weapon: Weapon = Weapon.DEFAULT
+var _grenade_aim: GrenadeAim = null
 
 
 func _ready() -> void:
@@ -60,6 +87,10 @@ func _ready() -> void:
 		_register_input_actions()
 
 	_character_skin.stepped.connect(play_foot_step_sound)
+
+	_grenade_aim = GrenadeAim.new()
+	add_child(_grenade_aim)
+	_grenade_aim.set_active(false)
 
 
 func _physics_process(delta: float) -> void:
@@ -108,17 +139,35 @@ func _physics_process(delta: float) -> void:
 		_camera_controller.set_pivot(_camera_controller.CAMERA_PIVOT.THIRD_PERSON)
 		_ui_aim_reticle.visible = false
 
+	# Handle weapon switching
+	if Input.is_action_just_pressed("weapon_switch"):
+		_switch_weapon()
+
 	# Update attack state and position
 
 	_shoot_cooldown_tick += delta
+	_grenade_cooldown_tick += delta
 
-	if is_attacking:
-		if is_aiming and is_on_floor():
-			if _shoot_cooldown_tick > shoot_cooldown:
-				_shoot_cooldown_tick = 0.0
-				shoot()
-		elif is_just_attacking:
-			attack()
+	if _weapon == Weapon.GRENADE:
+		# Grenade mode: keep the aiming aid updated and throw on attack. Default melee
+		# and the default projectile are intentionally disabled while grenades are equipped,
+		# so attacking during cooldown never falls back to melee or shooting.
+		_grenade_aim.set_active(true)
+		var throw_data := _compute_grenade_throw(is_aiming)
+		var ready_ratio := clampf(_grenade_cooldown_tick / grenade_cooldown, 0.0, 1.0)
+		_grenade_aim.update_preview(throw_data.spawn, throw_data.velocity, grenade_gravity, [get_rid()], ready_ratio)
+		if Input.is_action_pressed("attack") and _grenade_cooldown_tick > grenade_cooldown:
+			_grenade_cooldown_tick = 0.0
+			_throw_grenade(throw_data)
+	else:
+		_grenade_aim.set_active(false)
+		if is_attacking:
+			if is_aiming and is_on_floor():
+				if _shoot_cooldown_tick > shoot_cooldown:
+					_shoot_cooldown_tick = 0.0
+					shoot()
+			elif is_just_attacking:
+				attack()
 
 	velocity.y += _gravity * delta
 
@@ -171,6 +220,92 @@ func shoot() -> void:
 	bullet.distance_limit = 14.0
 	get_parent().add_child(bullet)
 	bullet.global_position = origin
+
+
+func _switch_weapon() -> void:
+	_weapon = Weapon.GRENADE if _weapon == Weapon.DEFAULT else Weapon.DEFAULT
+	if _weapon == Weapon.GRENADE:
+		weapon_switched.emit("GRENADE")
+	else:
+		weapon_switched.emit("DEFAULT")
+		_grenade_aim.set_active(false)
+
+
+func _throw_grenade(throw_data: Dictionary) -> void:
+	var grenade := GRENADE_SCENE.instantiate() as GrenadeProjectile
+	get_parent().add_child(grenade)
+	grenade.throw(self, throw_data.spawn, throw_data.velocity, grenade_gravity)
+	_character_skin.punch()
+
+
+## Computes where and how fast to launch a grenade for the current aim.
+## Returns a dictionary with "spawn" (Vector3) and "velocity" (Vector3).
+func _compute_grenade_throw(aiming: bool) -> Dictionary:
+	var direction := _get_camera_forward_horizontal()
+	var distance := grenade_default_distance
+
+	# While aiming, the camera aim point controls both direction and distance.
+	# Without aiming, use a stable default forward arc.
+	if aiming:
+		var aim_point := _camera_controller.get_aim_target()
+		var flat := aim_point - global_position
+		flat.y = 0.0
+		if flat.length() > 0.1:
+			direction = flat.normalized()
+			distance = clampf(flat.length(), grenade_min_distance, grenade_max_distance)
+
+	var spawn := global_position + Vector3.UP * grenade_spawn_height + direction * grenade_spawn_forward
+	var target := global_position + direction * distance
+	target.y = _find_ground_height(target, global_position.y)
+	var throw_velocity := _solve_ballistic_velocity(spawn, target, grenade_launch_angle_degrees, grenade_gravity)
+	return {"spawn": spawn, "velocity": throw_velocity}
+
+
+func _get_camera_forward_horizontal() -> Vector3:
+	var forward := _camera_controller.global_transform.basis * Vector3.BACK
+	forward.y = 0.0
+	if forward.length() < 0.01:
+		forward = Vector3(_last_strong_direction.x, 0.0, _last_strong_direction.z)
+	if forward.length() < 0.01:
+		forward = Vector3.FORWARD
+	return forward.normalized()
+
+
+func _find_ground_height(at: Vector3, fallback_y: float) -> float:
+	var space := get_world_3d().direct_space_state
+	var from := Vector3(at.x, at.y + 3.0, at.z)
+	var to := Vector3(at.x, at.y - 30.0, at.z)
+	var query := PhysicsRayQueryParameters3D.create(from, to)
+	query.exclude = [get_rid()]
+	query.collision_mask = 1
+	var hit := space.intersect_ray(query)
+	if hit:
+		return hit.position.y
+	return fallback_y
+
+
+## Solves the launch velocity needed to pass through `to` from `from` at a fixed angle.
+func _solve_ballistic_velocity(from: Vector3, to: Vector3, angle_degrees: float, gravity: float) -> Vector3:
+	var flat := to - from
+	flat.y = 0.0
+	var horizontal_distance := flat.length()
+	var direction := flat.normalized() if horizontal_distance > 0.001 else _get_camera_forward_horizontal()
+	var height_delta := to.y - from.y
+
+	var angle := deg_to_rad(angle_degrees)
+	var cos_a := cos(angle)
+	var sin_a := sin(angle)
+	var tan_a := tan(angle)
+
+	# Ballistic launch speed to pass through `to` at the chosen angle:
+	#   v^2 = g * d^2 / (2 * cos^2(a) * (d * tan(a) - dy))
+	var denominator := 2.0 * cos_a * cos_a * (horizontal_distance * tan_a - height_delta)
+	if denominator < 0.001:
+		denominator = 0.001
+	var speed := sqrt(gravity * horizontal_distance * horizontal_distance / denominator)
+	speed = clampf(speed, 0.0, grenade_max_speed)
+
+	return direction * (speed * cos_a) + Vector3.UP * (speed * sin_a)
 
 
 func reset_position() -> void:
@@ -245,6 +380,7 @@ func _register_input_actions() -> void:
 		"camera_right": KEY_E,
 		"camera_up": KEY_R,
 		"camera_down": KEY_F,
+		"weapon_switch": KEY_TAB,
 	}
 	for action in INPUT_ACTIONS:
 		if InputMap.has_action(action):
