@@ -22,10 +22,10 @@ feature change is less important than an honest, reproducible grader.
 ## Game Context
 
 - Project: RoboBlast: Third-Person Shooter demo.
-- Engine: Godot. The assignment text references Godot 4.6, while this local
-  project may declare or use a newer Godot 4.x version. Do not silently change
-  engine versions. Record the exact Godot version and command used for verifier
-  runs.
+- Engine: Godot 4.6. This project is fixed to Godot 4.6; do not change the
+  project, verifier, local tooling, or branch setup to any other Godot version
+  unless the user explicitly asks. Record the exact Godot 4.6 build and command
+  used for verifier runs.
 - Main scene: `res://main.tscn`.
 - Core gameplay areas:
   - `player/`: controller, camera, weapons, grenades, coins, HUD.
@@ -47,6 +47,13 @@ feature change is less important than an honest, reproducible grader.
   files, when assets or scripts require them.
 - Do not introduce broad refactors while building the eval task. The assignment
   rewards a clean, understandable slice.
+- When making any changes to the verifier repository at
+  `C:\recent_project\roboblast-grenade-verifier`, also commit those changes in
+  that verifier repository.
+- Chinese-language documents added or updated after the English source docs,
+  including `AGENTS.zh.md`, are personal preview translations for the user.
+  Unless the user explicitly asks for them to be committed, do not commit those
+  Chinese preview documents.
 - Use typed GDScript where practical and follow local style: `@export` for
   tunables, `@onready` for node references, signals for gameplay events, and
   `res://` paths for project resources.
