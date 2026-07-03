@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://player/grenade_projectile.gd" id="1_uofbq"]
+[ext_resource type="PackedScene" path="res://player/grenade_visuals/grenade/grenade.tscn" id="2_4hxex"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_uofbq"]
+friction = 0.8
+bounce = 0.35
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_o4u68"]
+radius = 0.28
+
+[node name="GrenadeProjectile" type="RigidBody3D"]
+physics_material_override = SubResource("PhysicsMaterial_uofbq")
+mass = 0.65
+linear_damp = 0.25
+angular_damp = 0.4
+contact_monitor = true
+max_contacts_reported = 6
+script = ExtResource("1_uofbq")
+
+[node name="Visual" parent="." instance=ExtResource("2_4hxex")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_o4u68")
