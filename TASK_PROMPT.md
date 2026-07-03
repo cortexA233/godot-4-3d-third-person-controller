@@ -6,7 +6,7 @@ Treat this as a player-facing gameplay task, not a code-shape task. You may insp
 
 ## Goal
 
-Add a second weapon mode: grenades. The player should be able to switch between the existing/default weapon behavior and a grenade mode. In grenade mode, aiming and attacking should throw an arcing grenade that lands or collides in the world, detonates, damages nearby enemies or breakable objects, and gives clear visual/audio feedback.
+Add a second weapon mode: grenades. The player should be able to switch between the existing/default weapon behavior and a grenade mode. In grenade mode, attacking should throw an arcing grenade whether or not the aim button is held. The grenade should land or collide in the world, detonate, damage nearby enemies or breakable objects, and give clear visual/audio feedback.
 
 The feature should feel integrated with the existing third-person shooter controls and presentation. Preserve all existing non-grenade behavior unless this task explicitly changes it.
 
@@ -20,8 +20,10 @@ The feature should feel integrated with the existing third-person shooter contro
   - Existing aim, shoot, and melee behavior should continue to work.
   - The player should not throw grenades.
 - When grenade mode is selected:
-  - Pressing attack while aiming should throw a grenade instead of firing the default projectile.
-  - Melee behavior may remain available when not aiming, but it must not accidentally throw a grenade.
+  - Pressing attack should throw a grenade instead of firing the default projectile.
+  - Pressing attack without holding aim should still throw a grenade.
+  - Melee behavior should not trigger while grenade mode is selected; the player should switch back to the default weapon mode for default melee behavior.
+  - Pressing attack during grenade cooldown should not fall back to melee or default shooting.
   - Grenade throwing should have a cooldown or rate limit so holding or spamming attack cannot create an uncontrolled stream of grenades.
 - Switching modes should be reliable before and after throwing grenades.
 
@@ -36,16 +38,15 @@ The feature should feel integrated with the existing third-person shooter contro
 
 ## Aiming Feedback
 
-When grenade mode is selected and the player is aiming:
+When grenade mode is selected:
 
-- Show a visible trajectory preview, landing marker, or equivalent aiming aid before the grenade is thrown.
+- Show a visible trajectory preview, landing marker, or equivalent aiming aid before the grenade is thrown, even when the player is not holding the aim button.
 - The aiming aid should communicate that the grenade will travel in an arc rather than in a straight bullet path.
 - The preview should update as the player changes aim direction or camera direction.
 - The predicted landing/impact feedback should appear near the intended target area when possible.
+- The aiming aid should remain visible during grenade cooldown so the player can keep lining up the next throw. It may show cooldown state, but it should not be deleted or hidden solely because the next grenade is not ready yet.
 - The aiming aid should be hidden when:
-  - The player is not aiming.
   - The player switches back to the default weapon.
-  - The player cannot currently throw a grenade.
 - The aiming aid should be visible in normal gameplay, not only in debug overlays.
 
 ## Grenade Throw And Flight
@@ -97,7 +98,7 @@ The explosion should affect nearby damageable game objects.
 
 - The game should run without script errors.
 - The main scene should still load and play normally.
-- Existing movement, jumping, aiming, default shooting, melee attacks, enemies, crates, coins, and jump pads should not be broken by the grenade work.
+- Existing movement, jumping, aiming, default shooting, default-mode melee attacks, enemies, crates, coins, and jump pads should not be broken by the grenade work.
 - The implementation should tolerate repeated weapon switches and repeated grenade throws.
 - Avoid test-only shortcuts, debug-only visuals, hard-coded one-off target damage, or behavior that only works in a single prearranged scene setup.
 - Prefer using existing project style and Godot conventions where they are apparent.
@@ -109,13 +110,15 @@ After implementing, manually verify this flow in the playable game:
 1. Start the main game scene.
 2. Confirm the default weapon mode is active and normal shooting/melee still works.
 3. Press `Tab` and confirm the HUD indicates grenade mode.
-4. Aim and confirm a visible arcing trajectory or landing indicator appears.
-5. Throw a grenade and confirm a visible projectile travels through the world.
-6. Confirm it detonates near where it lands or collides.
-7. Confirm nearby enemies or breakable objects are affected while distant targets are not.
-8. Confirm the player is not harmed by their own explosion.
-9. Throw a second grenade after the cooldown and confirm it also works.
-10. Switch back to the default weapon and confirm normal shooting still works.
+4. Confirm a visible arcing trajectory or landing indicator appears in grenade mode before holding the aim button.
+5. Move the camera or aim direction and confirm the trajectory/landing indicator updates.
+6. Press attack without holding aim and confirm a grenade is thrown instead of a melee attack.
+7. Confirm the trajectory/landing indicator remains visible during the grenade cooldown.
+8. Confirm the grenade detonates near where it lands or collides.
+9. Confirm nearby enemies or breakable objects are affected while distant targets are not.
+10. Confirm the player is not harmed by their own explosion.
+11. Throw a second grenade after the cooldown and confirm it also works.
+12. Switch back to the default weapon and confirm normal shooting and melee still work.
 
 ## Deliverable
 
