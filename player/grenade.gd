@@ -3,6 +3,7 @@ extends CharacterBody3D
 const EXPLOSION_SCENE := preload("res://player/explosion_visuals/explosion_scene.tscn")
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+const EXPLOSION_RADIUS := 3.0
 
 var _velocity := Vector3.ZERO
 
@@ -33,11 +34,13 @@ func _explode() -> void:
 	_explosion_sound.pitch_scale = randfn(2.0, 0.1)
 	_explosion_sound.play()
 
-	for body in get_tree().get_nodes_in_group("targeteables"):
+	for body in get_tree().get_nodes_in_group("damageables"):
 		if body is Player or not body is Node3D or not body.has_method("damage"):
 			continue
 
 		var target := body as Node3D
+		if target.global_position.distance_to(global_position) > EXPLOSION_RADIUS:
+			continue
 		var impact_point := global_position - target.global_position
 		if impact_point.is_zero_approx():
 			impact_point = Vector3.DOWN

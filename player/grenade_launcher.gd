@@ -2,8 +2,8 @@ class_name GrenadeLauncher extends Node3D
 
 const GRENADE_SCENE := preload("res://player/grenade.tscn")
 
-@export var min_throw_distance := 7.0
-@export var max_throw_distance := 16.0
+@export var min_throw_distance := 2.0
+@export var max_throw_distance := 3.0
 @export var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 @onready var from_look_position := Vector3.ZERO
@@ -30,8 +30,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func throw_grenade() -> bool:
-	if not visible:
-		return false
+	_update_throw_velocity()
 
 	var grenade: CharacterBody3D = GRENADE_SCENE.instantiate()
 	get_parent().add_child(grenade)
