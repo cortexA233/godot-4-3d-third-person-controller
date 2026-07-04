@@ -23,7 +23,8 @@
     "workspace":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\workspace",
     "grader_command":  "python C:\\recent_project\\roboblast-grenade-verifier\\run_grader.py --project C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\workspace --godot C:\\Godot_v4.6\\Godot_v4.6-stable_win64_console.exe --verifier-root C:\\recent_project\\roboblast-grenade-verifier --out C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\score.json --pdf-report C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\score-report.pdf --log C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\godot-verifier.log",
     "score_report_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\score-report.pdf",
-    "refreshed_at":  "2026-07-03T22:33:25.5739097-04:00",
-    "refreshed_verifier_sha":  "ca585a3cbcaaafd77dfe1391dec00d4ca910880f",
-    "refreshed_godot_version":  "4.6.stable.official.89cea1439"
+    "replacement_at":  "2026-07-03T22:33:25.5739097-04:00",
+    "replacement_verifier_sha":  "ca585a3cbcaaafd77dfe1391dec00d4ca910880f",
+    "replacement_godot_version":  "4.6.stable.official.89cea1439",
+    "discarded_prior_codex_score_record":  true
 }
