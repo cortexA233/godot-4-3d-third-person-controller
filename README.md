@@ -14,9 +14,11 @@ This branch is the final viewable submission for the agent-coding evaluation tas
 - Report: `evaluation/verifier/evaluation/writeup.html`
 - Verifier: `evaluation/verifier/`
 - Agent-facing task prompt: `TASK_PROMPT.md`
-- Ablated task source branch: `codex/grenade-rollout-task` at `ca3c987`
+- Chinese preview of the task prompt: `TASK_PROMPT.zh.md`
+- Ablated task source branch: `codex/grenade-rollout-task` at `84a7153`
   (retained rollout evidence was generated from `fb0fd4f`; the later task-branch
-  cleanup only removes verifier design notes from the public branch)
+  cleanup removed verifier design notes from the public branch, then synced
+  reviewer-facing assignment docs)
 - Rollout evidence branches:
   - `agent-run/01-cc-sonnet`, `agent-run/02-cc-sonnet`, `agent-run/03-cc-sonnet`
   - `agent-run/01-cc-opus`, `agent-run/02-cc-opus`, `agent-run/03-cc-opus`
