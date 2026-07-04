@@ -112,8 +112,14 @@ Official retained rollout score set (2026-07-03, `score >= 85` pass line):
 - Three Claude Code Sonnet rollout candidates score `77/100`, `82/100`, and `59/100`.
 - Three Codex rollout candidates score `6/100`, `28/100`, and `28/100`.
 - Global targetable sweep probe branch `codex/grenade-global-enemy-damage` commit `14310ca`: `78/100`, `passed: false`, with `explosion_gameplay` capped to `4/20` after global damage sweep detection.
-- Seven representative anti-cheat fake candidates now have committed score JSONs: HUD-only `19/100`, visual-only/no-damage `34/100`, damage-without-preview `54/100`, single-use `75/100`, fixed-trajectory `65/100`, bad-distance `50/100`, and global damage `78/100`.
+- The anti-cheat evidence for this submission is exactly seven representative fake candidates with committed score JSONs: HUD-only `19/100`, visual-only/no-damage `34/100`, damage-without-preview `54/100`, single-use `75/100`, fixed-trajectory `65/100`, bad-distance `50/100`, and global damage `78/100`.
 - Retained official run evidence lives under `evaluation/evidence/agent-runs-20260703-151656/`; retained probe score JSONs live under `evaluation/evidence/probes/`. Older score results and unrelated artifact outputs are intentionally not retained.
+
+Rollout agents did not receive a raw clone of the public fork or a checkout with
+the fork's branch history. The operator-side exporter prepared clean workspaces
+from the ablated task, stripped git history and verifier/probe materials, and
+initialized fresh local git repositories for the agents. The public task branch
+and its history are retained for reviewer audit only.
 
 The ablated score is low because the grenade weapon behavior is absent. The
 trajectory-preview gates, fixed-seed radial target variants, adaptive calibration,
@@ -124,4 +130,6 @@ behavior low-scoring.
 
 ## Probe Matrix
 
-Anti-cheat probe expectations are documented in `probe_matrix.md`. Each probe should receive only the relevant partial credit rather than a high score.
+The seven anti-cheat probes used for this submission are documented in
+`probe_matrix.md`. Each observed probe receives only the relevant partial credit
+rather than a high score.

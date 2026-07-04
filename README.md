@@ -31,6 +31,12 @@ given an exporter-produced, history-stripped clean workspace generated from the
 ablated task, with verifier files, local git history, generated artifacts,
 assignment notes, and hidden scoring/probe material excluded.
 
+Evaluation-integrity note: the public branch is provided for reviewer
+inspection, not as the literal workspace handed to agents. The actual rollout
+workspaces were fresh local git repositories initialized after export, so agents
+could not inspect the fork's original solution history, task-branch history, or
+verifier/probe files.
+
 ![](static/third-person-shooter-demo.webp)
 
 This open-source Godot 4 demo shows how to create a 3D character controller inspired by games like Ratchet and Clank or Jak and Daxter. You can copy the character to your project as a plug-and-play asset to prototype 3D games with and build upon.
