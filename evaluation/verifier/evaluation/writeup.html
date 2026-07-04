@@ -449,7 +449,7 @@
 
     <section>
       <h2>Calibration And Scores</h2>
-      <p>These official rollout numbers come from <code>C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656</code>, generated on 2026-07-03 with Godot <code>4.6.stable.official.89cea1439</code> and verifier SHA <code>bfa6d5f060b25b427209c15f95448f03532147ab</code>. The retained run workspaces were sourced from task commit <code>fb0fd4f</code>; the public task branch was later advanced to <code>ca3c987</code> only to remove verifier design notes from the branch. The <code>passed</code> flag means <code>score &gt;= 85</code> plus half-credit pass floors in core categories (<code>trajectory_preview &gt;= 15</code>, <code>projectile_physics &gt;= 8</code>, <code>explosion_gameplay &gt;= 10</code>). The only retained score evidence is this run set and the anti-cheat probe results.</p>
+      <p>These official rollout numbers come from <code>C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656</code>, generated on 2026-07-03 with Godot <code>4.6.stable.official.89cea1439</code>. The original retained run set used verifier SHA <code>bfa6d5f060b25b427209c15f95448f03532147ab</code>; the erroneous earlier Codex score records were discarded and replaced with current-verifier evidence from SHA <code>ca585a3cbcaaafd77dfe1391dec00d4ca910880f</code>, including PDF reports and updated score artifacts. The retained run workspaces were sourced from task commit <code>fb0fd4f</code>; the public task branch was later advanced to <code>ca3c987</code> only to remove verifier design notes from the branch. The <code>passed</code> flag means <code>score &gt;= 85</code> plus half-credit pass floors in core categories (<code>trajectory_preview &gt;= 15</code>, <code>projectile_physics &gt;= 8</code>, <code>explosion_gameplay &gt;= 10</code>). The only retained score evidence is this run set and the anti-cheat probe results.</p>
       <table>
         <thead>
           <tr><th>Candidate</th><th>Score</th><th>Observed</th><th>Key category signal</th><th>Evidence path</th></tr>
@@ -463,9 +463,9 @@
           <tr><td>Claude Code Sonnet run 1</td><td><span class="score mid">77/100</span></td><td><div class="bar"><span class="warn" style="width:77%"></span></div></td><td>Good blast behavior, but preview only 9/30.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-01-cc-sonnet/score.json</code></td></tr>
           <tr><td>Claude Code Sonnet run 2</td><td><span class="score mid">82/100</span></td><td><div class="bar"><span class="warn" style="width:82%"></span></div></td><td>Perfect preview, but explosion gameplay only 2/20.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-02-cc-sonnet/score.json</code></td></tr>
           <tr><td>Claude Code Sonnet run 3</td><td><span class="score mid">59/100</span></td><td><div class="bar"><span class="warn" style="width:59%"></span></div></td><td>Controls and projectile exist; explosion gameplay is 0/20.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-03-cc-sonnet/score.json</code></td></tr>
-          <tr><td>Codex run 1</td><td><span class="score low">6/100</span></td><td><div class="bar"><span class="bad" style="width:6%"></span></div></td><td>Script errors in log; no core grenade behavior observed.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-01-codex/score.json</code></td></tr>
-          <tr><td>Codex run 2</td><td><span class="score low">28/100</span></td><td><div class="bar"><span class="bad" style="width:28%"></span></div></td><td>HUD and partial preview, but no projectile or explosion.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-02-codex/score.json</code></td></tr>
-          <tr><td>Codex run 3</td><td><span class="score low">28/100</span></td><td><div class="bar"><span class="bad" style="width:28%"></span></div></td><td>Same partial surface behavior; no projectile or explosion.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-03-codex/score.json</code></td></tr>
+          <tr><td>Codex run 1</td><td><span class="score mid">73/100</span></td><td><div class="bar"><span class="warn" style="width:73%"></span></div></td><td>Full controls, physics, polish, and repeatability; preview remains 9/30 and explosion is 14/20.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-01-codex/score.json</code></td></tr>
+          <tr><td>Codex run 2</td><td><span class="score mid">75/100</span></td><td><div class="bar"><span class="warn" style="width:75%"></span></div></td><td>Full controls, physics, polish, and repeatability; preview remains 9/30 and explosion is 16/20.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-02-codex/score.json</code></td></tr>
+          <tr><td>Codex run 3</td><td><span class="score high">100/100</span></td><td><div class="bar"><span class="good" style="width:100%"></span></div></td><td>Passes with full credit in every category.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-03-codex/score.json</code></td></tr>
         </tbody>
       </table>
       <p class="muted">The run summary is retained at <code>evaluation/evidence/agent-runs-20260703-151656/verifier-score-summary.json</code>. Each run directory also includes the exact grader command, Godot verifier log, score report PDF, prompt, manifest, and diff where applicable.</p>
@@ -493,7 +493,7 @@
     <section>
       <h2>Rollout Runs</h2>
       <div class="callout">
-        Rollout workspaces were prepared under <code>C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656</code> as isolated copies with verifier files, local git history, generated artifacts, and assignment-only materials stripped from the agent-facing workspace. The same hidden verifier then scored every submitted workspace once.
+        Rollout workspaces were prepared under <code>C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656</code> as isolated copies with verifier files, local git history, generated artifacts, and assignment-only materials stripped from the agent-facing workspace. The same hidden verifier scored every submitted workspace; the erroneous earlier Codex score records were discarded and replaced with current-verifier PDF report evidence.
       </div>
       <table>
         <thead>
@@ -515,8 +515,8 @@
           <tr>
             <td>Codex runs</td>
             <td>Codex, GPT-5-based coding agent</td>
-            <td><code>run-01-codex</code>: 6/100<br><code>run-02-codex</code>: 28/100<br><code>run-03-codex</code>: 28/100</td>
-            <td>These runs either crash or stop at surface behavior. Run 1 has script errors and almost no observed behavior. Runs 2 and 3 receive HUD and partial-preview credit but no projectile physics, explosion gameplay, or polish credit.</td>
+            <td><code>run-01-codex</code>: 73/100<br><code>run-02-codex</code>: 75/100<br><code>run-03-codex</code>: 100/100</td>
+            <td>Run 3 is a passing implementation with full category credit. Runs 1 and 2 now show strong controls, projectile physics, explosion, polish, and repeatability, but both still miss most trajectory-preview credit and stay below the pass line.</td>
           </tr>
         </tbody>
       </table>
@@ -612,3 +612,4 @@
   </main>
 </body>
 </html>
+

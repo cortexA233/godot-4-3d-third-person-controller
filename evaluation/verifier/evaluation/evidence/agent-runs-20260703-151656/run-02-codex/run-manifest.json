@@ -1,43 +1,30 @@
-{
-  "agent": "codex",
-  "agent_record_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\AGENT_RUN_RECORD.md",
-  "artifact_paths": [],
-  "attempt_commit_created": false,
-  "baseline_sha": "c091b2af1c3af326dc306ecf9f5bef525fbccea7",
-  "created_at": "2026-07-03T19:17:04+00:00",
-  "diff_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\diff.patch",
-  "evidence_dir": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence",
-  "excluded_paths": [
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\.codex",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\.git",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\.godot",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\.superpowers",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\.worktrees",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\AGENTS.md",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\AGENTS.zh.md",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\CLAUDE.md",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\game_take_home.html",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\output",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\TASK_PROMPT.zh.md",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\tmp",
-    "C:\\recent_project\\godot-4-3d-third-person-controller\\docs\\superpowers"
-  ],
-  "final_sha": "fcbeed13098dd81ef5bf80e36085627a0d9b0818",
-  "finalized_at": "2026-07-03T21:24:49+00:00",
-  "git_status_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\git-status.txt",
-  "godot_mcp": "available",
-  "grader_command": "python C:\\recent_project\\roboblast-grenade-verifier\\run_grader.py --project C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\workspace --godot C:\\Godot_v4.6\\Godot_v4.6-stable_win64_console.exe --verifier-root C:\\recent_project\\roboblast-grenade-verifier --out C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\score.json --log C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\godot-verifier.log",
-  "model": "codex-unknown-version",
-  "profile": "roboblast",
-  "prompt_for_agent_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\prompt-for-agent.md",
-  "prompt_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\prompt.md",
-  "run_root": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex",
-  "score_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\score.json",
-  "source": "C:\\recent_project\\godot-4-3d-third-person-controller",
-  "source_branch": "codex/grenade-rollout-task",
-  "source_sha": "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
-  "tools": [
-    "Godot MCP available"
-  ],
-  "workspace": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\workspace"
+﻿{
+    "agent":  "codex",
+    "baseline_sha":  "f952c203c81f86d5f08b3ebb59f6c9db0a9f9c25",
+    "created_at":  "2026-07-04T00:38:23+00:00",
+    "evidence_dir":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence",
+    "excluded_paths":  [
+                           "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\_source-rollout-task-fb0fd4f-20260703-203317\\.codex",
+                           "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\_source-rollout-task-fb0fd4f-20260703-203317\\AGENTS.md",
+                           "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\_source-rollout-task-fb0fd4f-20260703-203317\\AGENTS.zh.md",
+                           "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\_source-rollout-task-fb0fd4f-20260703-203317\\CLAUDE.md",
+                           "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\_source-rollout-task-fb0fd4f-20260703-203317\\docs\\superpowers"
+                       ],
+    "godot_mcp":  "available",
+    "model":  "codex-unknown-version",
+    "profile":  "roboblast",
+    "prompt_for_agent_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\prompt-for-agent.md",
+    "prompt_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\prompt.md",
+    "run_root":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex",
+    "source":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\_source-rollout-task-fb0fd4f-20260703-203317",
+    "tools":  [
+                  "Godot MCP available"
+              ],
+    "workspace":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\workspace",
+    "grader_command":  "python C:\\recent_project\\roboblast-grenade-verifier\\run_grader.py --project C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\workspace --godot C:\\Godot_v4.6\\Godot_v4.6-stable_win64_console.exe --verifier-root C:\\recent_project\\roboblast-grenade-verifier --out C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\score.json --pdf-report C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\score-report.pdf --log C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\godot-verifier.log",
+    "score_report_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\score-report.pdf",
+    "replacement_at":  "2026-07-03T22:33:25.5739097-04:00",
+    "replacement_verifier_sha":  "ca585a3cbcaaafd77dfe1391dec00d4ca910880f",
+    "replacement_godot_version":  "4.6.stable.official.89cea1439",
+    "discarded_prior_codex_score_record":  true
 }

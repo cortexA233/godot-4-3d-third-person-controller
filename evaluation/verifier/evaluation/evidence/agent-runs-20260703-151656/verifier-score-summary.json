@@ -83,7 +83,7 @@
                        "prepared":  true,
                        "project":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\workspace",
                        "evidence":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence",
-                       "score":  6,
+                       "score":  73,
                        "max_score":  100,
                        "score_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\score.json",
                        "log_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\godot-verifier.log",
@@ -91,9 +91,12 @@
                        "final_sha":  "e6687c3192578680ba20a09107ed9cf0044a93b0",
                        "source_branch":  "codex/grenade-rollout-task",
                        "source_sha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
-                       "has_script_errors_in_log":  true,
-                       "script_error_count":  14,
-                       "error_word_count":  45
+                       "has_script_errors_in_log":  false,
+                       "script_error_count":  0,
+                       "error_word_count":  0,
+                       "score_report_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\score-report.pdf",
+                       "replacement_verifier_sha":  "ca585a3cbcaaafd77dfe1391dec00d4ca910880f",
+                       "discarded_prior_score_record":  true
                    },
                    {
                        "name":  "run-02-cc-opus",
@@ -134,7 +137,7 @@
                        "prepared":  true,
                        "project":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\workspace",
                        "evidence":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence",
-                       "score":  28,
+                       "score":  75,
                        "max_score":  100,
                        "score_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\score.json",
                        "log_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\godot-verifier.log",
@@ -142,9 +145,12 @@
                        "final_sha":  "fcbeed13098dd81ef5bf80e36085627a0d9b0818",
                        "source_branch":  "codex/grenade-rollout-task",
                        "source_sha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
-                       "has_script_errors_in_log":  true,
-                       "script_error_count":  2504,
-                       "error_word_count":  2559
+                       "has_script_errors_in_log":  false,
+                       "script_error_count":  0,
+                       "error_word_count":  0,
+                       "score_report_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\score-report.pdf",
+                       "replacement_verifier_sha":  "ca585a3cbcaaafd77dfe1391dec00d4ca910880f",
+                       "discarded_prior_score_record":  true
                    },
                    {
                        "name":  "run-03-cc-opus",
@@ -185,7 +191,7 @@
                        "prepared":  true,
                        "project":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-codex\\workspace",
                        "evidence":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-codex\\evidence",
-                       "score":  28,
+                       "score":  100,
                        "max_score":  100,
                        "score_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-codex\\evidence\\score.json",
                        "log_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-codex\\evidence\\godot-verifier.log",
@@ -193,9 +199,15 @@
                        "final_sha":  "8d387b20d6e63061452c47ab02ae35472e63aa41",
                        "source_branch":  "codex/grenade-rollout-task",
                        "source_sha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
-                       "has_script_errors_in_log":  true,
-                       "script_error_count":  12,
-                       "error_word_count":  45
+                       "has_script_errors_in_log":  false,
+                       "script_error_count":  0,
+                       "error_word_count":  0,
+                       "score_report_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-codex\\evidence\\score-report.pdf",
+                       "replacement_verifier_sha":  "ca585a3cbcaaafd77dfe1391dec00d4ca910880f",
+                       "discarded_prior_score_record":  true
                    }
-               ]
+               ],
+    "codex_replacement_at":  "2026-07-03T22:53:58.9125379-04:00",
+    "codex_replacement_verifier_sha":  "ca585a3cbcaaafd77dfe1391dec00d4ca910880f",
+    "discarded_prior_codex_score_records":  true
 }

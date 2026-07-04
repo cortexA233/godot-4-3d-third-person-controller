@@ -1,4 +1,4 @@
-# RoboBlast Grenade Eval Deliverables
+﻿# RoboBlast Grenade Eval Deliverables
 
 This branch is the reviewer-facing delivery branch. Do not give this branch to
 rollout agents; it intentionally contains the verifier, calibration evidence,
@@ -22,8 +22,8 @@ anti-cheat probes, and report.
 - `evaluation/verifier/`: self-contained verifier snapshot copied from the
   private verifier workspace. The retained official rollout scores were
   generated from task commit `fb0fd4f` using verifier SHA
-  `bfa6d5f060b25b427209c15f95448f03532147ab`; this snapshot also includes the
-  later materialized probe fixtures used for review.
+  `bfa6d5f060b25b427209c15f95448f03532147ab`; the erroneous earlier Codex score records were discarded and replaced with verifier SHA `ca585a3cbcaaafd77dfe1391dec00d4ca910880f`, including PDF reports and updated score artifacts. This snapshot also includes
+  the later materialized probe fixtures used for review.
 - `evaluation/verifier/evaluation/evidence/agent-runs-20260703-151656/`: the
   official retained reference, ablated, and rollout-attempt evidence from
   `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656`.
@@ -58,3 +58,4 @@ runs were generated from `fb0fd4f`; the public task branch was later advanced to
 workspace, reference implementation, hidden branches, calibration artifacts, and
 probe notes were kept outside agent-accessible workspaces. The verifier is
 copied into this branch only for final review.
+

@@ -1,135 +1,294 @@
 # RoboBlast Grenade Verifier
 
-External verifier for the RoboBlast grenade weapon benchmark.
+Private external verifier for the RoboBlast grenade weapon benchmark. It grades
+candidate Godot projects behaviorally, out of 100, by copying the project to a
+temporary directory, injecting `verifier_godot/__verifier__`, running Godot
+headlessly, and writing structured score artifacts.
 
-See `BENCHMARK.md` for the evaluation objective, agent protocol, candidate
-interface contract, and reproducibility notes.
+The assignment source of truth is `game_take_home.html`. See `BENCHMARK.md` for
+the benchmark construct, agent protocol, candidate interface contract, scoring
+interpretation, and reproducibility rules.
 
-Run:
+## Repository Map
+
+| Path | Purpose |
+| --- | --- |
+| `run_grader.py` | Main CLI entry point for headless grading. |
+| `verifier_godot/__verifier__/` | Godot-side deterministic behavioral checks. |
+| `report_renderer.py`, `render_report.py` | PDF score report generation. |
+| `export_debug_arena.py` | Exports a manual Godot debug arena matching verifier layout. |
+| `BENCHMARK.md` | Benchmark definition and evaluation protocol. |
+| `probe_matrix.md` | Anti-cheat probe expectations and observed results. |
+| `evaluation/writeup.html` | Browser-viewable assignment writeup with visuals. |
+| `evaluation/evidence/` | Curated score JSON evidence for calibration and probes. |
+| `evaluation/probes/` | Fake near-miss probe cases used to test verifier robustness. |
+| `skills/prepare-agent-run-workspace/` | Repo-local skill for preparing isolated agent run workspaces. |
+| `skills/collect-agent-run-evidence/` | Repo-local skill for collecting objective run evidence after an agent finishes. |
+| `tests/` | Python tests for runner behavior, report rendering, export, and consistency checks. |
+
+## Requirements
+
+- Godot 4.6 console executable.
+- Python 3.11+.
+- Report/test dependencies when rendering PDFs or running the full test suite:
 
 ```powershell
-python C:\recent_project\roboblast-grenade-verifier\run_grader.py `
-  --project C:\path\to\candidate-project `
-  --godot "C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe" `
-  --out C:\recent_project\roboblast-grenade-verifier\artifacts\score.json
+python -m pip install -r requirements.txt
 ```
 
-The verifier copies the candidate project to a temporary directory, imports resources in that copy, injects `verifier_godot\__verifier__`, runs Godot headlessly, and writes a 0-100 JSON result.
+## Quick Start
 
-For weapon switching, the verifier drives the project's `swap_weapons` or `weapon_switch` input action when one exists. If a candidate implements the player-facing `Tab` key directly instead of registering an action, the verifier falls back to injecting a real `Tab` key event through Godot's input event path. Weapon-switch scoring is behavioral: observable switching earns credit through any of these routes, and a controller (joypad) binding on a weapon-switch route earns a separate controller-input detail instead of any points depending on the action name.
-
-## Rollout Workspace Export
-
-Before giving an ablated task project to a rollout agent, create a clean agent-facing copy:
+Set paths for your local checkout and tools:
 
 ```powershell
-python C:\recent_project\roboblast-grenade-verifier\prepare_rollout_workspace.py `
-  --project C:\path\to\ablated-task-project `
-  --out C:\path\to\clean-rollout-workspace `
+$Verifier = "<path-to-this-repo>"
+$Godot = "<path-to-godot-4.6-console-executable>"
+$Project = "<path-to-candidate-project>"
+```
+
+Run the verifier against a candidate Godot project:
+
+```powershell
+python "$Verifier\run_grader.py" `
+  --project "$Project" `
+  --godot "$Godot" `
+  --out "$Verifier\artifacts\score.json" `
+  --log "$Verifier\artifacts\godot-verifier.log"
+```
+
+Write a detailed PDF report in the same run:
+
+```powershell
+python "$Verifier\run_grader.py" `
+  --project "$Project" `
+  --godot "$Godot" `
+  --out "$Verifier\artifacts\score.json" `
+  --pdf-report "$Verifier\artifacts\score-report.pdf" `
+  --log "$Verifier\artifacts\godot-verifier.log"
+```
+
+Render a PDF later from an existing score JSON:
+
+```powershell
+python "$Verifier\render_report.py" `
+  "$Verifier\artifacts\score.json" `
+  "$Verifier\artifacts\score-report.pdf"
+```
+
+## What The Verifier Measures
+
+The verifier grades observable gameplay behavior rather than exact filenames,
+class names, node paths, or signal names. It exercises real game systems in a
+deterministic arena and checks whether the candidate implements a usable
+grenade weapon while preserving existing RoboBlast gameplay.
+
+Score categories:
+
+| Category | Points |
+| --- | ---: |
+| `weapon_controls` | 15 |
+| `hud_feedback` | 10 |
+| `trajectory_preview` | 30 |
+| `projectile_physics` | 15 |
+| `explosion_gameplay` | 20 |
+| `visual_audio_polish` | 5 |
+| `stability_repeatability` | 5 |
+
+Weapon switching is behavioral. The verifier drives `swap_weapons` or
+`weapon_switch` when those actions exist, and falls back to a real `Tab` input
+event when a candidate implements the key path directly. Controller binding
+credit is recorded separately and does not depend on a specific action name.
+
+The `passed` flag is a reporting convenience. It currently requires
+`score >= 85` plus half-credit floors in the core gameplay categories:
+`trajectory_preview >= 15`, `projectile_physics >= 8`, and
+`explosion_gameplay >= 10`. The primary benchmark signal is the 0-100 score and
+category breakdown.
+
+The score JSON can also include a soft `suspect` flag with `suspect_reasons`
+for manual review. Suspect conditions include global damage sweeps, damaged
+far/side/rear safety targets, and player self-damage.
+
+## Agent Run Workflow
+
+The evaluated agent must receive only the ablated task workspace and the
+agent-facing prompt. Do not give the agent this verifier repo, hidden tests,
+scoring details, original solution history, calibration artifacts, or other
+task branches.
+
+### Skills
+
+The two repo-local skills are intentionally split by trust boundary and timing.
+The evaluated agent should not run either script.
+
+#### `prepare-agent-run-workspace`
+
+Use this before the agent starts. It is an operator-side setup step that creates
+an isolated `workspace/` from the ablated task project and an adjacent
+evaluator-owned `evidence/` directory.
+
+It strips hidden/verifier/solution files, initializes a fresh local git repo in
+`workspace/`, creates the baseline commit, copies the task prompt into
+`evidence/prompt.md`, and writes `evidence/run-manifest.json`,
+`evidence/baseline-sha.txt`, and `evidence/prompt-for-agent.md`.
+
+Give the agent only the prepared `workspace/` path and the text from
+`evidence/prompt-for-agent.md`. Do not give the agent `evidence/`, this
+verifier repo, original solution history, hidden probes, or scoring details.
+
+#### `collect-agent-run-evidence`
+
+Use this after the agent has stopped. It is an operator-side finalization step
+that records what the agent actually changed in the prepared workspace.
+
+It reads the local git repo in `workspace/`, records `git-status.txt`, writes a
+binary-capable `diff.patch` from baseline to final state, creates or records
+the final commit SHA in `final-sha.txt`, copies `AGENT_RUN_RECORD.md` when the
+agent created one, and updates `run-manifest.json` with finalized evidence
+paths.
+
+After the external verifier runs, call it again with `--score-json` and
+`--grader-command` so `evidence/` contains the score artifact and the exact
+command that produced it. Treat `AGENT_RUN_RECORD.md` as useful context, not as
+objective evidence; the formal evidence is the diff, manifest, score JSON, log,
+grader command, and any transcript/tool artifacts.
+
+### Commands
+
+For evaluated rollout runs, prefer the repo-local preparation skill:
+
+```powershell
+$Verifier = "<path-to-this-repo>"
+$AblatedProject = "<path-to-ablated-task-project>"
+$RunRoot = "<path-to-agent-runs>\run-01-cc-sonnet"
+$TaskPrompt = "<path-to-task-prompt>\TASK_PROMPT.md"
+
+python "$Verifier\skills\prepare-agent-run-workspace\scripts\setup_agent_run.py" `
+  --source "$AblatedProject" `
+  --run-root "$RunRoot" `
+  --agent cc-sonnet `
+  --model "model/version if known" `
+  --tool "Godot MCP available" `
+  --godot-mcp available `
+  --prompt "$TaskPrompt"
+```
+
+This creates `workspace/` for the agent and evaluator-owned `evidence/` beside
+it. Give the agent the `workspace/` path and the contents of
+`evidence/prompt-for-agent.md`.
+
+After the agent finishes, collect objective evidence:
+
+```powershell
+python "$Verifier\skills\collect-agent-run-evidence\scripts\finalize_agent_run.py" `
+  --run-root "$RunRoot"
+```
+
+After running the verifier, re-run evidence collection with the score and exact
+grader command:
+
+```powershell
+$ScoreJson = "<path-to-score-json>"
+$GraderCommand = 'python "<path-to-this-repo>\run_grader.py" --project "<path-to-agent-run>\workspace" --godot "<path-to-godot-4.6-console-executable>" --out "<path-to-score-json>"'
+
+python "$Verifier\skills\collect-agent-run-evidence\scripts\finalize_agent_run.py" `
+  --run-root "$RunRoot" `
+  --score-json "$ScoreJson" `
+  --grader-command "$GraderCommand"
+```
+
+For a plain clean rollout copy without baseline/evidence metadata, use:
+
+```powershell
+python "$Verifier\prepare_rollout_workspace.py" `
+  --project "$AblatedProject" `
+  --out "<path-to-clean-rollout-workspace>" `
   --force
 ```
 
-The exporter keeps runnable Godot resources and the agent-facing `TASK_PROMPT.md` while excluding git history, Godot caches, local agent config, verifier folders, generated artifacts, debug exports, temporary files, localized prompt drafts, and assignment/verifier files such as `AGENTS.md`, `CLAUDE.md`, `game_take_home.html`, `BENCHMARK.md`, and `probe_matrix.md`.
-
-To write a detailed PDF score report during grading, add `--pdf-report`:
-
-```powershell
-python C:\recent_project\roboblast-grenade-verifier\run_grader.py `
-  --project C:\path\to\candidate-project `
-  --godot "C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe" `
-  --out C:\recent_project\roboblast-grenade-verifier\artifacts\score.json `
-  --pdf-report C:\recent_project\roboblast-grenade-verifier\artifacts\score-report.pdf
-```
-
-You can also render a PDF from an existing score JSON:
-
-```powershell
-python C:\recent_project\roboblast-grenade-verifier\render_report.py `
-  C:\recent_project\roboblast-grenade-verifier\artifacts\score.json `
-  C:\recent_project\roboblast-grenade-verifier\artifacts\score-report.pdf
-```
-
-PDF rendering uses ReportLab. Install the Python dependencies with `python -m pip install -r requirements.txt` (or use the bundled Codex Python runtime) in the environment you use to run the report command. The PDF preserves full category notes and includes per-check earned or missed point details when the score JSON contains `details`.
-
 ## Debug Arena Export
 
-To inspect the verifier arena manually in Godot, export a debug project copy:
+Export the verifier arena for manual inspection in Godot:
 
 ```powershell
-python C:\recent_project\roboblast-grenade-verifier\export_debug_arena.py `
-  --project C:\path\to\candidate-project `
-  --out C:\recent_project\roboblast-grenade-verifier\artifacts\debug-arena
+python "$Verifier\export_debug_arena.py" `
+  --project "$Project" `
+  --out "$Verifier\artifacts\debug-arena"
 ```
 
-Open the exported project in Godot, then run:
+Open the exported project in Godot and run:
 
 ```text
 res://__verifier__/debug_arena.tscn
 ```
 
-This scene uses the same deterministic arena shell and fixed seed target generation as the grader. When it starts, it performs one target-free default throw, measures the safe projectile travel distance, rebuilds the arena, and places the seeded nearby damage targets plus far/side/rear safety targets used by the formal explosion trials. If debug-scene calibration cannot measure a usable throw, it shows a 4-14 unit distance band of labeled damage targets instead of pretending the fixed 8-unit fallback is authoritative. The debug scene adds a camera, light, visible floor, and labels so manual inspection matches the grader's seeded layout.
+The debug scene uses the same deterministic arena shell and fixed seed target
+generation as the grader. It measures default throw distance, places nearby
+damage targets and far/side/rear safety targets, and adds camera, light, floor,
+and labels for inspection.
 
-## Score Categories
+## Calibration And Evidence
 
-- `weapon_controls`: 15 points
-- `hud_feedback`: 10 points
-- `trajectory_preview`: 30 points
-- `projectile_physics`: 15 points
-- `explosion_gameplay`: 20 points
-- `visual_audio_polish`: 5 points
-- `stability_repeatability`: 5 points
-
-The score is behavioral. It does not require historical filenames, class names, node paths, or signal names.
-The `passed` flag in the score JSON is a report convenience meaning `score >= 85`
-plus half-credit pass floors in the core gameplay categories
-(`trajectory_preview >= 15`, `projectile_physics >= 8`, `explosion_gameplay >= 10`);
-the primary benchmark signal is the 0-100 score and category breakdown. The JSON
-also carries a soft `suspect` flag with `suspect_reasons` when global damage
-sweeps, damaged safety targets, or player self-damage need manual review.
-The `stability_repeatability` category now includes a real `res://main.tscn`
-smoke check for default shooting, melee, targetable actors, damageable actors,
-and coin/pickup behavior in addition to the deterministic verifier arena.
-
-## Calibration
-
-Explosion scoring calibrates default throw distance behaviorally. The runner measures a target-free throw, accepts only a nearby player-safe travel path, gives full throw-distance quality credit to a 6-12 unit default landing distance, and treats 4-14 units as borderline usable but worth `0/2` calibration-quality points. Formal explosion trials are generated from fixed seed constants: each seed deterministically picks a heading, nearby target radii around the canonical 6, 8, 10, and 12 unit rings plus the measured landing distance, and a far/side/rear safety radius inside the 30-unit target field. Every run of the same verifier version uses the same seeded variants. Explosion gameplay now separates nearby target damage, nearby damageable-only/destructible damage, blast locality, player safety, detonation effects, and throw-distance quality. Global damage sweeps that hit most nearby targets and multiple safety targets are capped within `explosion_gameplay`, so "damage every enemy in the scene" does not score like a localized blast. Trajectory preview scoring emphasizes visible aiming aid behavior, arcing or landing-area communication, aim/camera reactivity, and broad direction consistency with the actual thrown grenade.
-
-Run:
+Run local calibration:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\recent_project\roboblast-grenade-verifier\run_calibration.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File "$Verifier\run_calibration.ps1"
 ```
 
-Official retained rollout score set (2026-07-03, `score >= 85` pass line):
+This script reruns the ablated and reference checks. The probe and rollout rows
+below are curated evidence produced by the probe materializer and agent-run
+evidence workflows, not by `run_calibration.ps1` alone.
 
-- Godot executable: `C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe`
-- Godot version: `4.6.stable.official.89cea1439`
-- Score source: `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656`
-- Verifier SHA recorded by that score summary: `bfa6d5f060b25b427209c15f95448f03532147ab`
-- Reference `main` commit `1cf08f7`: `91/100`, `passed: true`, with localized explosion gameplay at `17/20`.
-- Ablated task branch `codex/grenade-rollout-task` retained run source commit `fb0fd4f`: `13/100`, `passed: false`; no grenade projectile is available, so explosion calibration falls back, trajectory preview scores 0, and explosion gameplay scores 0. The public task branch was later advanced to `ca3c987` only to remove verifier design notes from the branch.
-- Three Claude Code Opus 4.8 rollout candidates score `74/100`, `88/100`, and `80/100`; the second Opus run passes.
-- Three Claude Code Sonnet rollout candidates score `77/100`, `82/100`, and `59/100`.
-- Three Codex rollout candidates score `6/100`, `28/100`, and `28/100`.
-- Global targetable sweep probe branch `codex/grenade-global-enemy-damage` commit `14310ca`: `78/100`, `passed: false`, with `explosion_gameplay` capped to `4/20` after global damage sweep detection.
-- The anti-cheat evidence for this submission is exactly seven representative fake candidates with committed score JSONs: HUD-only `19/100`, visual-only/no-damage `34/100`, damage-without-preview `54/100`, single-use `75/100`, fixed-trajectory `65/100`, bad-distance `50/100`, and global damage `78/100`.
-- Retained official run evidence lives under `evaluation/evidence/agent-runs-20260703-151656/`; retained probe score JSONs live under `evaluation/evidence/probes/`. Older score results and unrelated artifact outputs are intentionally not retained.
+Latest local calibration was recorded on 2026-07-03 with Godot
+`4.6.stable.official.89cea1439` and the `score >= 85` pass line.
 
-Rollout agents did not receive a raw clone of the public fork or a checkout with
-the fork's branch history. The operator-side exporter prepared clean workspaces
-from the ablated task, stripped git history and verifier/probe materials, and
-initialized fresh local git repositories for the agents. The public task branch
-and its history are retained for reviewer audit only.
+| Candidate or probe | Score | Result |
+| --- | ---: | --- |
+| Ablated task branch `codex/grenade-rollout-task` at `fb0fd4f` | 13/100 | Fails as expected. |
+| Reference `main` at `1cf08f7` | 91/100 | Passes. |
+| Global targetable sweep probe at `14310ca` | 78/100 | Fails; `explosion_gameplay` capped to 4/20. |
+| HUD-only probe | 19/100 | Caught. |
+| Visual-only/no-damage probe | 34/100 | Caught. |
+| Damage-without-preview probe | 54/100 | Caught. |
+| Fixed-trajectory probe | 65/100 | Caught. |
+| Bad-distance probe | 50/100 | Caught. |
+| Single-use probe | 75/100 | Caught. |
 
-The ablated score is low because the grenade weapon behavior is absent. The
-trajectory-preview gates, fixed-seed radial target variants, adaptive calibration,
-damageable-only destructible probe, global-sweep cap, and frame-window effect
-observation reduce false negatives from exact throw-distance mismatch and
-short-lived presentation effects while keeping missing or reward-hacked grenade
-behavior low-scoring.
+Curated calibration, probe, and replacement Codex rollout score evidence lives
+under `evaluation/evidence/`. Anti-cheat expectations are documented in
+`probe_matrix.md`.
 
-## Probe Matrix
+Published rollout branches in the game repository record three attempts per
+agent family, each with branch-captured `score.json`, `score-report.pdf`,
+`diff.patch`, verifier log, grader command, and run manifest under
+`evaluation/agent-runs/<run>/`:
 
-The seven anti-cheat probes used for this submission are documented in
-`probe_matrix.md`. Each observed probe receives only the relevant partial credit
-rather than a high score.
+| Agent run family | Scores |
+| --- | --- |
+| `agent-run/01-codex` through `agent-run/03-codex` | 73/100, 75/100, 100/100 from the current verifier and PDF reports |
+| `agent-run/01-cc-opus` through `agent-run/03-cc-opus` | 74/100, 88/100, 80/100 |
+| `agent-run/01-cc-sonnet` through `agent-run/03-cc-sonnet` | 77/100, 82/100, 59/100 |
+
+The replacement Codex score JSONs, PDF reports, logs, commands, and manifests
+are retained under
+`evaluation/evidence/agent-runs-20260703-151656/run-0{1,2,3}-codex/`.
+
+The repository writeup for the assignment is `evaluation/writeup.html`.
+
+## Development
+
+Run unit tests:
+
+```powershell
+python -m unittest discover -s tests -v
+```
+
+Useful narrow checks:
+
+```powershell
+python run_grader.py --help
+python -m py_compile run_grader.py report_renderer.py render_report.py export_debug_arena.py
+```
+
+Generated runtime artifacts should stay out of git unless they are deliberately
+curated evidence. The normal scratch locations are `artifacts/` and `tmp/`.
