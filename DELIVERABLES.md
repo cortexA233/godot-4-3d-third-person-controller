@@ -9,7 +9,7 @@ anti-cheat probes, and report.
 - `main`: unablated reference game used to prove the verifier can pass the real
   behavior.
 - `codex/grenade-rollout-task`: agent-facing ablated task branch, currently at
-  `84a7153`. This is the branch supplied to rollout agents with the behavioral
+  `c7893bc`. This is the branch supplied to rollout agents with the behavioral
   prompt, without the verifier or hidden scoring notes.
 - `agent-run/*`: recorded rollout attempts and their branch-local
   evidence.
@@ -19,8 +19,6 @@ anti-cheat probes, and report.
 ## Reviewer Entry Points
 
 - `report.html`: browser entry point for the HTML writeup.
-- `TASK_PROMPT.zh.md`: personal Chinese preview translation of the rollout
-  prompt; the English `TASK_PROMPT.md` remains the source of truth.
 - `evaluation/verifier/`: self-contained verifier snapshot copied from the
   private verifier workspace. The retained official rollout scores were
   generated from task commit `fb0fd4f` using verifier SHA
@@ -56,8 +54,9 @@ The exact Godot build recorded during calibration was
 During rollout, agents received a git-stripped copy of
 `codex/grenade-rollout-task` and `TASK_PROMPT.md` only. The retained official
 runs were generated from `fb0fd4f`; the public task branch was later advanced to
-`ca3c987` to remove a verifier design note from the branch, then to `84a7153`
-to sync reviewer-facing assignment documentation. The verifier
+`ca3c987` to remove a verifier design note from the branch, then to `c7893bc`
+to sync reviewer-facing assignment documentation and remove personal Chinese
+preview files. The verifier
 workspace, reference implementation, hidden branches, calibration artifacts, and
 probe notes were kept outside agent-accessible workspaces. The verifier is
 copied into this branch only for final review.
