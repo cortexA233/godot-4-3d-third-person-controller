@@ -14,8 +14,7 @@ description: "A 3D Third Person Shooter Controller Demo"
 This checkout is also a take-home assignment workspace. Treat
 `game_take_home.html` as the source of truth for the evaluation deliverables.
 The project and verifier work are fixed to Godot 4.6, and the current rollout
-agent prompt lives in `TASK_PROMPT.md`. Personal Chinese preview translations,
-when present, use matching `.zh.md` files such as `TASK_PROMPT.zh.md`.
+agent prompt lives in `TASK_PROMPT.md`.
 
 This open-source Godot 4 demo shows how to create a 3D character controller inspired by games like Ratchet and Clank or Jak and Daxter. You can copy the character to your project as a plug-and-play asset to prototype 3D games with and build upon.
 
