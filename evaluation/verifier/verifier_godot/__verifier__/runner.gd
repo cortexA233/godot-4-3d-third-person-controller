@@ -5,6 +5,7 @@ const JsonWriter = preload("res://__verifier__/json_writer.gd")
 const ArenaBuilder = preload("res://__verifier__/arena_builder.gd")
 const InputDriver = preload("res://__verifier__/input_driver.gd")
 const SceneProbe = preload("res://__verifier__/scene_probe.gd")
+const MouseSafety = preload("res://__verifier__/mouse_safety.gd")
 
 const FALLBACK_THROW_DISTANCE := 8.0
 const TARGET_FIELD_RADIUS := 30.0
@@ -27,12 +28,15 @@ const TRAJECTORY_AIM_CHANGE_HEADING := 0.45
 const TRAJECTORY_DIRECTION_MIN_DOT := 0.5
 const TRAJECTORY_PROJECTILE_TRACK_FRAMES := 35
 const NEARBY_DAMAGE_TARGET_RADII := [6.0, 8.0, 10.0, 12.0]
+const PROJECTILE_VISUAL_MIN_EXTENT := 0.02
+const PROJECTILE_VISUAL_MAX_EXTENT := 2.0
 
 var board
 var input
 var arena: Node3D
 var player: Node3D
 var weapon_ui: Node
+var mouse_safety: Node
 
 
 func _init() -> void:
@@ -43,6 +47,7 @@ func _run() -> void:
 	seed(12345)
 	board = ScoreBoard.new()
 	input = InputDriver.new(self)
+	_install_mouse_safety()
 	print("Verifier swap input route: ", input.describe_route(_weapon_switch_action()))
 	await _build_arena()
 	await _score_weapon_controls()
@@ -75,6 +80,16 @@ func _cleanup_before_quit() -> void:
 	await process_frame
 
 
+func _install_mouse_safety() -> void:
+	if mouse_safety != null and is_instance_valid(mouse_safety):
+		if mouse_safety.has_method("force_visible_for_startup"):
+			mouse_safety.call("force_visible_for_startup")
+		return
+	mouse_safety = MouseSafety.new()
+	mouse_safety.name = "VerifierMouseSafety"
+	root.add_child(mouse_safety)
+
+
 func _build_arena() -> void:
 	if arena != null and is_instance_valid(arena):
 		_stop_audio_players_under(arena)
@@ -84,6 +99,7 @@ func _build_arena() -> void:
 	root.add_child(arena)
 	player = ArenaBuilder.add_player(arena)
 	weapon_ui = ArenaBuilder.add_optional_weapon_ui(arena, player)
+	_install_mouse_safety()
 	await input.wait_physics_frames(8)
 	if player == null:
 		push_warning("Player scene did not instantiate.")
@@ -924,19 +940,36 @@ func _score_visual_audio_polish() -> void:
 	await _tap_weapon_switch()
 	var before := SceneProbe.collect_instance_ids(arena)
 	await input.tap("attack")
+	await input.wait_physics_frames(2)
+	var spawned := SceneProbe.node3d_candidates(SceneProbe.new_nodes_since(arena, before), player.global_position, CALIBRATION_SPAWN_RADIUS)
+	var projectile_tracks: Dictionary = await SceneProbe.track_nodes_positions(self, spawned, TRAJECTORY_PROJECTILE_TRACK_FRAMES)
+	var projectile_visual: Dictionary = SceneProbe.grenade_projectile_visual_report(
+		spawned,
+		projectile_tracks,
+		CALIBRATION_MIN_TRAVEL_DISTANCE,
+		PROJECTILE_VISUAL_MIN_EXTENT,
+		PROJECTILE_VISUAL_MAX_EXTENT
+	)
 	var activity: Dictionary = await SceneProbe.observe_runtime_activity(self, arena, before, player.global_position, 30.0, 220)
 	var details: Array[Dictionary] = []
+	details.append(_score_detail(
+		"Thrown grenade model",
+		2,
+		bool(projectile_visual.get("has_model_visual", false)),
+		"moving grenade projectile used a visible non-placeholder model",
+		String(projectile_visual.get("notes", "moving grenade projectile model was not validated"))
+	))
 	var visible_effects := int(activity.get("visible_count", 0))
 	details.append(_score_detail(
 		"Visible effect nodes",
-		2,
+		1,
 		visible_effects > 0,
 		"visible grenade or explosion nodes appeared",
 		"no visible grenade or explosion nodes appeared"
 	))
 	details.append(_score_detail(
 		"Detonation audio",
-		2,
+		1,
 		visible_effects > 0 and bool(activity.get("saw_audio", false)),
 		"audio player was active during detonation window",
 		"detonation audio not observed during visible detonation window"

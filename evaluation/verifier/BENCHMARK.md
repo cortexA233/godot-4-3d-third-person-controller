@@ -23,16 +23,14 @@ credit when their observable behavior matches the task.
 Use these resources for the current local benchmark run:
 
 - Agent-facing task branch: `codex/grenade-rollout-task`
-- Current public task commit: `ca3c98778b23dd56a5baaea134d0d805d34c66c8`
-- Retained official rollout source commit: `fb0fd4f3e74d12c9da82acf7f36a9add06dade02`
-  (the later public task-branch cleanup removes only verifier design notes)
+- Agent-facing task commit: `fb0fd4f3e74d12c9da82acf7f36a9add06dade02`
 - Ablation base branch: `codex/ablate-grenade-keep-assets`
 - Ablation base commit: `ed35453f23ee219747d8706f4cd147acb2de7d37`
 - Agent prompt: `TASK_PROMPT.md` in the task branch
 - Reference implementation: local `main` branch of the task repository
 - Local reference commit: `1cf08f7c9ff11cf3d9617b611c2447a04dc79fe4`
 - Local git-stripped reference copy used for grading:
-  `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\reference-main-complete`
+  `<path-to-reference-main-complete>`
 
 The rollout agent should receive only the ablated task project and
 `TASK_PROMPT.md`. It must not receive this verifier repository, original
@@ -107,6 +105,22 @@ The verifier grades out of 100:
 - `visual_audio_polish`: 5
 - `stability_repeatability`: 5
 
+The emitted score JSON keeps the formal `score/max_score` as the 100-point
+benchmark result and also exposes that same formal score as
+`logic_score/logic_max_score`. The existing `visual_audio_polish` category
+remains part of the 100-point score and pass-floor logic. Screenshot-based
+visual analysis is auxiliary evidence with `used_for_score: false`; it is
+reported as a separate 10-point section that includes projectile visibility,
+explosion visibility, and screenshot projectile-footprint quality. It may be
+displayed separately in reports but does not change `score`, `passed`, or the
+category floors.
+
+`visual_audio_polish` includes runtime presentation checks for the thrown
+projectile model, visible detonation/effect nodes, detonation audio, and
+temporary visual cleanup. The projectile-model detail follows the moving
+runtime grenade object and rejects built-in primitive placeholders and obvious
+reused non-grenade assets, rather than checking for a fixed node path.
+
 `stability_repeatability` includes both deterministic verifier-arena repeat use
 checks and a real `res://main.tscn` smoke check for default shooting, melee,
 targetable/damageable actors, and coin/pickup behavior.
@@ -123,19 +137,20 @@ that hit most nearby targets and multiple safety targets are capped inside
 The `passed` flag currently uses `score >= 85` as a report convenience, and it
 additionally requires at least half credit in each core gameplay category:
 `trajectory_preview >= 15/30`, `projectile_physics >= 8/15`, and
-`explosion_gameplay >= 10/20`. The score JSON records the threshold in
+`explosion_gameplay >= 10/20`, plus a visual presentation floor of
+`visual_audio_polish >= 4/5`. The score JSON records the threshold in
 `pass_threshold` and lists any floor misses in `category_floor_failures`, so a
 candidate cannot pass by stacking supporting-category points while a core
-category stays broken. The primary benchmark signal is the 0-100 score and
-category breakdown. The pass line sits between the strongest observed
-near-miss probe (the capped global targetable sweep at `78/100`) and the
-reference implementation (`91/100`), leaving a 7-point margin over the
-strongest probe and a 6-point margin under the reference; the same probe also
-fails the `explosion_gameplay` floor outright. Any scoring or calibration
-change must re-run the global-sweep probe and confirm it still lands below the
-pass line. A reference score below 100 should be inspected as either reference
-incompleteness or a possible verifier false negative; it is not proof that the
-verifier is perfect.
+category or required visual presentation stays broken. The primary benchmark
+signal is the 0-100 score and category breakdown. The numeric pass line still
+sits between the strongest observed low-score near-miss probe (the capped
+global targetable sweep at `78/100`) and the reference implementation
+(`91/100`), while category floors block high-scoring near misses such as an
+otherwise complete grenade implementation with a placeholder projectile model.
+Any scoring or calibration change must re-run the global-sweep probe and any
+affected visual-model probe before publishing updated evidence. A reference
+score below 100 should be inspected as either reference incompleteness or a
+possible verifier false negative; it is not proof that the verifier is perfect.
 
 The score JSON also carries a soft `suspect` flag with `suspect_reasons`.
 Global damage sweeps, damaged far/side/rear safety targets, and player
@@ -159,25 +174,33 @@ python -m unittest discover -s tests -v
 Run local calibration:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File C:\recent_project\roboblast-grenade-verifier\run_calibration.ps1
+$Verifier = "<path-to-this-repo>"
+powershell -NoProfile -ExecutionPolicy Bypass -File "$Verifier\run_calibration.ps1"
 ```
 
-The calibration script writes score JSON and logs under `artifacts/`. Record the
-exact Godot executable and version from the logs with every published result.
+The calibration script reruns the ablated and reference checks and writes score
+JSON plus logs under `artifacts/`. Probe and rollout rows in the published
+calibration tables are curated evidence produced by separate probe
+materialization and agent-run workflows. Record the exact Godot executable and
+version from the logs with every published result.
 
 ## Validity Probes
 
-`probe_matrix.md` lists anti-cheat probes, expected score bands, and observed
-results. Every probe must stay below the `score >= 85` pass line; record each
-probe run in the matrix's Observed column and keep the score JSON as curated
-evidence under `evaluation/evidence/`. At minimum, local validation should
-demonstrate:
+`probe_matrix.md` lists anti-cheat probes, expected score bands, observed
+results, and explicitly deferred overlapping rows. Every observed probe must
+stay below the `score >= 85` pass line; record each probe run in the matrix's
+Observed column and keep the score JSON as curated evidence under
+`evaluation/evidence/`. The current local validation set should demonstrate:
 
 - the ablated task scores low
 - the reference behavior scores high
-- HUD-only, direct-damage, visual-only, fixed or wrong trajectory, global
-  targetable sweeps, broad-damage, borderline throw-distance, and single-use
-  implementations do not receive high scores
+- representative HUD-only, visual-only, no-preview damage, fixed or wrong
+  trajectory, wrong projectile model, global targetable sweep, borderline
+  throw-distance, and single-use implementations do not pass
+- deferred direct all-target damage, player-self-damage, one-angle/one-distance
+  blast, distant-target damage, and default-weapon regression rows are
+  explicitly documented in `probe_matrix.md` rather than treated as silent
+  passes
 - repeated runs of the same candidate produce stable scores
 
 Probe candidates should be kept outside rollout-agent workspaces.

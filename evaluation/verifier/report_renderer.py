@@ -9,7 +9,7 @@ try:
     from reportlab.lib.pagesizes import letter
     from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
     from reportlab.lib.units import inch
-    from reportlab.platypus import Flowable, KeepTogether, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+    from reportlab.platypus import Flowable, Image as ReportImage, KeepTogether, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 except ImportError as exc:  # pragma: no cover - exercised only when dependency is missing.
     raise RuntimeError(
         "ReportLab is required to render PDF reports. Use the bundled Codex Python runtime or install reportlab."
@@ -90,6 +90,8 @@ def render_pdf_report(result: dict, output_path: Path, source_json_path: Path | 
         reasons_text = "; ".join(suspect_reasons) if suspect_reasons else "anti-cheat signals observed"
         review_line = "Flagged for manual review: " + reasons_text + "."
     breakdown = [_normalize_item(item) for item in result.get("breakdown", [])]
+    score_sections = _normalize_score_sections(result.get("score_sections", []))
+    auxiliary_score_sections = _normalize_score_sections(result.get("auxiliary_score_sections", []))
     findings = select_key_findings(breakdown, limit=5)
 
     styles = _styles()
@@ -107,7 +109,40 @@ def render_pdf_report(result: dict, output_path: Path, source_json_path: Path | 
         _header_table(result, score, max_score, passed, source_json_path, styles),
         Spacer(1, 0.18 * inch),
         _score_summary_table(score, max_score, passed, styles, status_line, review_line),
-        Spacer(1, 0.18 * inch),
+        Spacer(1, 0.12 * inch),
+    ]
+    if auxiliary_score_sections:
+        story.extend(
+            [
+                _auxiliary_score_highlight(auxiliary_score_sections[0], styles),
+                Spacer(1, 0.14 * inch),
+            ]
+        )
+    if score_sections:
+        story.extend(
+            [
+                Paragraph("Score Sections", styles["section"]),
+                Spacer(1, 0.06 * inch),
+                _score_sections_table(score_sections, styles),
+                Spacer(1, 0.18 * inch),
+            ]
+        )
+    if auxiliary_score_sections:
+        story.extend(
+            [
+                Paragraph("Auxiliary Visual Scores", styles["section"]),
+                Spacer(1, 0.04 * inch),
+                Paragraph("These visual analysis scores are not counted in 100-point score.", styles["muted"]),
+                Spacer(1, 0.06 * inch),
+                _score_sections_table(auxiliary_score_sections, styles),
+                Spacer(1, 0.18 * inch),
+            ]
+        )
+    screenshot_evidence = _screenshot_evidence_flowables(result, source_json_path, styles)
+    if screenshot_evidence:
+        story.extend([*screenshot_evidence, Spacer(1, 0.18 * inch)])
+    story.extend(
+        [
         Paragraph("Category Scores", styles["section"]),
         Spacer(1, 0.06 * inch),
         _category_table(breakdown, styles),
@@ -117,7 +152,8 @@ def render_pdf_report(result: dict, output_path: Path, source_json_path: Path | 
         _findings_table(findings, styles),
         Spacer(1, 0.18 * inch),
         *_detail_analysis_flowables(breakdown, styles),
-    ]
+        ]
+    )
 
     doc.build(story)
 
@@ -273,6 +309,40 @@ def _styles() -> dict[str, ParagraphStyle]:
             leading=8.2,
             textColor=INK,
         ),
+        "aux_title": ParagraphStyle(
+            "aux_title",
+            parent=base["Normal"],
+            fontName="Helvetica-Bold",
+            fontSize=10.5,
+            leading=12.5,
+            textColor=INK,
+        ),
+        "aux_score": ParagraphStyle(
+            "aux_score",
+            parent=base["Normal"],
+            fontName="Helvetica-Bold",
+            fontSize=18,
+            leading=20,
+            textColor=INK,
+            alignment=TA_CENTER,
+        ),
+        "aux_meta": ParagraphStyle(
+            "aux_meta",
+            parent=base["Normal"],
+            fontName="Helvetica",
+            fontSize=7.8,
+            leading=9.4,
+            textColor=MUTED,
+        ),
+        "caption": ParagraphStyle(
+            "caption",
+            parent=base["Normal"],
+            fontName="Helvetica",
+            fontSize=7,
+            leading=8.4,
+            textColor=MUTED,
+            alignment=TA_CENTER,
+        ),
     }
 
 
@@ -353,6 +423,38 @@ def _score_summary_table(
     return table
 
 
+def _auxiliary_score_highlight(section: dict, styles: dict) -> Table:
+    note = section.get("notes", "")
+    summary = "Auxiliary only - not counted in 100-point score."
+    if note:
+        summary += "<br/>" + _escape(_compact_text(note, 145))
+    table = Table(
+        [
+            [
+                Paragraph("Screenshot visual score", styles["aux_title"]),
+                Paragraph(f'{section["score"]}/{section["max"]}', styles["aux_score"]),
+                Paragraph(summary, styles["aux_meta"]),
+            ]
+        ],
+        colWidths=[2.35 * inch, 0.85 * inch, 3.5 * inch],
+    )
+    table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, -1), PANEL),
+                ("BOX", (0, 0), (-1, -1), 0.8, LINE),
+                ("LINEBEFORE", (1, 0), (1, 0), 2, _bar_color(_ratio(section))),
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 8),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 8),
+                ("TOPPADDING", (0, 0), (-1, -1), 7),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 7),
+            ]
+        )
+    )
+    return table
+
+
 def _category_table(breakdown: list[dict], styles: dict) -> Table:
     if not breakdown:
         rows = [[Paragraph("No category breakdown was available.", styles["cell"])]]
@@ -375,6 +477,42 @@ def _category_table(breakdown: list[dict], styles: dict) -> Table:
             [
                 ("BACKGROUND", (0, 0), (-1, 0), PANEL),
                 ("TEXTCOLOR", (0, 0), (-1, 0), INK),
+                ("BOX", (0, 0), (-1, -1), 0.5, LINE),
+                ("INNERGRID", (0, 0), (-1, -1), 0.25, LINE),
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 7),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 7),
+                ("TOPPADDING", (0, 0), (-1, -1), 5),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+            ]
+        )
+    )
+    return table
+
+
+def _score_sections_table(score_sections: list[dict], styles: dict) -> Table:
+    rows = [
+        [
+            Paragraph("Section", styles["cell_bold"]),
+            Paragraph("Score", styles["cell_bold"]),
+            Paragraph("Observed", styles["cell_bold"]),
+            Paragraph("Categories", styles["cell_bold"]),
+        ]
+    ]
+    for section in score_sections:
+        rows.append(
+            [
+                Paragraph(_escape(section["label"]), styles["cell_bold"]),
+                Paragraph(f'{section["score"]}/{section["max"]}', styles["cell"]),
+                BarFlowable(section["score"], section["max"], width=185),
+                Paragraph(_escape(", ".join(_label(category) for category in section["categories"])), styles["cell"]),
+            ]
+        )
+    table = Table(rows, colWidths=[1.25 * inch, 0.7 * inch, 2.75 * inch, 2.0 * inch], repeatRows=1)
+    table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), PANEL),
                 ("BOX", (0, 0), (-1, -1), 0.5, LINE),
                 ("INNERGRID", (0, 0), (-1, -1), 0.25, LINE),
                 ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
@@ -469,6 +607,148 @@ def _detail_analysis_flowables(breakdown: list[dict], styles: dict) -> list:
     return flowables
 
 
+def _screenshot_evidence_flowables(result: dict, source_json_path: Path | None, styles: dict) -> list:
+    screenshots = _select_representative_screenshots(result, source_json_path, limit=4)
+    if not screenshots:
+        return []
+
+    cells = []
+    for screenshot in screenshots:
+        image = _screenshot_image(screenshot)
+        if image is None:
+            continue
+        cells.append(
+            [
+                image,
+                Spacer(1, 0.04 * inch),
+                Paragraph(_escape(_screenshot_caption(screenshot)), styles["caption"]),
+            ]
+        )
+    if not cells:
+        return []
+
+    rows = []
+    for index in range(0, len(cells), 2):
+        row = [cells[index]]
+        if index + 1 < len(cells):
+            row.append(cells[index + 1])
+        else:
+            row.append("")
+        rows.append(row)
+
+    table = Table(rows, colWidths=[3.28 * inch, 3.28 * inch], hAlign="LEFT")
+    table.setStyle(
+        TableStyle(
+            [
+                ("BOX", (0, 0), (-1, -1), 0.5, LINE),
+                ("INNERGRID", (0, 0), (-1, -1), 0.25, LINE),
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 6),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 6),
+                ("TOPPADDING", (0, 0), (-1, -1), 6),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+            ]
+        )
+    )
+    return [
+        Paragraph("Screenshot Evidence", styles["section"]),
+        Spacer(1, 0.04 * inch),
+        Paragraph("Representative frames used by the auxiliary screenshot visual analysis.", styles["muted"]),
+        Spacer(1, 0.06 * inch),
+        table,
+    ]
+
+
+def _select_representative_screenshots(result: dict, source_json_path: Path | None, limit: int = 4) -> list[Path]:
+    artifacts = result.get("artifacts", {})
+    if not isinstance(artifacts, dict):
+        return []
+
+    candidates: list[Path] = []
+    raw_screenshots = artifacts.get("screenshots", [])
+    if isinstance(raw_screenshots, list):
+        candidates.extend(_resolve_screenshot_path(str(path), source_json_path) for path in raw_screenshots)
+
+    probe_dir = artifacts.get("screenshot_probe_dir")
+    if probe_dir:
+        probe_root = _resolve_screenshot_path(str(probe_dir), source_json_path)
+        if probe_root.exists():
+            candidates.extend(sorted(probe_root.rglob("*.png")))
+
+    existing = []
+    seen = set()
+    for candidate in candidates:
+        if candidate.suffix.lower() != ".png" or not candidate.exists():
+            continue
+        key = str(candidate.resolve())
+        if key in seen:
+            continue
+        seen.add(key)
+        existing.append(candidate)
+
+    if not existing:
+        return []
+
+    grouped: dict[str, list[Path]] = {}
+    for screenshot in sorted(existing, key=_screenshot_sort_key):
+        grouped.setdefault(screenshot.parent.name, []).append(screenshot)
+
+    selected: list[Path] = []
+    for mode in ("debug_arena", "main_scene"):
+        if mode in grouped:
+            selected.extend(_pick_mode_screenshots(grouped[mode], slots=2))
+    if len(selected) < limit:
+        for screenshot in sorted(existing, key=_screenshot_sort_key):
+            if screenshot not in selected:
+                selected.append(screenshot)
+            if len(selected) >= limit:
+                break
+    return selected[:limit]
+
+
+def _pick_mode_screenshots(screenshots: list[Path], slots: int) -> list[Path]:
+    attack_frames = [path for path in screenshots if path.stem.startswith("attack_")]
+    if attack_frames:
+        picks = [attack_frames[0]]
+        if len(attack_frames) > 1:
+            picks.append(attack_frames[-1])
+    else:
+        picks = screenshots[:slots]
+    return picks[:slots]
+
+
+def _resolve_screenshot_path(raw_path: str, source_json_path: Path | None) -> Path:
+    path = Path(raw_path)
+    if path.is_absolute():
+        return path
+    if source_json_path is not None:
+        return Path(source_json_path).parent / path
+    return path
+
+
+def _screenshot_sort_key(path: Path) -> tuple:
+    mode_rank = {"debug_arena": 0, "main_scene": 1}.get(path.parent.name, 2)
+    return (mode_rank, path.parent.name, path.name)
+
+
+def _screenshot_image(path: Path):
+    try:
+        image = ReportImage(str(path))
+    except Exception:
+        return None
+    max_width = 3.0 * inch
+    max_height = 1.7 * inch
+    ratio = min(max_width / image.imageWidth, max_height / image.imageHeight)
+    image.drawWidth = image.imageWidth * ratio
+    image.drawHeight = image.imageHeight * ratio
+    return image
+
+
+def _screenshot_caption(path: Path) -> str:
+    return f"{path.parent.name} / {path.stem}"
+
+
 def _normalize_item(item: dict) -> dict:
     name = str(item.get("name", "unknown"))
     score = _safe_int(item.get("score", 0))
@@ -477,6 +757,32 @@ def _normalize_item(item: dict) -> dict:
     raw_details = item.get("details", [])
     details = _normalize_details(raw_details, notes)
     return {"name": name, "score": score, "max": max_score, "notes": notes, "details": details}
+
+
+def _normalize_score_sections(raw_sections) -> list[dict]:
+    if not isinstance(raw_sections, list):
+        return []
+    sections: list[dict] = []
+    for raw_section in raw_sections:
+        if not isinstance(raw_section, dict):
+            continue
+        name = str(raw_section.get("name", "section"))
+        label = str(raw_section.get("label", _label(name)))
+        categories = raw_section.get("categories", [])
+        if not isinstance(categories, list):
+            categories = []
+        sections.append(
+            {
+                "name": name,
+                "label": label,
+                "score": _safe_int(raw_section.get("score", 0)),
+                "max": _safe_int(raw_section.get("max", raw_section.get("max_score", 0))),
+                "used_for_score": bool(raw_section.get("used_for_score", True)),
+                "notes": str(raw_section.get("notes", "")),
+                "categories": [str(category) for category in categories],
+            }
+        )
+    return sections
 
 
 def _normalize_details(raw_details, notes: str) -> list[dict]:
@@ -561,3 +867,9 @@ def _compact_path(path: str, max_length: int) -> str:
     if len(path) <= max_length:
         return path
     return "..." + path[-(max_length - 3) :]
+
+
+def _compact_text(text: str, max_length: int) -> str:
+    if len(text) <= max_length:
+        return text
+    return text[: max_length - 3].rstrip() + "..."

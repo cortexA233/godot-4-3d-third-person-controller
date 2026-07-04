@@ -45,6 +45,158 @@ static func audio_players_playing(root: Node) -> Array[Node]:
 	return found
 
 
+static func viewport_screenshot_signature(viewport: Viewport, sample_step: int = 32) -> Dictionary:
+	var capture := _capture_viewport_screenshot(viewport)
+	if not bool(capture.get("available", false)):
+		return capture
+	var image: Image = capture["image"]
+	var width := image.get_width()
+	var height := image.get_height()
+	var safe_sample_step := maxi(sample_step, 1)
+	var samples: Array = []
+	for y in range(0, height, safe_sample_step):
+		for x in range(0, width, safe_sample_step):
+			var color := image.get_pixel(x, y)
+			samples.append([color.r, color.g, color.b, color.a])
+	return {
+		"available": true,
+		"display_driver": DisplayServer.get_name(),
+		"width": width,
+		"height": height,
+		"sample_step": safe_sample_step,
+		"sample_count": samples.size(),
+		"samples": samples,
+	}
+
+
+static func viewport_image(viewport: Viewport) -> Dictionary:
+	var capture := _capture_viewport_screenshot(viewport)
+	if not bool(capture.get("available", false)):
+		return capture
+	return capture
+
+
+static func viewport_region_signature(viewport: Viewport, rect: Rect2, sample_step: int = 8) -> Dictionary:
+	var capture := viewport_image(viewport)
+	if not bool(capture.get("available", false)):
+		return capture
+	var image: Image = capture["image"]
+	var signature := image_region_signature(image, rect, sample_step)
+	if bool(signature.get("available", false)):
+		signature["display_driver"] = DisplayServer.get_name()
+	return signature
+
+
+static func image_region_signature(image: Image, rect: Rect2, sample_step: int = 8) -> Dictionary:
+	if image == null:
+		return {"available": false, "reason": "image is null"}
+	var width := image.get_width()
+	var height := image.get_height()
+	if width <= 0 or height <= 0:
+		return {
+			"available": false,
+			"reason": "image has no pixels",
+			"width": width,
+			"height": height,
+		}
+	var x0 := clampi(int(floorf(rect.position.x)), 0, maxi(width - 1, 0))
+	var y0 := clampi(int(floorf(rect.position.y)), 0, maxi(height - 1, 0))
+	var x1 := clampi(int(ceilf(rect.position.x + rect.size.x)), x0 + 1, width)
+	var y1 := clampi(int(ceilf(rect.position.y + rect.size.y)), y0 + 1, height)
+	var safe_sample_step := maxi(sample_step, 1)
+	var samples: Array = []
+	for y in range(y0, y1, safe_sample_step):
+		for x in range(x0, x1, safe_sample_step):
+			var color := image.get_pixel(x, y)
+			samples.append([color.r, color.g, color.b, color.a])
+	return {
+		"available": true,
+		"width": width,
+		"height": height,
+		"region": [x0, y0, x1 - x0, y1 - y0],
+		"sample_step": safe_sample_step,
+		"sample_count": samples.size(),
+		"samples": samples,
+	}
+
+
+static func frame_signature_delta(before: Dictionary, after: Dictionary) -> float:
+	if not bool(before.get("available", false)) or not bool(after.get("available", false)):
+		return -1.0
+	var before_samples: Array = before.get("samples", [])
+	var after_samples: Array = after.get("samples", [])
+	var count := mini(before_samples.size(), after_samples.size())
+	if count <= 0:
+		return 0.0
+	var total := 0.0
+	for index in range(count):
+		var before_color: Array = before_samples[index]
+		var after_color: Array = after_samples[index]
+		for channel in range(4):
+			total += absf(float(after_color[channel]) - float(before_color[channel]))
+	return total / float(count * 4)
+
+
+static func save_viewport_screenshot(viewport: Viewport, output_path: String) -> Dictionary:
+	var capture := _capture_viewport_screenshot(viewport)
+	if not bool(capture.get("available", false)):
+		capture.erase("image")
+		capture["saved"] = false
+		capture["path"] = output_path
+		return capture
+	var image: Image = capture["image"]
+	var error := image.save_png(output_path)
+	return {
+		"available": true,
+		"saved": error == OK,
+		"path": output_path,
+		"error": error,
+		"display_driver": DisplayServer.get_name(),
+		"width": image.get_width(),
+		"height": image.get_height(),
+	}
+
+
+static func _capture_viewport_screenshot(viewport: Viewport) -> Dictionary:
+	if viewport == null:
+		return {"available": false, "reason": "viewport is null"}
+	if DisplayServer.get_name() == "headless":
+		return {
+			"available": false,
+			"reason": "headless display driver does not expose viewport screenshots",
+			"display_driver": DisplayServer.get_name(),
+		}
+	var texture := viewport.get_texture()
+	if texture == null:
+		return {
+			"available": false,
+			"reason": "viewport texture is null",
+			"display_driver": DisplayServer.get_name(),
+		}
+	var image := texture.get_image()
+	if image == null:
+		return {
+			"available": false,
+			"reason": "viewport image is null",
+			"display_driver": DisplayServer.get_name(),
+		}
+	if image.get_width() <= 0 or image.get_height() <= 0:
+		return {
+			"available": false,
+			"reason": "viewport image has no pixels",
+			"display_driver": DisplayServer.get_name(),
+			"width": image.get_width(),
+			"height": image.get_height(),
+		}
+	return {
+		"available": true,
+		"display_driver": DisplayServer.get_name(),
+		"width": image.get_width(),
+		"height": image.get_height(),
+		"image": image,
+	}
+
+
 static func observe_runtime_activity(tree: SceneTree, root: Node, before: Dictionary, point: Vector3, radius: float, frame_count: int) -> Dictionary:
 	var visible_ids := {}
 	var saw_audio := false
@@ -118,6 +270,196 @@ static func node3d_candidates(nodes: Array[Node], origin: Vector3, max_distance:
 			if node_3d.global_position.distance_to(origin) <= max_distance:
 				result.append(node_3d)
 	return result
+
+
+static func visible_mesh_instances_under(root_node: Node) -> Array[MeshInstance3D]:
+	var result: Array[MeshInstance3D] = []
+	for node in flatten(root_node):
+		if node is MeshInstance3D:
+			var mesh_instance := node as MeshInstance3D
+			if mesh_instance.mesh != null and _mesh_instance_is_visible(mesh_instance):
+				result.append(mesh_instance)
+	return result
+
+
+static func projectile_screen_rect(camera: Camera3D, projectile: Node3D, viewport_size: Vector2i) -> Dictionary:
+	if camera == null:
+		return {"available": false, "visible": false, "reason": "camera unavailable"}
+	if projectile == null or not is_instance_valid(projectile):
+		return {"available": false, "visible": false, "reason": "projectile unavailable"}
+	var points: Array[Vector2] = []
+	for mesh_instance in visible_mesh_instances_under(projectile):
+		var aabb := mesh_instance.get_aabb()
+		for x in [aabb.position.x, aabb.position.x + aabb.size.x]:
+			for y in [aabb.position.y, aabb.position.y + aabb.size.y]:
+				for z in [aabb.position.z, aabb.position.z + aabb.size.z]:
+					var world_point := mesh_instance.global_transform * Vector3(x, y, z)
+					if not camera.is_position_behind(world_point):
+						points.append(camera.unproject_position(world_point))
+	if points.is_empty():
+		if camera.is_position_behind(projectile.global_position):
+			return {"available": true, "visible": false, "reason": "projectile is behind camera"}
+		var center := camera.unproject_position(projectile.global_position)
+		points = [center - Vector2(6, 6), center + Vector2(6, 6)]
+	var min_x := INF
+	var min_y := INF
+	var max_x := -INF
+	var max_y := -INF
+	for point in points:
+		min_x = minf(min_x, point.x)
+		min_y = minf(min_y, point.y)
+		max_x = maxf(max_x, point.x)
+		max_y = maxf(max_y, point.y)
+	min_x = clampf(floorf(min_x) - 2.0, 0.0, float(viewport_size.x))
+	min_y = clampf(floorf(min_y) - 2.0, 0.0, float(viewport_size.y))
+	max_x = clampf(ceilf(max_x) + 2.0, 0.0, float(viewport_size.x))
+	max_y = clampf(ceilf(max_y) + 2.0, 0.0, float(viewport_size.y))
+	var rect_width := maxf(0.0, max_x - min_x)
+	var rect_height := maxf(0.0, max_y - min_y)
+	return {
+		"available": true,
+		"visible": rect_width > 0.0 and rect_height > 0.0,
+		"x": int(min_x),
+		"y": int(min_y),
+		"width": int(rect_width),
+		"height": int(rect_height),
+		"area_px": int(rect_width * rect_height),
+	}
+
+
+static func grenade_projectile_visual_report(
+	candidates: Array[Node3D],
+	tracks: Dictionary,
+	minimum_travel_distance: float = 0.5,
+	min_visual_extent: float = 0.1,
+	max_visual_extent: float = 2.0
+) -> Dictionary:
+	var moving_projectile_count := 0
+	var mesh_count := 0
+	var accepted_count := 0
+	var placeholder_count := 0
+	var reused_asset_count := 0
+	var bad_size_count := 0
+	var inspected_notes: Array[String] = []
+	for candidate in candidates:
+		if not is_instance_valid(candidate):
+			continue
+		var points: Array = tracks.get(candidate.get_instance_id(), [])
+		if horizontal_travel_distance(points) < minimum_travel_distance:
+			continue
+		moving_projectile_count += 1
+		for mesh_instance in visible_mesh_instances_under(candidate):
+			mesh_count += 1
+			var mesh := mesh_instance.mesh
+			var mesh_class := mesh.get_class()
+			var max_extent := _mesh_max_world_extent(mesh_instance)
+			if _mesh_is_placeholder_primitive(mesh):
+				placeholder_count += 1
+				inspected_notes.append("%s uses placeholder primitive %s" % [str(mesh_instance.get_path()), mesh_class])
+				continue
+			if _mesh_uses_reused_projectile_asset(mesh_instance):
+				reused_asset_count += 1
+				inspected_notes.append("%s appears to reuse non-grenade asset %s" % [str(mesh_instance.get_path()), _mesh_resource_path(mesh_instance)])
+				continue
+			if max_extent < min_visual_extent or max_extent > max_visual_extent:
+				bad_size_count += 1
+				inspected_notes.append("%s has model extent %.2f outside %.2f-%.2f" % [str(mesh_instance.get_path()), max_extent, min_visual_extent, max_visual_extent])
+				continue
+			accepted_count += 1
+			inspected_notes.append("%s has non-placeholder projectile mesh %s, extent %.2f" % [str(mesh_instance.get_path()), mesh_class, max_extent])
+	var notes := ""
+	if accepted_count > 0:
+		notes = "moving grenade projectile carries a visible non-placeholder model"
+	elif moving_projectile_count <= 0:
+		notes = "no moving projectile candidates were available for model inspection"
+	elif mesh_count <= 0:
+		notes = "moving projectile had no visible MeshInstance3D child"
+	elif placeholder_count > 0:
+		notes = "moving projectile visual used placeholder primitive mesh"
+	elif reused_asset_count > 0:
+		notes = "moving projectile visual appeared to reuse a non-grenade asset"
+	else:
+		notes = "moving projectile visual was not grenade-sized or model-like"
+	if not inspected_notes.is_empty():
+		notes += ": " + "; ".join(inspected_notes.slice(0, 3))
+	return {
+		"has_model_visual": accepted_count > 0,
+		"moving_projectile_count": moving_projectile_count,
+		"visible_mesh_count": mesh_count,
+		"accepted_mesh_count": accepted_count,
+		"placeholder_mesh_count": placeholder_count,
+		"reused_asset_count": reused_asset_count,
+		"bad_size_count": bad_size_count,
+		"notes": notes,
+	}
+
+
+static func _mesh_instance_is_visible(mesh_instance: MeshInstance3D) -> bool:
+	if not mesh_instance.visible:
+		return false
+	if mesh_instance.is_inside_tree():
+		return mesh_instance.is_visible_in_tree()
+	return true
+
+
+static func _mesh_max_world_extent(mesh_instance: MeshInstance3D) -> float:
+	var aabb := mesh_instance.get_aabb()
+	var scale := mesh_instance.global_transform.basis.get_scale()
+	var size := Vector3(
+		absf(aabb.size.x * scale.x),
+		absf(aabb.size.y * scale.y),
+		absf(aabb.size.z * scale.z)
+	)
+	return maxf(size.x, maxf(size.y, size.z))
+
+
+static func _mesh_resource_path(mesh_instance: MeshInstance3D) -> String:
+	if mesh_instance.mesh == null:
+		return ""
+	return String(mesh_instance.mesh.resource_path)
+
+
+static func _mesh_context_text(mesh_instance: MeshInstance3D) -> String:
+	var parts: Array[String] = [String(mesh_instance.name), _mesh_resource_path(mesh_instance)]
+	var current: Node = mesh_instance.get_parent()
+	while current != null:
+		parts.append(String(current.name))
+		current = current.get_parent()
+	return " ".join(parts).to_lower()
+
+
+static func _mesh_is_placeholder_primitive(mesh: Mesh) -> bool:
+	return (
+		mesh is BoxMesh
+		or mesh is SphereMesh
+		or mesh is CapsuleMesh
+		or mesh is CylinderMesh
+		or mesh is PlaneMesh
+		or mesh is PrismMesh
+		or mesh is QuadMesh
+		or mesh is TorusMesh
+	)
+
+
+static func _mesh_uses_reused_projectile_asset(mesh_instance: MeshInstance3D) -> bool:
+	var text := _mesh_context_text(mesh_instance)
+	var rejected_tokens := [
+		"bullet",
+		"coin",
+		"box",
+		"crate",
+		"gdbot",
+		"player/model",
+		"trajectory",
+		"target",
+		"reticle",
+		"explosion",
+		"smoke",
+	]
+	for token in rejected_tokens:
+		if text.find(token) >= 0:
+			return true
+	return false
 
 
 static func track_node_positions(tree: SceneTree, node: Node3D, frame_count: int) -> Array[Vector3]:

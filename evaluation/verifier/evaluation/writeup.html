@@ -347,7 +347,7 @@
     <div class="hero-inner">
       <p class="eyebrow">Take-home evaluation writeup</p>
       <h1>RoboBlast Grenade Verifier</h1>
-      <p class="lead">A behavioral Godot 4.6 grader for a missing grenade weapon, with the official rollout scores from <code>C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656</code> plus seven representative anti-cheat fake solutions below the pass line.</p>
+      <p class="lead">A behavioral Godot 4.6 grader for a missing grenade weapon, with rollout evidence from Claude Code Sonnet 5 medium, Claude Code Opus 4.8 max, and Codex GPT-5.5 xhigh attempts, plus eight representative anti-cheat fake solutions, including a high-scoring visual-floor failure.</p>
     </div>
   </header>
 
@@ -364,14 +364,14 @@
         <small>Fresh local run: no projectile, trajectory, explosion, or polish behavior observed.</small>
       </div>
       <div class="metric status-blue">
-        <b>6-88</b>
-        <span>Agent score spread</span>
-        <small>Nine rollout attempts from the same scored run set; one Opus run passes and the rest expose partial or failed behavior.</small>
+        <b>13-80</b>
+        <span>Highlighted Sonnet spread</span>
+        <small>Three Sonnet 5 medium attempts land in partial-credit territory rather than an easy 100.</small>
       </div>
       <div class="metric status-good">
-        <b>7</b>
+        <b>8</b>
         <span>Anti-cheat probes</span>
-        <small>Representative fake solutions all score below the score >= 85 pass line.</small>
+        <small>Seven stay below score >= 85; one scores 98/100 but fails the visual presentation floor.</small>
       </div>
     </div>
 
@@ -382,7 +382,7 @@
           <p>The task removes the grenade weapon from RoboBlast and asks the rollout agent to rebuild it from a behavioral-only prompt. The expected player-facing behavior spans weapon switching, HUD state, trajectory preview, physical projectile flight, localized explosion damage, visual/audio feedback, cleanup, and preservation of default shooting/melee.</p>
           <p>The feature is a good benchmark slice because it crosses code, scenes, resources, UI, physics, damage conventions, and visual presentation. It is also hard to grade honestly: a solution can look plausible while skipping aim reactivity, spatial damage, cooldown behavior, or main-scene integration.</p>
           <div class="callout">
-            The agent-facing prompt is <code>TASK_PROMPT.md</code>. It intentionally describes outcomes only: no historical file names, node paths, class names, methods, or verifier internals. Rollout agents received exporter-produced, history-stripped clean workspaces generated from the ablated task, not raw branch checkouts. The public branch and its history are reviewer audit artifacts; they were not available inside the evaluated agent workspaces.
+            The agent-facing prompt is <code>TASK_PROMPT.md</code>. It intentionally describes outcomes only: no historical file names, node paths, class names, methods, or verifier internals.
           </div>
         </div>
         <figure class="media-frame">
@@ -449,103 +449,201 @@
 
     <section>
       <h2>Calibration And Scores</h2>
-      <p>These official rollout numbers come from <code>C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656</code>, generated on 2026-07-03 with Godot <code>4.6.stable.official.89cea1439</code>. The original retained run set used verifier SHA <code>bfa6d5f060b25b427209c15f95448f03532147ab</code>; the erroneous earlier Codex score records were discarded and replaced with current-verifier evidence from SHA <code>ca585a3cbcaaafd77dfe1391dec00d4ca910880f</code>, including PDF reports and updated score artifacts. The retained run workspaces were sourced from task commit <code>fb0fd4f</code>; the public task branch was later advanced to <code>ca3c987</code> only to remove verifier design notes from the branch. The <code>passed</code> flag means <code>score &gt;= 85</code> plus half-credit pass floors in core categories (<code>trajectory_preview &gt;= 15</code>, <code>projectile_physics &gt;= 8</code>, <code>explosion_gameplay &gt;= 10</code>). The only retained score evidence is this run set and the anti-cheat probe results.</p>
+      <p>Most numbers are from fresh local Godot 4.6 verifier runs on 2026-07-03 with the current verifier; the wrong-projectile-model visual-floor probe was added on 2026-07-04. The global-damage sweep cap is active, weapon-switch input is scored behaviorally instead of by action name, and the <code>passed</code> flag means <code>score >= 85</code> plus half-credit pass floors in the core gameplay categories (<code>trajectory_preview >= 15</code>, <code>projectile_physics >= 8</code>, <code>explosion_gameplay >= 10</code>) and the visual presentation floor (<code>visual_audio_polish >= 4</code>). Score JSONs also carry a soft <code>suspect</code> flag when global sweeps, damaged safety targets, or player self-damage need manual review. Committed copies of every score JSON below live under <code>evaluation/evidence/</code>.</p>
       <table>
         <thead>
-          <tr><th>Candidate</th><th>Score</th><th>Observed</th><th>Key category signal</th><th>Evidence path</th></tr>
+          <tr><th>Candidate</th><th>Score</th><th>Observed</th><th>Evidence path</th></tr>
         </thead>
         <tbody>
-          <tr><td>Reference complete implementation</td><td><span class="score high">91/100</span></td><td><div class="bar"><span class="good" style="width:91%"></span></div></td><td>Passes; preview 24/30, explosion 17/20.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/reference-main-complete/score.json</code></td></tr>
-          <tr><td>Ablated task workspace</td><td><span class="score low">13/100</span></td><td><div class="bar"><span class="bad" style="width:13%"></span></div></td><td>No preview, projectile, explosion, or polish behavior.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/rollout-task/score.json</code></td></tr>
-          <tr><td>Claude Code Opus 4.8 run 1</td><td><span class="score mid">74/100</span></td><td><div class="bar"><span class="warn" style="width:74%"></span></div></td><td>Strong controls/physics, but preview only 9/30.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-01-cc-opus/score.json</code></td></tr>
-          <tr><td>Claude Code Opus 4.8 run 2</td><td><span class="score high">88/100</span></td><td><div class="bar"><span class="good" style="width:88%"></span></div></td><td>Only passing rollout; preview 23/30, explosion 15/20.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-02-cc-opus/score.json</code></td></tr>
-          <tr><td>Claude Code Opus 4.8 run 3</td><td><span class="score mid">80/100</span></td><td><div class="bar"><span class="warn" style="width:80%"></span></div></td><td>Full controls/physics, partial preview 15/30.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-03-cc-opus/score.json</code></td></tr>
-          <tr><td>Claude Code Sonnet run 1</td><td><span class="score mid">77/100</span></td><td><div class="bar"><span class="warn" style="width:77%"></span></div></td><td>Good blast behavior, but preview only 9/30.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-01-cc-sonnet/score.json</code></td></tr>
-          <tr><td>Claude Code Sonnet run 2</td><td><span class="score mid">82/100</span></td><td><div class="bar"><span class="warn" style="width:82%"></span></div></td><td>Perfect preview, but explosion gameplay only 2/20.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-02-cc-sonnet/score.json</code></td></tr>
-          <tr><td>Claude Code Sonnet run 3</td><td><span class="score mid">59/100</span></td><td><div class="bar"><span class="warn" style="width:59%"></span></div></td><td>Controls and projectile exist; explosion gameplay is 0/20.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-03-cc-sonnet/score.json</code></td></tr>
-          <tr><td>Codex run 1</td><td><span class="score mid">73/100</span></td><td><div class="bar"><span class="warn" style="width:73%"></span></div></td><td>Full controls, physics, polish, and repeatability; preview remains 9/30 and explosion is 14/20.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-01-codex/score.json</code></td></tr>
-          <tr><td>Codex run 2</td><td><span class="score mid">75/100</span></td><td><div class="bar"><span class="warn" style="width:75%"></span></div></td><td>Full controls, physics, polish, and repeatability; preview remains 9/30 and explosion is 16/20.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-02-codex/score.json</code></td></tr>
-          <tr><td>Codex run 3</td><td><span class="score high">100/100</span></td><td><div class="bar"><span class="good" style="width:100%"></span></div></td><td>Passes with full credit in every category.</td><td><code>evaluation/evidence/agent-runs-20260703-151656/run-03-codex/score.json</code></td></tr>
-        </tbody>
-      </table>
-      <p class="muted">The run summary is retained at <code>evaluation/evidence/agent-runs-20260703-151656/verifier-score-summary.json</code>. Each run directory also includes the exact grader command, Godot verifier log, score report PDF, prompt, manifest, and diff where applicable.</p>
-
-      <h3>Anti-Cheat Probe Scores</h3>
-      <table>
-        <thead>
-          <tr><th>Probe</th><th>Score</th><th>Observed</th><th>Evidence path</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Fake broad/global damage probe (capped)</td><td><span class="score mid">78/100</span></td><td><div class="bar"><span class="warn" style="width:78%"></span></div></td><td><code>evaluation/evidence/probes/calibration-20260703-probe-global-damage-score.json</code></td></tr>
-          <tr><td>Fake HUD-only probe</td><td><span class="score low">19/100</span></td><td><div class="bar"><span class="bad" style="width:19%"></span></div></td><td><code>evaluation/evidence/probes/calibration-20260703-probe-hud-only-score.json</code></td></tr>
-          <tr><td>Fake visual-only/no-damage probe</td><td><span class="score low">34/100</span></td><td><div class="bar"><span class="bad" style="width:34%"></span></div></td><td><code>evaluation/evidence/probes/calibration-20260703-probe-visual-no-damage-score.json</code></td></tr>
-          <tr><td>Fake damage-without-preview probe</td><td><span class="score mid">54/100</span></td><td><div class="bar"><span class="warn" style="width:54%"></span></div></td><td><code>evaluation/evidence/probes/calibration-20260703-probe-damage-no-preview-score.json</code></td></tr>
-          <tr><td>Fake single-use grenade probe</td><td><span class="score mid">75/100</span></td><td><div class="bar"><span class="warn" style="width:75%"></span></div></td><td><code>evaluation/evidence/probes/calibration-20260703-probe-single-use-score.json</code></td></tr>
-          <tr><td>Fake fixed-trajectory probe</td><td><span class="score mid">65/100</span></td><td><div class="bar"><span class="warn" style="width:65%"></span></div></td><td><code>evaluation/evidence/probes/calibration-20260703-probe-fixed-trajectory-score.json</code></td></tr>
-          <tr><td>Fake bad-distance probe</td><td><span class="score mid">50/100</span></td><td><div class="bar"><span class="warn" style="width:50%"></span></div></td><td><code>evaluation/evidence/probes/calibration-20260703-probe-bad-distance-score.json</code></td></tr>
+          <tr>
+            <td>Reference complete implementation</td>
+            <td><span class="score high">91/100</span></td>
+            <td><div class="bar"><span class="good" style="width:91%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-reference-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Ablated task workspace</td>
+            <td><span class="score low">13/100</span></td>
+            <td><div class="bar"><span class="bad" style="width:13%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-ablated-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Claude Code Sonnet 5 medium run 1</td>
+            <td><span class="score mid">80/100</span></td>
+            <td><div class="bar"><span class="warn" style="width:80%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-sonnet-1-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Claude Code Sonnet 5 medium run 2</td>
+            <td><span class="score mid">78/100</span></td>
+            <td><div class="bar"><span class="warn" style="width:78%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-sonnet-2-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Claude Code Sonnet 5 medium run 3</td>
+            <td><span class="score low">13/100</span></td>
+            <td><div class="bar"><span class="bad" style="width:13%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-sonnet-3-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Codex GPT-5.5 xhigh run 1</td>
+            <td><span class="score mid">73/100</span></td>
+            <td><div class="bar"><span class="warn" style="width:73%"></span></div></td>
+            <td><code>evaluation/evidence/agent-runs-20260703-151656/run-01-codex/score.json</code></td>
+          </tr>
+          <tr>
+            <td>Codex GPT-5.5 xhigh run 2</td>
+            <td><span class="score mid">75/100</span></td>
+            <td><div class="bar"><span class="warn" style="width:75%"></span></div></td>
+            <td><code>evaluation/evidence/agent-runs-20260703-151656/run-02-codex/score.json</code></td>
+          </tr>
+          <tr>
+            <td>Codex GPT-5.5 xhigh run 3</td>
+            <td><span class="score high">100/100</span></td>
+            <td><div class="bar"><span class="good" style="width:100%"></span></div></td>
+            <td><code>evaluation/evidence/agent-runs-20260703-151656/run-03-codex/score.json</code></td>
+          </tr>
+          <tr>
+            <td>Fake broad/global damage probe (capped)</td>
+            <td><span class="score mid">78/100</span></td>
+            <td><div class="bar"><span class="warn" style="width:78%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-probe-global-damage-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Fake wrong-projectile-model overlay probe</td>
+            <td><span class="score high">98/100</span></td>
+            <td><div class="bar"><span class="good" style="width:98%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260704-probe-wrong-projectile-model-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Fake HUD-only probe</td>
+            <td><span class="score low">19/100</span></td>
+            <td><div class="bar"><span class="bad" style="width:19%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-probe-hud-only-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Fake visual-only/no-damage probe</td>
+            <td><span class="score low">34/100</span></td>
+            <td><div class="bar"><span class="bad" style="width:34%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-probe-visual-no-damage-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Fake damage-without-preview probe</td>
+            <td><span class="score mid">54/100</span></td>
+            <td><div class="bar"><span class="warn" style="width:54%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-probe-damage-no-preview-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Fake single-use grenade probe</td>
+            <td><span class="score mid">75/100</span></td>
+            <td><div class="bar"><span class="warn" style="width:75%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-probe-single-use-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Fake fixed-trajectory probe</td>
+            <td><span class="score mid">65/100</span></td>
+            <td><div class="bar"><span class="warn" style="width:65%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-probe-fixed-trajectory-score.json</code></td>
+          </tr>
+          <tr>
+            <td>Fake bad-distance probe</td>
+            <td><span class="score mid">50/100</span></td>
+            <td><div class="bar"><span class="warn" style="width:50%"></span></div></td>
+            <td><code>evaluation/evidence/calibration-20260703-probe-bad-distance-score.json</code></td>
+          </tr>
         </tbody>
       </table>
       <div class="callout">
-        <strong>Anti-cheat evidence:</strong> the broad/global damage fake is capped at 78/100 and all seven retained probe score JSONs stay below the score &gt;= 85 pass line. These probe files are the only non-agent-run score results retained in the repository.
+        <strong>Anti-cheat evidence:</strong> the broad/global damage fake previously scored 90 and passed. The verifier now detects global damage sweeps that hit most nearby targets plus multiple far/side/rear safety targets and caps <code>explosion_gameplay</code> to <code>4/20</code>, bringing that probe to 78/100. Six additional low-score fake candidates cover HUD-only, visual-only/no-damage, damage-without-preview, single-use, fixed-trajectory, and bad-distance near misses; all seven stay below the score >= 85 pass line. The wrong-projectile-model overlay probe intentionally remains high-scoring at 98/100 but records <code>passed: false</code> because <code>visual_audio_polish</code> is 3/5 and fails the visual floor.
       </div>
     </section>
 
     <section>
       <h2>Rollout Runs</h2>
       <div class="callout">
-        Rollout workspaces were prepared under <code>C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656</code> as isolated copies with verifier files, local git history, generated artifacts, and assignment-only materials stripped from the agent-facing workspace. The same hidden verifier scored every submitted workspace; the erroneous earlier Codex score records were discarded and replaced with current-verifier PDF report evidence.
+        Rollout workspaces were prepared as isolated copies with verifier files, local git history, generated artifacts, and assignment-only materials stripped from the agent-facing workspace. The local Godot MCP configuration for the task project enables <code>@coding-solo/godot-mcp</code> through Node and points <code>GODOT_PATH</code> at the Godot 4.6 installation used for the run.
       </div>
       <table>
         <thead>
-          <tr><th>Run family</th><th>Agent / model</th><th>Scores from the run directory</th><th>Failure analysis</th></tr>
+          <tr><th>Run</th><th>Agent / model</th><th>Diff summary</th><th>Score</th><th>Failure analysis</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>Opus runs</td>
-            <td>Claude Code, Opus 4.8</td>
-            <td><code>run-01-cc-opus</code>: 74/100<br><code>run-02-cc-opus</code>: 88/100<br><code>run-03-cc-opus</code>: 80/100</td>
-            <td>The strongest family overall. All three preserve controls, HUD, projectile physics, polish, and repeatability. The passing run still misses some trajectory/projectile consistency and explosion detail; the lower Opus runs mainly lose trajectory-preview credit.</td>
+            <td>Sonnet 1</td>
+            <td>Claude Code, Sonnet 5 medium</td>
+            <td>6 modified, 6 added, 1 prompt-localized file removed. Added <code>thrown_grenade</code> and trajectory resources; modified player, weapon UI, project settings, and explosion scene.</td>
+            <td><span class="score mid">80/100</span></td>
+            <td>Earlier verifier builds scored this run 43: its weapon switch takes effect slightly later than the tight input taps the weapon/HUD/projectile/polish checks used, so those categories never saw the grenade — a verifier timing artifact, not an agent defect. After harmonizing every category on the same weapon-switch input timing, those categories score fully. Real remaining defects: the aiming aid does not update with aim/camera direction (15/30) and the damageable-only destructible probes were not damaged (15/20).</td>
           </tr>
           <tr>
-            <td>Sonnet runs</td>
-            <td>Claude Code, Sonnet</td>
-            <td><code>run-01-cc-sonnet</code>: 77/100<br><code>run-02-cc-sonnet</code>: 82/100<br><code>run-03-cc-sonnet</code>: 59/100</td>
-            <td>Good partial implementations, but none passes. Run 2 has a full 30/30 preview yet scores only 2/20 on explosion gameplay. Run 1 has strong localized blast behavior but weak preview. Run 3 wires controls/projectile basics but never earns explosion gameplay credit.</td>
+            <td>Sonnet 2</td>
+            <td>Claude Code, Sonnet 5 medium</td>
+            <td>5 modified, 5 added, 1 prompt-localized file removed. Added <code>grenade_projectile</code>, projectile scene, landing marker, and a grenade implementation plan.</td>
+            <td><span class="score mid">78/100</span></td>
+            <td>Strong partial run. It implemented switchable grenade attacks through a Tab-bound custom input action with a controller binding, projectile physics, localized damage, visual/audio feedback, and repeat use. Name-based scoring used to dock it 4 points for not naming the action <code>swap_weapons</code>; behavioral scoring now credits it. Real remaining defects: preview did not update with aim/camera direction, default throw landed at 13.20 units outside the preferred 6-12 band, and the damageable-only destructible probes were not damaged.</td>
           </tr>
           <tr>
-            <td>Codex runs</td>
-            <td>Codex, GPT-5-based coding agent</td>
-            <td><code>run-01-codex</code>: 73/100<br><code>run-02-codex</code>: 75/100<br><code>run-03-codex</code>: 100/100</td>
-            <td>Run 3 is a passing implementation with full category credit. Runs 1 and 2 now show strong controls, projectile physics, explosion, polish, and repeatability, but both still miss most trajectory-preview credit and stay below the pass line.</td>
+            <td>Sonnet 3</td>
+            <td>Claude Code, Sonnet 5 medium</td>
+            <td>0 code/resource changes relative to the ablated baseline; removed the localized task prompt file.</td>
+            <td><span class="score low">13/100</span></td>
+            <td>Real agent failure: no grenade trajectory, projectile, explosion gameplay, or polish behavior was implemented. The remaining points come from existing UI/default-player behavior that survived the ablation.</td>
           </tr>
         </tbody>
       </table>
-      <p class="muted">This branch keeps the run directory evidence directly under <code>evaluation/evidence/agent-runs-20260703-151656/</code>. It does not keep older score results or unrelated artifact outputs.</p>
+      <p class="muted">Full run evidence is published on per-run branches. Each branch includes <code>evaluation/agent-runs/&lt;run&gt;/diff.patch</code>, <code>score.json</code>, <code>score-report.pdf</code>, <code>run-manifest.json</code>, the prompt given to the agent, and the verifier command/log.</p>
+      <table>
+        <thead>
+          <tr><th>Run family</th><th>Agent / model</th><th>Published branches</th><th>Branch-recorded scores</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sonnet runs</td>
+            <td>Claude Code, Sonnet 5 medium</td>
+            <td><code>agent-run/01-cc-sonnet</code><br><code>agent-run/02-cc-sonnet</code><br><code>agent-run/03-cc-sonnet</code></td>
+            <td>77/100, 82/100, 59/100 in branch-captured score JSONs; current calibration scores shown above are 80/100, 78/100, and 13/100.</td>
+          </tr>
+          <tr>
+            <td>Opus runs</td>
+            <td>Claude Code, Opus 4.8 max</td>
+            <td><code>agent-run/01-cc-opus</code><br><code>agent-run/02-cc-opus</code><br><code>agent-run/03-cc-opus</code></td>
+            <td>74/100, 88/100, 80/100 in branch-captured score JSONs.</td>
+          </tr>
+          <tr>
+            <td>Codex runs</td>
+            <td>Codex, GPT-5.5 xhigh</td>
+            <td><code>agent-run/01-codex</code><br><code>agent-run/02-codex</code><br><code>agent-run/03-codex</code></td>
+            <td>73/100, 75/100, 100/100 in branch-captured score JSONs and PDF reports from the current verifier. Earlier Codex score records were erroneous and are not retained as evidence.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
       <h2>Anti-Cheat Status</h2>
       <div class="three-col">
         <div class="panel">
-          <h3>Probes In Scope</h3>
+          <h3>Probes Designed</h3>
           <span class="tag">HUD only</span>
           <span class="tag">visual only</span>
           <span class="tag">no trajectory</span>
           <span class="tag">single-use</span>
+          <span class="tag">player damage</span>
           <span class="tag">wrong trajectory</span>
           <span class="tag">global damage</span>
           <span class="tag">bad distance</span>
-          <p class="muted">These seven observed probes and their expected bands live in <code>probe_matrix.md</code>.</p>
+          <span class="tag">default regression</span>
+          <p class="muted">The expected bands live in <code>probe_matrix.md</code>.</p>
         </div>
         <div class="panel">
           <h3>Probes Actually Run</h3>
-          <p><span class="tag good">global damage capped at 78</span></p>
+          <p><span class="tag good">global damage capped at 78</span> <span class="tag good">wrong projectile 98/floor fail</span></p>
           <p><span class="tag good">HUD-only 19</span> <span class="tag good">visual-only 34</span> <span class="tag good">no-preview damage 54</span> <span class="tag good">single-use 75</span> <span class="tag good">fixed trajectory 65</span> <span class="tag good">bad distance 50</span></p>
-          <p>The runner now detects sweeps that damage most nearby targets plus three or more far/side/rear safety targets and caps <code>explosion_gameplay</code> to <code>4/20</code>. The strongest fake lands at 78/100, below the score >= 85 pass line, and it is triple-blocked: it also fails the <code>explosion_gameplay >= 10</code> pass floor and is flagged <code>suspect</code> for the sweep and the safety-target damage.</p>
+          <p>The runner now detects sweeps that damage most nearby targets plus three or more far/side/rear safety targets and caps <code>explosion_gameplay</code> to <code>4/20</code>. The strongest low-score fake lands at 78/100, below the score >= 85 pass line, and it is triple-blocked: it also fails the <code>explosion_gameplay >= 10</code> pass floor and is flagged <code>suspect</code> for the sweep and the safety-target damage. The wrong-projectile-model probe proves that a model-only defect cannot receive 100/100 or <code>passed: true</code> because <code>visual_audio_polish >= 4</code> is also required.</p>
         </div>
         <div class="panel">
-          <h3>Submission Scope</h3>
-          <p>This submission claims only the seven anti-cheat probes listed above. Other possible near-misses are not counted as completed probe evidence.</p>
+          <h3>Deferred Work</h3>
+          <p>Five overlapping rows are deferred rather than silent: direct all-target damage and distant-target damage are covered by the global sweep evidence; one-angle/one-distance is partially covered by fixed-trajectory plus seeded multi-heading trials; player self-damage and default-shooting regression have verifier hooks but no separate fake candidate in this fast pass.</p>
         </div>
       </div>
     </section>
@@ -559,13 +657,13 @@
         <tbody>
           <tr>
             <td>Agent reads verifier or hidden rubric</td>
-            <td><code>prepare_rollout_workspace.py</code> and the agent-run setup flow excluded verifier folders, generated artifacts, assignment/verifier docs, Godot caches, local agent config, hidden scoring/probe material, and git history before agents started work.</td>
-            <td><span class="tag good">Clean workspaces used</span></td>
+            <td><code>prepare_rollout_workspace.py</code> excludes verifier folders, generated artifacts, assignment/verifier docs, Godot caches, local agent config, and git history.</td>
+            <td><span class="tag good">Implemented</span></td>
           </tr>
           <tr>
             <td>Agent recovers original grenade from git history</td>
-            <td>Rollout copies were history-stripped clean workspaces generated from the ablated task, then initialized as fresh local git repositories. Agents were not run directly from the public raw branch checkout and could not inspect the fork's branch history.</td>
-            <td><span class="tag good">Isolated workspaces used</span></td>
+            <td>Rollout copy should be non-git or history-stripped. Public branches should keep the ablated task separate from verifier and reference evidence.</td>
+            <td><span class="tag good">Local copies were isolated</span></td>
           </tr>
           <tr>
             <td>Verifier overfits one coordinate setup</td>
@@ -574,7 +672,7 @@
           </tr>
           <tr>
             <td>Verifier accepts reward hacking</td>
-            <td>Seven representative fake candidates are observed below the pass line. This submission only claims those seven probes as completed anti-cheat evidence.</td>
+            <td>Eight representative fake candidates are observed: seven below the numeric pass line, and one high-scoring wrong-projectile-model probe blocked by the visual presentation floor. Deferred rows are documented as overlapping follow-up work rather than treated as passing evidence.</td>
             <td><span class="tag good">Representative validation</span></td>
           </tr>
         </tbody>
@@ -583,33 +681,38 @@
 
     <section>
       <h2>Reproduction Commands</h2>
-      <p>The exact command for each retained official run is stored beside its score JSON as <code>grader-command.txt</code>. For example, the ablated task run command is retained at:</p>
-      <div class="command">evaluation/evidence/agent-runs-20260703-151656/rollout-task/grader-command.txt</div>
-      <p>The reference and rollout-attempt runs use the same verifier, Godot executable, and output layout with their own project paths. Probe score JSONs are retained under <code>evaluation/evidence/probes/</code>.</p>
-      <p>Godot version recorded in the official score summary: <code>4.6.stable.official.89cea1439</code>.</p>
+      <p>Verifier command pattern used for the fresh checks. The reference, probe, and Sonnet runs use the same pattern with their own project paths and <code>calibration-20260703-*</code> output names:</p>
+      <div class="command">$Verifier = "&lt;path-to-this-repo&gt;"
+$Godot = "&lt;path-to-godot-4.6-console-executable&gt;"
+$Project = "&lt;path-to-candidate-or-probe-project&gt;"
+$OutJson = "$Verifier\artifacts\calibration-20260703-name-score.json"
+$OutLog = "$Verifier\artifacts\calibration-20260703-name-score.log"
+
+python "$Verifier\run_grader.py" --project "$Project" --godot "$Godot" --out "$OutJson" --log "$OutLog"</div>
+      <p>The broad-damage probe used this pattern with the global targetable sweep fake candidate as <code>$Project</code>.</p>
+      <p>Godot version recorded in result JSON: <code>4.6-stable (official)</code>. The README also records the local executable build as <code>4.6.stable.official.89cea1439</code>.</p>
     </section>
 
     <section>
       <h2>Final Submission Checklist</h2>
       <table>
         <thead>
-          <tr><th>Item</th><th>Status</th><th>Evidence</th></tr>
+          <tr><th>Item</th><th>Status</th><th>Next action</th></tr>
         </thead>
         <tbody>
-          <tr><td>Ablated task branch and behavioral spec</td><td><span class="tag good">Published</span></td><td>The public task source is <code>codex/grenade-rollout-task</code> at <code>ca3c987</code>; rollout agents used exporter-produced clean workspaces generated from the prior <code>fb0fd4f</code> task content before the docs-only verifier-note cleanup.</td></tr>
-          <tr><td>Headless verifier and scoring docs</td><td><span class="tag good">Published</span></td><td>The verifier, rubric, commands, score JSONs, and Godot 4.6 build record are included under <code>evaluation/verifier/</code>.</td></tr>
-          <tr><td>At least 3 Claude Code runs</td><td><span class="tag good">Published</span></td><td>The retained run set records six Claude Code runs and three Codex runs, with diff, score, verifier command/log, prompt, manifest, and PDF score report where applicable.</td></tr>
-          <tr><td>Godot MCP available to rollout agents</td><td><span class="tag good">Documented</span></td><td>The Claude Code rollout agents had Godot MCP available; the three Codex runs are supplemental and are reported separately because they did not have Godot MCP available.</td></tr>
-          <tr><td>Anti-cheat fake solutions</td><td><span class="tag good">Published</span></td><td>Seven representative fake candidates have committed score JSONs and public probe branches. This submission claims those seven probes only.</td></tr>
-          <tr><td>HTML writeup with visuals</td><td><span class="tag good">Published</span></td><td>This page is the viewable report and is synced to the retained agent-run and probe evidence.</td></tr>
+          <tr><td>Ablated task branch and behavioral spec</td><td><span class="tag good">Ready locally</span></td><td>Publish exact ablated branch and keep verifier/history out of agent reach.</td></tr>
+          <tr><td>Headless verifier and scoring docs</td><td><span class="tag good">Ready locally</span></td><td>Include exact command and Godot 4.6 version.</td></tr>
+          <tr><td>At least 3 Claude Code runs</td><td><span class="tag good">Scored</span></td><td>Published run branches record diff, score, verifier command/log, and tool evidence; this writeup records the model settings for Sonnet 5 medium, Opus 4.8 max, and Codex GPT-5.5 xhigh attempts.</td></tr>
+          <tr><td>Godot MCP available to rollout agents</td><td><span class="tag good">Configured locally</span></td><td>Document the MCP config in the public run metadata.</td></tr>
+          <tr><td>Anti-cheat fake solutions</td><td><span class="tag good">Representative set ready</span></td><td>Eight fake candidates have committed score JSONs; optional follow-up is to run the five deferred overlapping rows if exhaustive per-row evidence is requested.</td></tr>
+          <tr><td>HTML writeup with visuals</td><td><span class="tag good">This page</span></td><td>Keep the score table in sync with <code>evaluation/evidence/</code> whenever runs are replaced or rerun.</td></tr>
         </tbody>
       </table>
     </section>
 
     <footer>
-      Updated from <code>C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656</code> on 2026-07-03. This writeup is intentionally candid: the verifier discriminates reference vs ablated, produces useful partial-credit agent spread, and keeps the seven anti-cheat fake candidates claimed for this submission below the score &gt;= 85 pass line.
+      Updated from fresh local runs on 2026-07-03, with the wrong-projectile-model visual-floor probe added on 2026-07-04. This writeup is intentionally candid: the verifier discriminates reference vs ablated, produces useful partial-credit agent spread, keeps seven representative anti-cheat fake candidates below the score >= 85 pass line, and blocks one high-scoring visual defect with the visual_audio_polish floor; the remaining validity debt is five documented overlapping probe rows without separate fake-candidate runs.
     </footer>
   </main>
 </body>
 </html>
-

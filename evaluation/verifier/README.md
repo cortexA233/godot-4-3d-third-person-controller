@@ -94,6 +94,17 @@ Score categories:
 | `visual_audio_polish` | 5 |
 | `stability_repeatability` | 5 |
 
+The score JSON also exposes the formal benchmark as `logic_score` and
+`logic_max_score`. This is the same 100-point score as `score/max_score`,
+including the existing `visual_audio_polish` category. Screenshot-based visual
+analysis is reported separately as auxiliary evidence by the screenshot probe
+and is not counted in the 100-point benchmark score or pass threshold.
+
+`visual_audio_polish` includes a runtime check that the thrown, moving grenade
+projectile carries a visible non-placeholder model. Built-in primitive
+placeholder meshes and obvious reused bullet, coin, trajectory, or explosion
+assets do not receive this model credit.
+
 Weapon switching is behavioral. The verifier drives `swap_weapons` or
 `weapon_switch` when those actions exist, and falls back to a real `Tab` input
 event when a candidate implements the key path directly. Controller binding
@@ -102,7 +113,8 @@ credit is recorded separately and does not depend on a specific action name.
 The `passed` flag is a reporting convenience. It currently requires
 `score >= 85` plus half-credit floors in the core gameplay categories:
 `trajectory_preview >= 15`, `projectile_physics >= 8`, and
-`explosion_gameplay >= 10`. The primary benchmark signal is the 0-100 score and
+`explosion_gameplay >= 10`, plus a visual presentation floor of
+`visual_audio_polish >= 4`. The primary benchmark signal is the 0-100 score and
 category breakdown.
 
 The score JSON can also include a soft `suspect` flag with `suspect_reasons`
@@ -227,6 +239,43 @@ generation as the grader. It measures default throw distance, places nearby
 damage targets and far/side/rear safety targets, and adds camera, light, floor,
 and labels for inspection.
 
+Mouse safety is enabled in verifier-owned scenes. The debug arena starts with
+the cursor visible, `F8` toggles temporary mouse capture for manual aiming, and
+`Esc` releases the cursor. Automated grenade throws continue to use Godot input
+actions and do not require cursor capture.
+
+## Experimental Screenshot Probe
+
+The screenshot probe is an auxiliary visual-evidence runner. It is not part of
+the formal 0-100 score and every result marks `used_for_score: false`.
+
+```powershell
+python "$Verifier\run_screenshot_probe.py" `
+  --project "$Project" `
+  --godot "C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe" `
+  --out-dir "$Verifier\artifacts\screenshot-probe" `
+  --mode both
+```
+
+Modes:
+
+| Mode | Evidence |
+| --- | --- |
+| `debug-arena` | Controlled verifier arena screenshots every 10 physics frames after grenade throw until explosion or timeout. |
+| `main-scene` | Real `res://main.tscn` ready, aim, grenade-ready, and post-throw screenshots when the playable scene exposes a player and camera. |
+| `both` | Runs both visual modes and writes separate `debug_arena/` and `main_scene/` artifact folders. |
+
+The top-level `result.json` contains one `modes` entry per attempted visual run.
+It also includes an `auxiliary_score_sections` entry for the screenshot visual
+analysis. That auxiliary section is scored out of 10: 1 point for runnable
+rendered capture, 2 points for visible projectile evidence, 2 points for
+observed explosion evidence, and 5 points for projectile footprint quality
+across the debug arena and main scene screenshots. It is marked
+`used_for_score: false` and is not counted in the formal 100-point verifier
+score.
+Windowed rendering can be unavailable on headless machines; that is reported as
+probe infrastructure state rather than as a candidate scoring failure.
+
 ## Calibration And Evidence
 
 Run local calibration:
@@ -253,6 +302,7 @@ Latest local calibration was recorded on 2026-07-03 with Godot
 | Fixed-trajectory probe | 65/100 | Caught. |
 | Bad-distance probe | 50/100 | Caught. |
 | Single-use probe | 75/100 | Caught. |
+| Wrong projectile model overlay on the 100-point Codex candidate | 98/100 | `passed: false`; `visual_audio_polish` floor catches the placeholder model. |
 
 Curated calibration, probe, and replacement Codex rollout score evidence lives
 under `evaluation/evidence/`. Anti-cheat expectations are documented in

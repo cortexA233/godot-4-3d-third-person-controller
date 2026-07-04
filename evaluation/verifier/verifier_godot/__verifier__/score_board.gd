@@ -5,6 +5,7 @@ const CATEGORY_PASS_FLOORS := {
 	"trajectory_preview": 15,
 	"projectile_physics": 8,
 	"explosion_gameplay": 10,
+	"visual_audio_polish": 4,
 }
 
 var _items: Array[Dictionary] = []
@@ -50,6 +51,34 @@ func category_score(category_name: String) -> int:
 	return 0
 
 
+func score_sections() -> Array[Dictionary]:
+	var category_names: Array[String] = []
+	for item in _items:
+		category_names.append(String(item["name"]))
+	return [
+		_score_section("logic", "Logic Score", category_names),
+	]
+
+
+func _score_section(name: String, label: String, category_names: Array) -> Dictionary:
+	var section_score := 0
+	var section_max := 0
+	var present_categories: Array[String] = []
+	for item in _items:
+		var category_name := String(item["name"])
+		if category_names.has(category_name):
+			section_score += int(item["score"])
+			section_max += int(item["max"])
+			present_categories.append(category_name)
+	return {
+		"name": name,
+		"label": label,
+		"score": section_score,
+		"max": section_max,
+		"categories": present_categories,
+	}
+
+
 func failed_category_floors() -> Array[String]:
 	var failures: Array[String] = []
 	for category_name in CATEGORY_PASS_FLOORS:
@@ -63,15 +92,19 @@ func to_dictionary(godot_version: String) -> Dictionary:
 	var max_total := max_score()
 	var score_total := total_score()
 	var floor_failures := failed_category_floors()
+	var sections := score_sections()
 	return {
 		"score": score_total,
 		"max_score": max_total,
+		"logic_score": score_total,
+		"logic_max_score": max_total,
 		"passed": score_total >= PASS_THRESHOLD and floor_failures.is_empty(),
 		"pass_threshold": PASS_THRESHOLD,
 		"category_floor_failures": floor_failures,
 		"suspect": not _suspect_reasons.is_empty(),
 		"suspect_reasons": _suspect_reasons,
 		"godot_version": godot_version,
+		"score_sections": sections,
 		"breakdown": _items,
 		"artifacts": {
 			"log": "",
