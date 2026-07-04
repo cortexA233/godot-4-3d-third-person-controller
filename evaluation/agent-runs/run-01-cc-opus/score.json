@@ -1,7 +1,23 @@
 {
   "artifacts": {
     "log": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\godot-verifier.log",
-    "screenshots": []
+    "screenshots": [
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\debug_arena\\attack_010.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\debug_arena\\attack_020.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\debug_arena\\attack_030.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\debug_arena\\attack_040.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\debug_arena\\attack_050.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_010.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_020.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_030.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_040.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_050.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\main_scene\\main_aim.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\main_scene\\main_ready.png"
+    ],
+    "screenshot_probe_result": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe\\result.json",
+    "screenshot_probe_dir": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\evidence\\screenshot-probe"
   },
   "breakdown": [
     {
@@ -201,17 +217,24 @@
     {
       "details": [
         {
-          "label": "Visible effect nodes",
+          "label": "Thrown grenade model",
           "max": 2,
-          "notes": "visible grenade or explosion nodes appeared",
+          "notes": "moving grenade projectile used a visible non-placeholder model",
           "score": 2,
           "status": "earned"
         },
         {
+          "label": "Visible effect nodes",
+          "max": 1,
+          "notes": "visible grenade or explosion nodes appeared",
+          "score": 1,
+          "status": "earned"
+        },
+        {
           "label": "Detonation audio",
-          "max": 2,
+          "max": 1,
           "notes": "audio player was active during detonation window",
-          "score": 2,
+          "score": 1,
           "status": "earned"
         },
         {
@@ -224,7 +247,7 @@
       ],
       "max": 5,
       "name": "visual_audio_polish",
-      "notes": "visible grenade or explosion nodes appeared; audio player was active during detonation window; some temporary nodes cleaned up",
+      "notes": "moving grenade projectile used a visible non-placeholder model; visible grenade or explosion nodes appeared; audio player was active during detonation window; some temporary nodes cleaned up",
       "score": 5
     },
     {
@@ -271,8 +294,64 @@
       "score": 5
     }
   ],
+  "category_floor_failures": [
+    "trajectory_preview below pass floor 15"
+  ],
   "godot_version": "4.6-stable (official)",
+  "logic_max_score": 100,
+  "logic_score": 74,
   "max_score": 100,
+  "pass_threshold": 85,
   "passed": false,
-  "score": 74
+  "score": 74,
+  "score_sections": [
+    {
+      "categories": [
+        "weapon_controls",
+        "hud_feedback",
+        "trajectory_preview",
+        "projectile_physics",
+        "explosion_gameplay",
+        "visual_audio_polish",
+        "stability_repeatability"
+      ],
+      "label": "Logic Score",
+      "max": 100,
+      "name": "logic",
+      "score": 74
+    }
+  ],
+  "suspect": false,
+  "suspect_reasons": [],
+  "auxiliary_score_sections": [
+    {
+      "categories": [
+        "debug_arena",
+        "main_scene"
+      ],
+      "label": "Screenshot Visual Analysis",
+      "max": 10,
+      "name": "screenshot_visual",
+      "notes": "debug_arena projectile visible in 3 captured frame(s); debug_arena projectile footprint 72px earns partial debug footprint credit; debug_arena explosion observed at frame 50; main_scene projectile visible in 4 captured frame(s); main_scene projectile footprint 252px earns full main-scene footprint credit; main_scene explosion observed at frame 50; auxiliary screenshot score is not counted in 100-point score",
+      "score": 9,
+      "used_for_score": false
+    }
+  ],
+  "screenshot_probe_summary": {
+    "requested_mode": "both",
+    "modes": {
+      "debug_arena": {
+        "ok": true,
+        "stop_reason": "explosion_observed",
+        "screenshots": 5,
+        "explosion_frame": 50
+      },
+      "main_scene": {
+        "ok": true,
+        "stop_reason": "explosion_observed",
+        "screenshots": 8,
+        "explosion_frame": 50
+      }
+    }
+  }
 }
