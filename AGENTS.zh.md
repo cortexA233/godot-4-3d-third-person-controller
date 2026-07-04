@@ -24,9 +24,9 @@ verifier 和评估流程是最主要的交付物。一个聪明的游戏功能�
 ## 游戏背景
 
 - 项目：RoboBlast: Third-Person Shooter demo。
-- 引擎：Godot。作业文本提到 Godot 4.6，而本地项目可能声明或使用更新的
-  Godot 4.x 版本。不要静默切换引擎版本。记录 verifier 运行时使用的精确
-  Godot 版本和命令。
+- 引擎：Godot 4.6。这个项目固定使用 Godot 4.6；除非用户明确要求，否则不要把
+  项目、verifier、本地工具或分支设置切换到其他 Godot 版本。记录 verifier
+  运行时使用的精确 Godot 4.6 build 和命令。
 - 主场景：`res://main.tscn`。
 - 核心玩法区域：
   - `player/`：角色控制器、摄像机、武器、手雷、金币、HUD。
@@ -47,6 +47,10 @@ verifier 和评估流程是最主要的交付物。一个聪明的游戏功能�
   和 `.import` 文件。
 - 构建 eval task 时不要引入大范围重构。这个作业奖励的是干净、可理解的
   end-to-end slice。
+- 修改 `C:\recent_project\roboblast-grenade-verifier` 里的 verifier 仓库时，
+  也要在那个 verifier 仓库中提交这些改动。
+- 在英文源文档之后新增或更新的中文文档，包括 `AGENTS.zh.md`，是给用户看的
+  个人预览译本。除非用户明确要求提交，否则不要提交这些中文预览文档。
 - 尽量使用带类型的 GDScript，并遵循本地风格：用 `@export` 暴露可调参数，
   用 `@onready` 获取节点引用，用 signal 表达玩法事件，用 `res://` 路径
   引用项目资源。
