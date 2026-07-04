@@ -23,7 +23,9 @@ credit when their observable behavior matches the task.
 Use these resources for the current local benchmark run:
 
 - Agent-facing task branch: `codex/grenade-rollout-task`
-- Agent-facing task commit: `fb0fd4f3e74d12c9da82acf7f36a9add06dade02`
+- Current public task commit: `ca3c98778b23dd56a5baaea134d0d805d34c66c8`
+- Retained official rollout source commit: `fb0fd4f3e74d12c9da82acf7f36a9add06dade02`
+  (the later public task-branch cleanup removes only verifier design notes)
 - Ablation base branch: `codex/ablate-grenade-keep-assets`
 - Ablation base commit: `ed35453f23ee219747d8706f4cd147acb2de7d37`
 - Agent prompt: `TASK_PROMPT.md` in the task branch

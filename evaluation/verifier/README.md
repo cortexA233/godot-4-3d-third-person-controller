@@ -107,7 +107,7 @@ Official retained rollout score set (2026-07-03, `score >= 85` pass line):
 - Score source: `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656`
 - Verifier SHA recorded by that score summary: `bfa6d5f060b25b427209c15f95448f03532147ab`
 - Reference `main` commit `1cf08f7`: `91/100`, `passed: true`, with localized explosion gameplay at `17/20`.
-- Ablated task branch `codex/grenade-rollout-task` commit `fb0fd4f`: `13/100`, `passed: false`; no grenade projectile is available, so explosion calibration falls back, trajectory preview scores 0, and explosion gameplay scores 0.
+- Ablated task branch `codex/grenade-rollout-task` retained run source commit `fb0fd4f`: `13/100`, `passed: false`; no grenade projectile is available, so explosion calibration falls back, trajectory preview scores 0, and explosion gameplay scores 0. The public task branch was later advanced to `ca3c987` only to remove verifier design notes from the branch.
 - Three Claude Code Opus 4.8 rollout candidates score `74/100`, `88/100`, and `80/100`; the second Opus run passes.
 - Three Claude Code Sonnet rollout candidates score `77/100`, `82/100`, and `59/100`.
 - Three Codex rollout candidates score `6/100`, `28/100`, and `28/100`.

@@ -8,9 +8,9 @@ anti-cheat probes, and report.
 
 - `main`: unablated reference game used to prove the verifier can pass the real
   behavior.
-- `codex/grenade-rollout-task`: agent-facing ablated task branch. This is the
-  branch supplied to rollout agents with the behavioral prompt, without the
-  verifier or hidden scoring notes.
+- `codex/grenade-rollout-task`: agent-facing ablated task branch, currently at
+  `ca3c987`. This is the branch supplied to rollout agents with the behavioral
+  prompt, without the verifier or hidden scoring notes.
 - `agent-run/*`: recorded rollout attempts and their branch-local
   evidence.
 - `submission/final-deliverable`: this branch, collecting the verifier and report for
@@ -21,8 +21,9 @@ anti-cheat probes, and report.
 - `report.html`: browser entry point for the HTML writeup.
 - `evaluation/verifier/`: self-contained verifier snapshot copied from the
   private verifier workspace. The retained official rollout scores were
-  generated with verifier SHA `bfa6d5f060b25b427209c15f95448f03532147ab`; this
-  snapshot also includes the later materialized probe fixtures used for review.
+  generated from task commit `fb0fd4f` using verifier SHA
+  `bfa6d5f060b25b427209c15f95448f03532147ab`; this snapshot also includes the
+  later materialized probe fixtures used for review.
 - `evaluation/verifier/evaluation/evidence/agent-runs-20260703-151656/`: the
   official retained reference, ablated, and rollout-attempt evidence from
   `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656`.
@@ -51,7 +52,9 @@ The exact Godot build recorded during calibration was
 ## Integrity Note
 
 During rollout, agents received a git-stripped copy of
-`codex/grenade-rollout-task` and `TASK_PROMPT.md` only. The verifier workspace,
-reference implementation, hidden branches, calibration artifacts, and probe
-notes were kept outside agent-accessible workspaces. The verifier is copied into
-this branch only for final review.
+`codex/grenade-rollout-task` and `TASK_PROMPT.md` only. The retained official
+runs were generated from `fb0fd4f`; the public task branch was later advanced to
+`ca3c987` only to remove a verifier design note from the branch. The verifier
+workspace, reference implementation, hidden branches, calibration artifacts, and
+probe notes were kept outside agent-accessible workspaces. The verifier is
+copied into this branch only for final review.
