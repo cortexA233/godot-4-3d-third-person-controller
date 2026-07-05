@@ -1,0 +1,6 @@
+COMMAND: C:\Python314\python.exe C:\recent_project\roboblast-grenade-verifier\render_report.py C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-03-cc-sonnet\evidence\score.json C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-03-cc-sonnet\evidence\score-report.pdf
+
+STDOUT:
+Wrote PDF report: C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-03-cc-sonnet\evidence\score-report.pdf
+
+STDERR:

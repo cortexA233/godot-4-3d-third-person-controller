@@ -1,0 +1,4 @@
+﻿Wrote screenshot probe artifacts: C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-03-cc-sonnet\evidence\screenshot-probe
+Requested mode: both
+debug_arena: ok=True stop=explosion_observed frame=120 screenshots=12
+main_scene: ok=True stop=explosion_observed frame=90 screenshots=12
