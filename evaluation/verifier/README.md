@@ -291,20 +291,20 @@ evidence workflows, not by `run_calibration.ps1` alone.
 Latest local calibration was recorded on 2026-07-03 with Godot
 `4.6.stable.official.89cea1439` and the `score >= 85` pass line.
 
-| Candidate or probe | Logic score | Screenshot score | Result |
-| --- | ---: | ---: | --- |
-| Ablated task branch `codex/grenade-rollout-task` at `fb0fd4f` | 13/100 | N/A | Fails as expected. |
-| Reference `main` at `1cf08f7` | 91/100 | 10/10 | Passes. |
-| Global targetable sweep probe at `14310ca` | 78/100 | N/A | Fails; `explosion_gameplay` capped to 4/20. |
-| HUD-only probe | 19/100 | N/A | Caught. |
-| Visual-only/no-damage probe | 34/100 | N/A | Caught. |
-| Damage-without-preview probe | 54/100 | N/A | Caught. |
-| Fixed-trajectory probe | 65/100 | N/A | Caught. |
-| Bad-distance probe | 50/100 | N/A | Caught. |
-| Single-use probe | 75/100 | N/A | Caught. |
-| Wrong projectile model overlay on the 100-point Codex candidate | 98/100 | N/A | `passed: false`; `visual_audio_polish` floor catches the placeholder model. |
+| Candidate or probe | Score | Result |
+| --- | ---: | --- |
+| Ablated task branch `codex/grenade-rollout-task` at `fb0fd4f` | 13/100 | Fails as expected. |
+| Reference `main` at `1cf08f7` | 91/100 | Passes. |
+| Global targetable sweep probe at `14310ca` | 78/100 | Fails; `explosion_gameplay` capped to 4/20. |
+| HUD-only probe | 19/100 | Caught. |
+| Visual-only/no-damage probe | 34/100 | Caught. |
+| Damage-without-preview probe | 54/100 | Caught. |
+| Fixed-trajectory probe | 65/100 | Caught. |
+| Bad-distance probe | 50/100 | Caught. |
+| Single-use probe | 75/100 | Caught. |
+| Wrong projectile model overlay on the 100-point Codex candidate | 98/100 | `passed: false`; `visual_audio_polish` floor catches the placeholder model. |
 
-Curated calibration, probe, and branch-captured rollout score evidence lives
+Curated calibration, probe, and replacement Codex rollout score evidence lives
 under `evaluation/evidence/`. Anti-cheat expectations are documented in
 `probe_matrix.md`.
 
@@ -313,15 +313,15 @@ agent family, each with branch-captured `score.json`, `score-report.pdf`,
 `diff.patch`, verifier log, grader command, and run manifest under
 `evaluation/agent-runs/<run>/`:
 
-| Agent run family | Logic scores | Screenshot scores |
-| --- | --- | --- |
-| `agent-run/01-codex` through `agent-run/03-codex` | 73/100, 75/100, 100/100 from the current verifier and PDF reports | 6/10, 7/10, 6/10 |
-| `agent-run/01-cc-opus` through `agent-run/03-cc-opus` | 74/100, 88/100, 80/100 | 9/10, 10/10, 10/10 |
-| `agent-run/01-cc-sonnet` through `agent-run/03-cc-sonnet` | 77/100, 82/100, 59/100 | 7/10, 10/10, 6/10 |
+| Agent run family | Scores |
+| --- | --- |
+| `agent-run/01-codex` through `agent-run/03-codex` | 73/100, 75/100, 100/100 from the current verifier and PDF reports |
+| `agent-run/01-cc-opus` through `agent-run/03-cc-opus` | 74/100, 88/100, 80/100 |
+| `agent-run/01-cc-sonnet` through `agent-run/03-cc-sonnet` | 77/100, 82/100, 59/100 |
 
-The copied rollout score JSONs, PDF reports, logs, commands, and manifests are
-retained under
-`evaluation/evidence/agent-runs-20260703-151656/run-*/`.
+The replacement Codex score JSONs, PDF reports, logs, commands, and manifests
+are retained under
+`evaluation/evidence/agent-runs-20260703-151656/run-0{1,2,3}-codex/`.
 
 The repository writeup for the assignment is `evaluation/writeup.html`.
 
