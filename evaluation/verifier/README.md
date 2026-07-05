@@ -304,7 +304,7 @@ Latest local calibration was recorded on 2026-07-03 with Godot
 | Single-use probe | 75/100 | Caught. |
 | Wrong projectile model overlay on the 100-point Codex candidate | 98/100 | `passed: false`; `visual_audio_polish` floor catches the placeholder model. |
 
-Curated calibration, probe, and replacement Codex rollout score evidence lives
+Curated calibration, probe, and branch-captured rollout score evidence lives
 under `evaluation/evidence/`. Anti-cheat expectations are documented in
 `probe_matrix.md`.
 
@@ -319,9 +319,9 @@ agent family, each with branch-captured `score.json`, `score-report.pdf`,
 | `agent-run/01-cc-opus` through `agent-run/03-cc-opus` | 74/100, 88/100, 80/100 |
 | `agent-run/01-cc-sonnet` through `agent-run/03-cc-sonnet` | 77/100, 82/100, 59/100 |
 
-The replacement Codex score JSONs, PDF reports, logs, commands, and manifests
-are retained under
-`evaluation/evidence/agent-runs-20260703-151656/run-0{1,2,3}-codex/`.
+The copied rollout score JSONs, PDF reports, logs, commands, and manifests are
+retained under
+`evaluation/evidence/agent-runs-20260703-151656/run-*/`.
 
 The repository writeup for the assignment is `evaluation/writeup.html`.
 
