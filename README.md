@@ -27,6 +27,11 @@ This branch is the final viewable submission for the agent-coding evaluation tas
   - `fake/single-use`, `fake/fixed-trajectory`, `fake/bad-distance`
   - `codex/grenade-global-enemy-damage`
 
+The verifier also has a standalone GitHub repository at
+[cortexA233/godot_task_verifier](https://github.com/cortexA233/godot_task_verifier).
+For reviewer convenience, this submission branch includes a direct copy of the
+verifier instead of adding it as a Git submodule.
+
 Rollout agents were not run directly from a raw branch checkout. Each agent was
 given an exporter-produced, history-stripped clean workspace generated from the
 ablated task, with verifier files, local git history, generated artifacts,
