@@ -55,8 +55,9 @@ formal score is valid.
 
 Alternative: promote rendered projectile footprint to formal scoring now. This
 would catch the observed defect more strongly, but it needs calibration against
-the reference, rollout attempts, and wrong-model probes before it is safe. It is
-better as a follow-up after the screenshot artifacts and metrics are stable.
+the reference behavior, rollout attempts, and the retained seven-probe evidence
+before it is safe. It is better as a follow-up after the screenshot artifacts
+and metrics are stable.
 
 ## Architecture
 

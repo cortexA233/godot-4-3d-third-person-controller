@@ -302,7 +302,6 @@ Latest local calibration was recorded on 2026-07-03 with Godot
 | Fixed-trajectory probe | 65/100 | Caught. |
 | Bad-distance probe | 50/100 | Caught. |
 | Single-use probe | 75/100 | Caught. |
-| Wrong projectile model overlay on the 100-point Codex candidate | 98/100 | `passed: false`; `visual_audio_polish` floor catches the placeholder model. |
 
 Curated calibration, probe, and replacement Codex rollout score evidence lives
 under `evaluation/evidence/`. Anti-cheat expectations are documented in

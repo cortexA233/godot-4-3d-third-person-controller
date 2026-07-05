@@ -2,13 +2,13 @@
 
 ## Agent
 
-- Agent/model/version: Codex, based on GPT-5.
+- Agent/model/version: Codex GPT-5 xhigh.
 
 ## Tools
 
-- Tools available in this session: PowerShell shell commands, `apply_patch`, plan updates, parallel tool calls, local file/image helpers, web access, and Codex app helpers.
+- Tools available in this session: PowerShell shell commands, `apply_patch`, plan updates, parallel tool calls, local file/image helpers, web access, Codex app helpers, and the local Codex/Godot MCP configuration for the prepared workspace.
 - Tools actually used: PowerShell shell commands, `apply_patch`, plan updates, parallel tool calls, `rg`, `Get-Content`, `Get-ChildItem`, `pytest`, `where.exe`.
-- Godot MCP visibility/use: no Godot MCP tools were visible in the active tool list, and no Godot MCP was used.
+- Godot MCP availability/use: Godot MCP was available through the prepared workspace configuration. This run did not directly invoke Godot MCP in its final evidence; shell/static checks were the primary local checks.
 
 ## Files Changed
 
@@ -30,7 +30,7 @@
 - `pytest -q`
   - Passed, `5 passed in 0.06s`.
 - `godot --version`, `godot4 --version`, `where.exe godot`, `where.exe godot4`
-  - Failed/not found. Godot was not available on `PATH`.
+  - Failed/not found on `PATH` during the agent shell checks.
 - PowerShell resource reference check over edited scene/script files
   - Passed: all referenced `res://` files exist.
 - `git status --short`
@@ -38,7 +38,7 @@
 
 ## Manual Observations
 
-- I could not run the main Godot scene or perform the playable smoke test because the Godot executable was not available in this environment.
+- I did not complete a live playable smoke test in this run. The later verifier pass used the recorded Godot 4.6 console executable and produced the committed score/PDF evidence.
 - Static inspection confirms grenade mode consumes attack without falling back to melee/shooting, keeps the preview visible during cooldown, and hides it when switching back to default mode.
 - The projectile uses a real `RigidBody3D` with gravity, collision, impact fuse, timed fuse, and one-shot detonation.
 

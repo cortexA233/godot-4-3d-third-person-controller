@@ -20,19 +20,35 @@ anti-cheat probes, and report.
 
 - `report.html`: browser entry point for the HTML writeup.
 - `evaluation/verifier/`: self-contained verifier snapshot copied from the
-  private verifier workspace. The retained official rollout scores were
-  generated from task commit `fb0fd4f` using verifier SHA
-  `bfa6d5f060b25b427209c15f95448f03532147ab`; the erroneous earlier Codex score records were discarded and replaced with verifier SHA `ca585a3cbcaaafd77dfe1391dec00d4ca910880f`, including PDF reports and updated score artifacts. This snapshot also includes
-  the later materialized probe fixtures used for review.
+  private verifier workspace. The copied verifier code and docs match
+  `C:\recent_project\roboblast-grenade-verifier` `main` at
+  `aac0896` (`Add screenshot footprint auxiliary scoring`). The retained
+  official rollout scores were generated from task commit `fb0fd4f`; earlier
+  Codex score records were discarded and replaced with the later verifier
+  lineage that produced the committed score JSONs, PDF reports, and screenshot
+  analysis artifacts. This snapshot also includes the seven materialized probe
+  fixtures used for review.
 - `evaluation/verifier/evaluation/evidence/agent-runs-20260703-151656/`: the
   official retained reference, ablated, and rollout-attempt evidence from
-  `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656`.
-- `evaluation/verifier/evaluation/evidence/probes/`: retained anti-cheat probe
-  score JSONs.
+  `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656`,
+  including branch-captured score JSONs, PDF reports, logs, manifests, and
+  auxiliary screenshot-analysis artifacts where available.
+- `evaluation/verifier/evaluation/evidence/probes/`: retained score JSONs for
+  the seven anti-cheat probe candidates.
 - `evaluation/verifier/evaluation/probes/`: materialized fake near-miss
-  solutions used to check reward-hacking resistance.
+  solutions for those seven reward-hacking checks.
 - `evaluation/verifier/BENCHMARK.md`: benchmark objective, protocol, scoring,
   reproducibility notes, and validity-probe expectations.
+
+The writeup tables report both the formal 100-point logic score and the
+auxiliary 10-point screenshot-analysis score for reference and rollout branches.
+The rollout range is 59/100-100/100 for logic and 6/10-10/10 for screenshot
+analysis; screenshot analysis supports visual review but does not change the
+formal pass/fail threshold. The 100/100 Codex run is not presented as proof
+that the task was too easy: it is one branch-recorded rollout among nine, and
+its auxiliary screenshot analysis was 6/10 because the captured projectile
+footprint was still too small in the debug arena and only partial in the main
+scene.
 
 ## Verifier Command
 

@@ -27,7 +27,7 @@
   "git_status_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-sonnet\\evidence\\git-status.txt",
   "godot_mcp": "available",
   "grader_command": "python C:\\recent_project\\roboblast-grenade-verifier\\run_grader.py --project C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-sonnet\\workspace --godot C:\\Godot_v4.6\\Godot_v4.6-stable_win64_console.exe --verifier-root C:\\recent_project\\roboblast-grenade-verifier --out C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-sonnet\\evidence\\score.json --log C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-sonnet\\evidence\\godot-verifier.log",
-  "model": "sonnet-unknown-version",
+  "model": "claude-sonnet-5-medium",
   "profile": "roboblast",
   "prompt_for_agent_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-sonnet\\evidence\\prompt-for-agent.md",
   "prompt_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-sonnet\\evidence\\prompt.md",

@@ -143,12 +143,12 @@ additionally requires at least half credit in each core gameplay category:
 candidate cannot pass by stacking supporting-category points while a core
 category or required visual presentation stays broken. The primary benchmark
 signal is the 0-100 score and category breakdown. The numeric pass line still
-sits between the strongest observed low-score near-miss probe (the capped
-global targetable sweep at `78/100`) and the reference implementation
-(`91/100`), while category floors block high-scoring near misses such as an
-otherwise complete grenade implementation with a placeholder projectile model.
-Any scoring or calibration change must re-run the global-sweep probe and any
-affected visual-model probe before publishing updated evidence. A reference
+sits between the strongest observed near-miss probe (the capped global
+targetable sweep at `78/100`) and the reference implementation (`91/100`),
+while category floors block candidates whose core gameplay or required visual
+presentation stays below half credit. Any scoring or calibration change must
+re-run the global-sweep probe and any affected current probe before publishing
+updated evidence. A reference
 score below 100 should be inspected as either reference incompleteness or a
 possible verifier false negative; it is not proof that the verifier is perfect.
 
@@ -186,21 +186,17 @@ version from the logs with every published result.
 
 ## Validity Probes
 
-`probe_matrix.md` lists anti-cheat probes, expected score bands, observed
-results, and explicitly deferred overlapping rows. Every observed probe must
-stay below the `score >= 85` pass line; record each probe run in the matrix's
-Observed column and keep the score JSON as curated evidence under
-`evaluation/evidence/`. The current local validation set should demonstrate:
+`probe_matrix.md` lists the seven anti-cheat probes, expected score bands, and
+observed results. Every observed probe must stay below the `score >= 85` pass
+line; record each probe run in the matrix's Observed column and keep the score
+JSON as curated evidence under `evaluation/evidence/`. The current local
+validation set should demonstrate:
 
 - the ablated task scores low
 - the reference behavior scores high
 - representative HUD-only, visual-only, no-preview damage, fixed or wrong
-  trajectory, wrong projectile model, global targetable sweep, borderline
-  throw-distance, and single-use implementations do not pass
-- deferred direct all-target damage, player-self-damage, one-angle/one-distance
-  blast, distant-target damage, and default-weapon regression rows are
-  explicitly documented in `probe_matrix.md` rather than treated as silent
-  passes
+  trajectory, global targetable sweep, borderline throw-distance, and
+  single-use implementations do not pass
 - repeated runs of the same candidate produce stable scores
 
 Probe candidates should be kept outside rollout-agent workspaces.

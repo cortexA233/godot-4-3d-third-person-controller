@@ -8,7 +8,7 @@
                  {
                      "Name":  "run-01-codex",
                      "Agent":  "codex",
-                     "Model":  "codex-unknown-version",
+                     "Model":  "codex-gpt-5-xhigh",
                      "SourceBranch":  "codex/grenade-rollout-task",
                      "SourceSha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
                      "Workspace":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\workspace",
@@ -18,7 +18,7 @@
                  {
                      "Name":  "run-02-codex",
                      "Agent":  "codex",
-                     "Model":  "codex-unknown-version",
+                     "Model":  "codex-gpt-5-xhigh",
                      "SourceBranch":  "codex/grenade-rollout-task",
                      "SourceSha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
                      "Workspace":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\workspace",
@@ -28,7 +28,7 @@
                  {
                      "Name":  "run-03-codex",
                      "Agent":  "codex",
-                     "Model":  "codex-unknown-version",
+                     "Model":  "codex-gpt-5-xhigh",
                      "SourceBranch":  "codex/grenade-rollout-task",
                      "SourceSha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
                      "Workspace":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-codex\\workspace",
@@ -38,7 +38,7 @@
                  {
                      "Name":  "run-01-cc-sonnet",
                      "Agent":  "claude-code",
-                     "Model":  "sonnet-unknown-version",
+                     "Model":  "claude-sonnet-5-medium",
                      "SourceBranch":  "codex/grenade-rollout-task",
                      "SourceSha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
                      "Workspace":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-sonnet\\workspace",
@@ -48,7 +48,7 @@
                  {
                      "Name":  "run-02-cc-sonnet",
                      "Agent":  "claude-code",
-                     "Model":  "sonnet-unknown-version",
+                     "Model":  "claude-sonnet-5-medium",
                      "SourceBranch":  "codex/grenade-rollout-task",
                      "SourceSha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
                      "Workspace":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\workspace",
@@ -58,7 +58,7 @@
                  {
                      "Name":  "run-03-cc-sonnet",
                      "Agent":  "claude-code",
-                     "Model":  "sonnet-unknown-version",
+                     "Model":  "claude-sonnet-5-medium",
                      "SourceBranch":  "codex/grenade-rollout-task",
                      "SourceSha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
                      "Workspace":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-sonnet\\workspace",
@@ -68,7 +68,7 @@
                  {
                      "Name":  "run-01-cc-opus",
                      "Agent":  "claude-code",
-                     "Model":  "opus-unknown-version",
+                     "Model":  "claude-opus-4.8-max",
                      "SourceBranch":  "codex/grenade-rollout-task",
                      "SourceSha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
                      "Workspace":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus\\workspace",
@@ -78,7 +78,7 @@
                  {
                      "Name":  "run-02-cc-opus",
                      "Agent":  "claude-code",
-                     "Model":  "opus-unknown-version",
+                     "Model":  "claude-opus-4.8-max",
                      "SourceBranch":  "codex/grenade-rollout-task",
                      "SourceSha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
                      "Workspace":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\workspace",
@@ -88,7 +88,7 @@
                  {
                      "Name":  "run-03-cc-opus",
                      "Agent":  "claude-code",
-                     "Model":  "opus-unknown-version",
+                     "Model":  "claude-opus-4.8-max",
                      "SourceBranch":  "codex/grenade-rollout-task",
                      "SourceSha":  "fb0fd4f3e74d12c9da82acf7f36a9add06dade02",
                      "Workspace":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\workspace",

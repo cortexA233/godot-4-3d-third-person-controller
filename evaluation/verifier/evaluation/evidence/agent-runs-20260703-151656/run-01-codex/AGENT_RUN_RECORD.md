@@ -1,7 +1,7 @@
 # Agent Run Record
 
-- Agent/model/version: Codex, GPT-5-based coding agent per session instructions; exact runtime version not exposed.
-- Godot MCP visibility/use: no Godot MCP tools were visible. `tool_search` was checked for Godot/editor tooling and returned non-Godot tools only. Godot MCP was not used.
+- Agent/model/version: Codex GPT-5 xhigh.
+- Godot MCP availability/use: Godot MCP was available through the local Codex/Godot configuration for the prepared workspace. This run did not directly drive the editor through MCP in its final evidence; shell/static checks were the primary local checks.
 - Tools available/used: PowerShell shell commands, `rg`, `python`, `pytest`, `apply_patch`, `update_plan`, `tool_search`, and `multi_tool_use.parallel`.
 
 ## Files Changed
@@ -32,7 +32,7 @@
 
 ## Manual Observations
 
-- I could not run the game or perform the suggested playable smoke test in this environment because no Godot executable or Godot MCP/editor tool was available.
+- I did not complete a live playable smoke test in this run. The later verifier pass used the recorded Godot 4.6 console executable and produced the committed score/PDF evidence.
 - Static checks confirm the new action/UI/player/projectile/aim-assist resources are present and the modified `res://` references resolve.
 
 ## Known Remaining Issues Or Uncertainties

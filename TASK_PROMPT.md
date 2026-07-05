@@ -42,6 +42,8 @@ When grenade mode is selected:
 
 - Show a visible trajectory preview, landing marker, or equivalent aiming aid before the grenade is thrown, even when the player is not holding the aim button.
 - The aiming aid should communicate that the grenade will travel in an arc rather than in a straight bullet path.
+- Without holding the aim button, grenade mode should use a stable default medium-range forward arc. Normal mouse or camera movement should not be required to fine-tune throw distance in this default throw state.
+- While holding the aim button, moving the mouse or adjusting the camera aim should let the player control both the grenade's throw direction and throw distance by changing the predicted arc and landing area.
 - The preview should update as the player changes aim direction or camera direction.
 - The predicted landing/impact feedback should appear near the intended target area when possible.
 - The aiming aid should remain visible during grenade cooldown so the player can keep lining up the next throw. It may show cooldown state, but it should not be deleted or hidden solely because the next grenade is not ready yet.
@@ -77,7 +79,7 @@ When the player throws a grenade:
 
 The explosion should affect nearby damageable game objects.
 
-- Nearby enemies should be damaged, defeated, knocked back, or otherwise visibly affected in a way consistent with the existing game.
+- Nearby enemies should be damaged or defeated in a way consistent with the existing game. Knockback or other visible reactions are welcome as additional feedback, but should not replace a real damage or defeat effect.
 - Nearby breakable crates or equivalent destructible targets should be damaged or broken.
 - Multiple nearby targets should be affected by the same explosion.
 - Distant enemies and distant destructible targets should not be affected.

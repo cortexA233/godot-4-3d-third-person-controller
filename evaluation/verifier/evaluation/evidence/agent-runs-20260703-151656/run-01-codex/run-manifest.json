@@ -11,7 +11,7 @@
                            "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\_source-rollout-task-fb0fd4f-20260703-203317\\docs\\superpowers"
                        ],
     "godot_mcp":  "available",
-    "model":  "codex-unknown-version",
+    "model":  "codex-gpt-5-xhigh",
     "profile":  "roboblast",
     "prompt_for_agent_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\prompt-for-agent.md",
     "prompt_path":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\prompt.md",

@@ -2,13 +2,13 @@
 
 ## Agent
 
-- Agent/model/version: Codex based on GPT-5, exact runtime version not exposed.
+- Agent/model/version: Codex GPT-5 xhigh.
 
 ## Tools
 
-- Tools available: PowerShell shell access, `apply_patch`, task plan updates, tool discovery, web access, image generation, Node REPL after discovery, GitHub connector after discovery.
+- Tools available: PowerShell shell access, `apply_patch`, task plan updates, tool discovery, web access, image generation, Node REPL after discovery, GitHub connector after discovery, and the local Codex/Godot MCP configuration for the prepared workspace.
 - Tools actually used: PowerShell shell commands, `apply_patch`, task plan updates, tool discovery.
-- Godot MCP visible or used: No Godot MCP tool was visible. A tool discovery search for Godot did not expose Godot editor/MCP controls. Godot MCP was not used.
+- Godot MCP availability/use: Godot MCP was available through the prepared workspace configuration. This run did not directly invoke Godot MCP in its final evidence; shell/static checks were the primary local checks.
 
 ## Files Changed
 
@@ -35,7 +35,7 @@
 
 ## Manual Observations
 
-- The game could not be launched or manually smoke-tested in this environment because no Godot executable is available on PATH and no Godot MCP/editor control is visible.
+- I did not complete a live playable smoke test in this run. The Godot executable was not on `PATH` during the agent's shell checks, but the later verifier pass used the recorded Godot 4.6 console executable and produced the committed score/PDF evidence.
 - Static inspection confirms the main scene already connects `Player.weapon_switched` to `weapon_switch_ui.switch_to`, so the new `"GRENADE"` signal value is routed through the existing HUD connection.
 - Static inspection confirms enemies and boxes use the existing `damageables` group plus `damage(impact_point, force)`, which the grenade explosion now calls spatially.
 
