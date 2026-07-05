@@ -3,10 +3,10 @@
     "log": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\godot-verifier.log",
     "screenshots": [
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\screenshot-probe\\debug_arena\\attack_010.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\screenshot-probe\\main_scene\\attack_010.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\screenshot-probe\\main_scene\\main_ready.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\screenshot-probe\\main_scene\\main_aim.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\screenshot-probe\\main_scene\\main_ready.png"
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\screenshot-probe\\main_scene\\attack_010.png"
     ],
     "screenshot_probe_result": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\screenshot-probe\\result.json",
     "screenshot_probe_dir": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex\\evidence\\screenshot-probe"
@@ -324,13 +324,15 @@
       "label": "Screenshot Visual Analysis",
       "max": 10,
       "name": "screenshot_visual",
-      "notes": "debug_arena projectile visible in 1 captured frame(s); debug_arena projectile footprint too small: 36px below 64px minimum; debug_arena explosion observed at frame 10; main_scene projectile visible in 1 captured frame(s); main_scene projectile footprint 121px earns strong main-scene footprint credit; main_scene explosion observed at frame 10; auxiliary screenshot score is not counted in 100-point score",
-      "score": 7,
+      "notes": "debug_arena projectile visible in 1 captured frame(s); debug_arena projectile footprint too small: 36px below 64px minimum; debug_arena explosion observed at frame 10; main_scene projectile visible in 1 captured frame(s); main_scene projectile footprint 99px earns partial main-scene footprint credit; main_scene explosion observed at frame 10; auxiliary screenshot score is not counted in 100-point score",
+      "score": 6,
       "used_for_score": false
     }
   ],
   "screenshot_probe_summary": {
     "requested_mode": "both",
+    "ok": true,
+    "display_driver": "Windows",
     "modes": {
       "debug_arena": {
         "ok": true,

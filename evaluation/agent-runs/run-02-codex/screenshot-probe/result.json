@@ -1,0 +1,208 @@
+{
+  "auxiliary_score_sections": [
+    {
+      "categories": [
+        "debug_arena",
+        "main_scene"
+      ],
+      "label": "Screenshot Visual Analysis",
+      "max": 10,
+      "name": "screenshot_visual",
+      "notes": "debug_arena projectile visible in 1 captured frame(s); debug_arena projectile footprint too small: 36px below 64px minimum; debug_arena explosion observed at frame 10; main_scene projectile visible in 1 captured frame(s); main_scene projectile footprint 99px earns partial main-scene footprint credit; main_scene explosion observed at frame 10; auxiliary screenshot score is not counted in 100-point score",
+      "score": 6,
+      "used_for_score": false
+    }
+  ],
+  "display_driver": "Windows",
+  "godot_version": "4.6-stable (official)",
+  "modes": {
+    "debug_arena": {
+      "artifact_dir": "debug_arena",
+      "captures": [
+        {
+          "delta_from_baseline": 0.0,
+          "delta_from_previous": 0.0,
+          "elapsed_frames": 10,
+          "explosion_nodes": [
+            "/root/VerifierDebugArena/VerifierArena/GrenadeProjectile/ExplosionSound"
+          ],
+          "explosion_observed": true,
+          "label": "attack_010",
+          "path": "res://__screenshot_probe__/debug_arena/attack_010.png",
+          "projectile_visual": {
+            "area_px": 36,
+            "available": true,
+            "delta_in_rect": 0.0,
+            "screen_rect": [
+              985,
+              467,
+              6,
+              6
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/debug_arena/attack_010.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        }
+      ],
+      "explosion_frame": 10,
+      "ok": true,
+      "projectile_footprint": {
+        "best_frame": "attack_010",
+        "max_area_px": 36,
+        "max_delta_in_rect": 0.0,
+        "used_for_score": false,
+        "visible_frame_count": 1
+      },
+      "screenshot_interval_frames": 10,
+      "stop_reason": "explosion_observed",
+      "used_for_score": false
+    },
+    "main_scene": {
+      "artifact_dir": "main_scene",
+      "captures": [
+        {
+          "label": "main_ready",
+          "path": "res://__screenshot_probe__/main_scene/main_ready.png",
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/main_ready.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "label": "main_aim",
+          "path": "res://__screenshot_probe__/main_scene/main_aim.png",
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/main_aim.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "label": "grenade_ready",
+          "path": "res://__screenshot_probe__/main_scene/grenade_ready.png",
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/grenade_ready.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0063192669281979,
+          "delta_from_previous": 0.0063192669281979,
+          "elapsed_frames": 10,
+          "explosion_nodes": [
+            "/root/ScreenshotProbeMainScene/GrenadeProjectile/ExplosionSound"
+          ],
+          "explosion_observed": true,
+          "label": "attack_010",
+          "path": "res://__screenshot_probe__/main_scene/attack_010.png",
+          "projectile_visual": {
+            "area_px": 99,
+            "available": true,
+            "delta_in_rect": 0.00152505478925175,
+            "screen_rect": [
+              955,
+              278,
+              9,
+              11
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/attack_010.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        }
+      ],
+      "explosion_frame": 10,
+      "ok": true,
+      "projectile_footprint": {
+        "best_frame": "attack_010",
+        "max_area_px": 99,
+        "max_delta_in_rect": 0.00152505478925175,
+        "used_for_score": false,
+        "visible_frame_count": 1
+      },
+      "resume_demo": {
+        "attempted": true,
+        "method": "resume_demo",
+        "node": "/root/ScreenshotProbeMainScene/DemoPage",
+        "paused_after": false,
+        "paused_before": true,
+        "settle_frames": 24
+      },
+      "screenshot_interval_frames": 10,
+      "stop_reason": "explosion_observed",
+      "used_for_score": false
+    }
+  },
+  "ok": true,
+  "requested_mode": "both",
+  "used_for_score": false
+}

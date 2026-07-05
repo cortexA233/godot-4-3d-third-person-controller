@@ -1,247 +1,71 @@
 diff --git a/AGENT_RUN_RECORD.md b/AGENT_RUN_RECORD.md
 new file mode 100644
-index 0000000..d26488f
+index 0000000..cf6e50b
 --- /dev/null
 +++ b/AGENT_RUN_RECORD.md
-@@ -0,0 +1,56 @@
+@@ -0,0 +1,60 @@
 +# Agent Run Record
 +
 +## Agent
 +
-+- Agent/model/version: Codex based on GPT-5, exact runtime version not exposed.
++- Agent/model/version: Codex, GPT-5-based coding agent.
++- Project: Godot third-person shooter demo.
++- Date: 2026-07-03.
 +
 +## Tools
 +
-+- Tools available: PowerShell shell access, `apply_patch`, task plan updates, tool discovery, web access, image generation, Node REPL after discovery, GitHub connector after discovery.
-+- Tools actually used: PowerShell shell commands, `apply_patch`, task plan updates, tool discovery.
-+- Godot MCP visible or used: No Godot MCP tool was visible. A tool discovery search for Godot did not expose Godot editor/MCP controls. Godot MCP was not used.
++- Tools available: PowerShell shell, file editing via `apply_patch`, planning updates, tool discovery, and Godot MCP.
++- Tools used: PowerShell shell, `apply_patch`, `tool_search`, `update_plan`, and Godot MCP (`get_project_info`, `launch_editor`, `run_project`, `get_debug_output`, `stop_project`, `get_godot_version`).
++- Godot MCP: visible and used.
++- Godot version reported by MCP: `4.6.stable.official.89cea1439`.
++- Local shell `godot --version`: failed because `godot` was not on PATH.
 +
 +## Files Changed
 +
-+- `project.godot`: Added `weapon_switch` input action with `Tab` and joypad left shoulder.
-+- `player/player.gd`: Added weapon mode state, switching, grenade cooldown, grenade throwing, trajectory preview updates, and runtime fallback registration for weapon switching.
-+- `player/grenade_trajectory.gd`: Added shared ballistic helper methods for default throws, aimed throws, landing estimates, and sampled positions.
-+- `player/grenade_trajectory_preview.gd`: Added in-world arcing preview points and landing marker that stay visible in grenade mode.
-+- `player/grenade_projectile.gd`: Added physical grenade fuse/impact detonation, explosion feedback, spatial damage, shooter/player exclusion, and cleanup.
-+- `player/grenade_projectile.tscn`: Added the physical grenade scene using the existing grenade visual asset.
-+- `icons/weapon_ui.gd`: Added the grenade HUD selection key.
-+- `icons/weapon_ui.tscn`: Added the bomb icon and repositioned the weapon panel near the bottom center to avoid the reticle and coin HUD.
-+- `tests/grenade_feature_tests.gd`: Added a headless Godot test script for default throw range, aimed throw range response, and spatial explosion damage.
-+- `AGENT_RUN_RECORD.md`: Added this run record.
++- `project.godot`: Added `weapon_switch` input action for `Tab` and controller top face button.
++- `icons/weapon_ui.gd`: Added `GRENADE` selection support.
++- `icons/weapon_ui.tscn`: Expanded weapon HUD to show default and grenade icons.
++- `player/player.gd`: Added weapon mode state, switching, grenade cooldown, grenade throwing, visible arcing preview, landing marker, aimed/default targeting, and runtime fallback input registration.
++- `player/grenade_throw_math.gd`: Added tested helper functions for default target selection, ballistic launch velocity, and arc sampling.
++- `player/grenade_throw_math.gd.uid`: Godot-generated UID for the new helper script.
++- `player/grenade_projectile.gd`: Added physical grenade projectile, fuse/impact detonation, explosion feedback, spatial damage, shooter exclusion, and cleanup.
++- `player/grenade_projectile.gd.uid`: Godot-generated UID for the new projectile script.
++- `player/grenade_projectile.tscn`: Added grenade projectile scene with collision, visual model, timers, and explosion sound.
++- `tests/grenade_math_test.gd`: Added headless trajectory math test scene script.
++- `tests/grenade_math_test.tscn`: Added test scene for the trajectory math.
++- `AGENT_RUN_RECORD.md`: This record.
 +
-+## Commands Run
++## Commands And Outcomes
 +
-+- `rg --files`: Inspected workspace file layout.
-+- `Get-Content` on player, projectile, enemy, box, HUD, input, and asset files: Inspected current project conventions.
-+- `Get-Command godot, godot4`: No Godot executable found on PATH.
-+- `godot --headless --path . -s tests/grenade_feature_tests.gd`: Failed because `godot` is not recognized in this environment.
-+- Resource reference check with `Test-Path`: Confirmed new scripts/scenes reference existing local assets.
-+- `rg` checks for grenade, weapon, and input wiring: Confirmed expected project references are present.
-+- PowerShell tuning calculation: Default flat-ground throw lands about 9.238 units from the player spawn point, inside the requested 6-12 unit range.
++- `mcp__godot.get_project_info`: succeeded; project recognized as Godot `4.6`.
++- `mcp__godot.launch_editor`: succeeded; used once to generate `.godot` import/script cache for runtime verification.
++- `mcp__godot.run_project` with `res://tests/grenade_math_test.tscn`: final fresh run printed `[grenade_math_test] PASS` with no errors.
++- `mcp__godot.run_project` with `res://main.tscn`: final fresh run launched with no debug output errors.
++- Earlier verification runs exposed GDScript parser errors from strict type inference in new scripts; those were fixed and rerun cleanly.
 +
 +## Manual Observations
 +
-+- The game could not be launched or manually smoke-tested in this environment because no Godot executable is available on PATH and no Godot MCP/editor control is visible.
-+- Static inspection confirms the main scene already connects `Player.weapon_switched` to `weapon_switch_ui.switch_to`, so the new `"GRENADE"` signal value is routed through the existing HUD connection.
-+- Static inspection confirms enemies and boxes use the existing `damageables` group plus `damage(impact_point, force)`, which the grenade explosion now calls spatially.
++- Main scene launched through Godot MCP after imports were generated.
++- Debug output showed no script/runtime errors on the final main-scene launch.
++- The trajectory test confirmed the default grenade throw lands at medium range and sampled arc ends near the target ground position.
++- I did not perform a full interactive keyboard/controller playthrough because the available Godot MCP tools exposed launch/debug output but not direct gameplay input control.
 +
 +## Known Remaining Issues Or Uncertainties
 +
-+- In-engine script parsing, physics behavior, visual framing, audio playback, and manual smoke testing still need to be verified in Godot.
-+- The headless test script is present but could not be run here because the Godot CLI is unavailable.
-+- Controller mapping uses joypad left shoulder (`button_index = 9`), which should be validated with the target controller mapping in Godot.
++- Actual moment-to-moment throw feel, HUD readability in motion, and enemy/crate hit feel should still be checked interactively in the Godot window.
++- The implementation uses distance-based group scanning for explosion damage. It ignores the thrower and skips group members without a `damage()` method.
++- The preview uses generated blue arc points plus the existing target material rather than the unused `trajectory_mockup.tscn`.
 +
 +## Implemented Behavior Summary
 +
 +- Player starts in default weapon mode.
-+- `Tab` or controller left shoulder toggles default and grenade modes.
-+- Default mode preserves existing aim/shoot and melee behavior.
-+- Grenade mode consumes attack for grenade throws, including when aim is not held, and never falls back to melee or default shooting during cooldown.
-+- Grenade mode shows an arcing in-world trajectory preview and landing marker, including during cooldown.
-+- A thrown grenade is a physical `RigidBody3D` with gravity, collision, short fuse, impact-triggered detonation shortening, visible explosion, explosion sound, and cleanup.
-+- Explosion damage is radius-based, affects multiple nearby `damageables`, skips the shooter/player, and leaves distant targets outside the radius untouched.
-diff --git a/box/box_visuals/box.glb.import b/box/box_visuals/box.glb.import
-index 864a4cd..12b0a93 100644
---- a/box/box_visuals/box.glb.import
-+++ b/box/box_visuals/box.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/box.glb-166f7369b91e81b2a019f9ed94d78677.scn"
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -42,4 +40,3 @@ materials/extract_path=""
- _subresources={}
- gltf/naming_version=0
- gltf/embedded_image_handling=3
--gltf/texture_map_mode=0
-diff --git a/box/box_visuals/destroyed_box.glb.import b/box/box_visuals/destroyed_box.glb.import
-index 14a9c44..e48311f 100644
---- a/box/box_visuals/destroyed_box.glb.import
-+++ b/box/box_visuals/destroyed_box.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/destroyed_box.glb-5f3459f373fd26cd397a58a7cec
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -75,4 +73,3 @@ _subresources={
- }
- gltf/naming_version=0
- gltf/embedded_image_handling=3
--gltf/texture_map_mode=0
-diff --git a/enemies/bee_bot/bee_bot.glb.import b/enemies/bee_bot/bee_bot.glb.import
-index 1fa03dc..ff2cb16 100644
---- a/enemies/bee_bot/bee_bot.glb.import
-+++ b/enemies/bee_bot/bee_bot.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/bee_bot.glb-505fe86f9a7002cc7504b07d2f7ef707.
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -2101,4 +2099,3 @@ _subresources={
- }
- gltf/naming_version=0
- gltf/embedded_image_handling=3
--gltf/texture_map_mode=0
-diff --git a/enemies/beetle_bot/beetle_bot_fused.glb.import b/enemies/beetle_bot/beetle_bot_fused.glb.import
-index 666a863..f59be85 100644
---- a/enemies/beetle_bot/beetle_bot_fused.glb.import
-+++ b/enemies/beetle_bot/beetle_bot_fused.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/beetle_bot_fused.glb-75a13db3ae66c04c28ae97a6
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -42,4 +40,3 @@ materials/extract_path=""
- _subresources={}
- gltf/naming_version=0
- gltf/embedded_image_handling=1
--gltf/texture_map_mode=0
-diff --git a/enemies/smoke_puff/smoke_ball.glb.import b/enemies/smoke_puff/smoke_ball.glb.import
-index 676fff6..722170c 100644
---- a/enemies/smoke_puff/smoke_ball.glb.import
-+++ b/enemies/smoke_puff/smoke_ball.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/smoke_ball.glb-ee73239c0e9a66aa8a3262b524e415
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -42,4 +40,3 @@ materials/extract_path=""
- _subresources={}
- gltf/naming_version=0
- gltf/embedded_image_handling=3
--gltf/texture_map_mode=0
-diff --git a/environment/mushroom/mushroom.glb.import b/environment/mushroom/mushroom.glb.import
-index 5896643..c56596f 100644
---- a/environment/mushroom/mushroom.glb.import
-+++ b/environment/mushroom/mushroom.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/mushroom.glb-e261d9c1a9b453ee18c1f0b6ead14f9f
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -42,4 +40,3 @@ materials/extract_path=""
- _subresources={}
- gltf/naming_version=0
- gltf/embedded_image_handling=1
--gltf/texture_map_mode=0
-diff --git a/environment/orange_flowers/orange_flower.glb.import b/environment/orange_flowers/orange_flower.glb.import
-index 4bc196e..5254e84 100644
---- a/environment/orange_flowers/orange_flower.glb.import
-+++ b/environment/orange_flowers/orange_flower.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/orange_flower.glb-bbc7b6632757d61270033268f6f
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -42,4 +40,3 @@ materials/extract_path=""
- _subresources={}
- gltf/naming_version=0
- gltf/embedded_image_handling=1
--gltf/texture_map_mode=0
-diff --git a/environment/terrain.glb.import b/environment/terrain.glb.import
-index 01af3fe..f723faf 100644
---- a/environment/terrain.glb.import
-+++ b/environment/terrain.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/terrain.glb-257b7310aba45c9ff3c706d73d281523.
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -55,4 +53,3 @@ _subresources={
- }
- gltf/naming_version=0
- gltf/embedded_image_handling=1
--gltf/texture_map_mode=0
-diff --git a/environment/tree_trunk/tree_trunk_long.glb.import b/environment/tree_trunk/tree_trunk_long.glb.import
-index 25eecb9..be5c8a1 100644
---- a/environment/tree_trunk/tree_trunk_long.glb.import
-+++ b/environment/tree_trunk/tree_trunk_long.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/tree_trunk_long.glb-51fcf43db39d36f77dc810ec1
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -48,4 +46,3 @@ _subresources={
- }
- gltf/naming_version=0
- gltf/embedded_image_handling=1
--gltf/texture_map_mode=0
-diff --git a/environment/tree_trunk/tree_trunk_small.glb.import b/environment/tree_trunk/tree_trunk_small.glb.import
-index 9f83948..5570521 100644
---- a/environment/tree_trunk/tree_trunk_small.glb.import
-+++ b/environment/tree_trunk/tree_trunk_small.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/tree_trunk_small.glb-8abed9894a418ebcb19f9b37
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -48,4 +46,3 @@ _subresources={
- }
- gltf/naming_version=0
- gltf/embedded_image_handling=1
--gltf/texture_map_mode=0
++- `Tab` toggles between default and grenade modes; controller top face button is also mapped.
++- Default mode preserves existing aim/shoot and click/melee behavior.
++- Grenade mode shows an arcing preview and landing marker, including when aim is not held.
++- Grenade mode attack throws a physical arcing grenade when cooldown is ready and never falls back to melee or bullets during cooldown.
++- Grenades collide/bounce, detonate once after impact delay or fuse, play explosion feedback, damage nearby enemies/crates, exclude the player thrower, and clean themselves up.
 diff --git a/icons/weapon_ui.gd b/icons/weapon_ui.gd
-index f07b042..4f26003 100644
+index f07b042..ab75941 100644
 --- a/icons/weapon_ui.gd
 +++ b/icons/weapon_ui.gd
 @@ -1,7 +1,8 @@
@@ -249,723 +73,544 @@ index f07b042..4f26003 100644
  
  @onready var nodes := {
 -	"DEFAULT" : %Flash
-+	"DEFAULT": %Flash,
-+	"GRENADE": %Bomb,
++	"DEFAULT" : %Flash,
++	"GRENADE" : %Bomb,
  }
  
  var selected_node: String = ""
 diff --git a/icons/weapon_ui.tscn b/icons/weapon_ui.tscn
-index d10132f..1f872ed 100644
+index d10132f..a86a4f0 100644
 --- a/icons/weapon_ui.tscn
 +++ b/icons/weapon_ui.tscn
 @@ -2,6 +2,7 @@
  
  [ext_resource type="Script" uid="uid://df4v2xav53hfi" path="res://icons/weapon_ui.gd" id="1_vteie"]
  [ext_resource type="PackedScene" uid="uid://b1fed4rxaa3qj" path="res://icons/icone.tscn" id="2_etwmu"]
-+[ext_resource type="Texture2D" uid="uid://cj4npx16cmso7" path="res://icons/bomb_icon.png" id="3_qpywh"]
++[ext_resource type="Texture2D" uid="uid://cj4npx16cmso7" path="res://icons/bomb_icon.png" id="3_itc31"]
  
  [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmqom"]
  bg_color = Color(0, 0, 0, 0.392157)
-@@ -11,17 +12,17 @@ corner_radius_bottom_right = 16
- corner_radius_bottom_left = 16
- 
- [node name="weapon_switch_ui" type="PanelContainer" unique_id=192274453 groups=["camera_mode_toggle"]]
--anchors_preset = 8
-+anchors_preset = 7
- anchor_left = 0.5
--anchor_top = 0.5
-+anchor_top = 1.0
+@@ -16,9 +17,9 @@ anchor_left = 0.5
+ anchor_top = 0.5
  anchor_right = 0.5
--anchor_bottom = 0.5
+ anchor_bottom = 0.5
 -offset_left = -40.0
--offset_top = -34.0
--offset_right = 40.0
--offset_bottom = 34.0
-+anchor_bottom = 1.0
 +offset_left = -80.0
-+offset_top = -96.0
+ offset_top = -34.0
+-offset_right = 40.0
 +offset_right = 80.0
-+offset_bottom = -24.0
+ offset_bottom = 34.0
  grow_horizontal = 2
--grow_vertical = 2
-+grow_vertical = 0
- size_flags_horizontal = 4
- size_flags_vertical = 4
- theme_override_styles/panel = SubResource("StyleBoxFlat_kmqom")
-@@ -31,7 +32,7 @@ script = ExtResource("1_vteie")
- layout_mode = 2
- size_flags_horizontal = 4
- size_flags_vertical = 4
--theme_override_constants/separation = 0
-+theme_override_constants/separation = 4
- alignment = 1
- 
- [node name="MarginContainer" type="MarginContainer" parent="Control" unique_id=141859043]
-@@ -43,3 +44,14 @@ theme_override_constants/margin_bottom = 2
+ grow_vertical = 2
+@@ -43,3 +44,15 @@ theme_override_constants/margin_bottom = 2
  
  [node name="Flash" parent="Control/MarginContainer" unique_id=784886255 instance=ExtResource("2_etwmu")]
  layout_mode = 2
 +
-+[node name="BombMargin" type="MarginContainer" parent="Control" unique_id=1136915095]
++[node name="BombMarginContainer" type="MarginContainer" parent="Control" unique_id=177833135]
 +layout_mode = 2
 +theme_override_constants/margin_left = 8
 +theme_override_constants/margin_top = 2
 +theme_override_constants/margin_right = 8
 +theme_override_constants/margin_bottom = 2
 +
-+[node name="Bomb" parent="Control/BombMargin" unique_id=969361808 instance=ExtResource("2_etwmu")]
++[node name="Bomb" parent="Control/BombMarginContainer" unique_id=2116841211 instance=ExtResource("2_etwmu")]
++unique_name_in_owner = true
 +layout_mode = 2
-+texture = ExtResource("3_qpywh")
-diff --git a/jumping_pad/jumping_pad_visuals/jumping_pad_model.glb.import b/jumping_pad/jumping_pad_visuals/jumping_pad_model.glb.import
-index 7192612..00ead4b 100644
---- a/jumping_pad/jumping_pad_visuals/jumping_pad_model.glb.import
-+++ b/jumping_pad/jumping_pad_visuals/jumping_pad_model.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/jumping_pad_model.glb-9914d3044fb0b39bc54fbbe
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -42,4 +40,3 @@ materials/extract_path=""
- _subresources={}
- gltf/naming_version=0
- gltf/embedded_image_handling=3
--gltf/texture_map_mode=0
-diff --git a/level/terrain.glb.import b/level/terrain.glb.import
-index c2e69bd..ed3d314 100644
---- a/level/terrain.glb.import
-+++ b/level/terrain.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/terrain.glb-f61dd9449b8484d861a587963e3ed34f.
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -129,4 +127,3 @@ _subresources={
- }
- gltf/naming_version=0
- gltf/embedded_image_handling=3
--gltf/texture_map_mode=0
-diff --git a/player/coin/coin_visuals/coin_model.glb.import b/player/coin/coin_visuals/coin_model.glb.import
-index a836aff..4e7773c 100644
---- a/player/coin/coin_visuals/coin_model.glb.import
-+++ b/player/coin/coin_visuals/coin_model.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/coin_model.glb-efb81e41b83e5add705b57b301734b
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -42,4 +40,3 @@ materials/extract_path=""
- _subresources={}
- gltf/naming_version=0
- gltf/embedded_image_handling=3
--gltf/texture_map_mode=0
-diff --git a/player/explosion_visuals/objects/explosion_smoke.glb.import b/player/explosion_visuals/objects/explosion_smoke.glb.import
-index fb1d7ff..dde7e4f 100644
---- a/player/explosion_visuals/objects/explosion_smoke.glb.import
-+++ b/player/explosion_visuals/objects/explosion_smoke.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/explosion_smoke.glb-149ea77a92872e00c5d4668f5
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -42,4 +40,3 @@ materials/extract_path=""
- _subresources={}
- gltf/naming_version=0
- gltf/embedded_image_handling=3
--gltf/texture_map_mode=0
++texture = ExtResource("3_itc31")
 diff --git a/player/grenade_projectile.gd b/player/grenade_projectile.gd
 new file mode 100644
-index 0000000..4b92ffd
+index 0000000..e17120a
 --- /dev/null
 +++ b/player/grenade_projectile.gd
-@@ -0,0 +1,117 @@
+@@ -0,0 +1,95 @@
 +extends RigidBody3D
 +
 +const EXPLOSION_SCENE := preload("res://player/explosion_visuals/explosion_scene.tscn")
-+const EXPLOSION_SOUND := preload("res://player/sounds/musket-explosion-6383.wav")
 +
-+@export var fuse_time := 1.45
-+@export var impact_detonation_delay := 0.25
-+@export var arm_time := 0.12
++@export var fuse_time := 1.6
++@export var impact_detonation_delay := 0.35
 +@export var explosion_radius := 3.5
 +@export var explosion_force := 12.0
 +
 +var shooter: Node = null
-+var initial_velocity := Vector3.ZERO
 +
-+var _time_alive := 0.0
++@onready var _visual_root: Node3D = $GrenadeVisual
++@onready var _collision_shape: CollisionShape3D = $CollisionShape3D
++@onready var _fuse_timer: Timer = $FuseTimer
++@onready var _impact_timer: Timer = $ImpactTimer
++@onready var _explosion_sound: AudioStreamPlayer3D = $ExplosionSound
++
 +var _detonated := false
-+var _impact_detonation_started := false
++var _impact_timer_started := false
 +
 +
 +func _ready() -> void:
 +	body_entered.connect(_on_body_entered)
-+	if shooter is CollisionObject3D:
-+		add_collision_exception_with(shooter)
++	_fuse_timer.timeout.connect(_detonate)
++	_impact_timer.timeout.connect(_detonate)
++	_fuse_timer.start(fuse_time)
++
++
++func launch(initial_velocity: Vector3, thrower: Node, gravity_strength: float) -> void:
++	shooter = thrower
 +	linear_velocity = initial_velocity
-+	angular_velocity = Vector3(8.0, 4.0, 6.0)
++	angular_velocity = Vector3(randf_range(-8.0, 8.0), randf_range(-12.0, 12.0), randf_range(-8.0, 8.0))
 +
-+	await get_tree().create_timer(fuse_time).timeout
-+	detonate()
++	var default_gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
++	gravity_scale = gravity_strength / max(default_gravity, 0.001)
 +
-+
-+func _physics_process(delta: float) -> void:
-+	_time_alive += delta
-+
-+
-+func throw(origin: Vector3, velocity: Vector3, source: Node) -> void:
-+	shooter = source
-+	initial_velocity = velocity
-+	global_position = origin
-+	if is_inside_tree():
-+		linear_velocity = velocity
-+		if shooter is CollisionObject3D:
-+			add_collision_exception_with(shooter)
++	if shooter is PhysicsBody3D:
++		add_collision_exception_with(shooter)
 +
 +
-+func detonate() -> void:
++func _on_body_entered(body: Node) -> void:
++	if body == shooter or _detonated or _impact_timer_started:
++		return
++
++	_impact_timer_started = true
++	_impact_timer.start(impact_detonation_delay)
++
++
++func _detonate() -> void:
 +	if _detonated:
 +		return
 +
 +	_detonated = true
-+	_apply_explosion_damage()
++	freeze = true
++	linear_velocity = Vector3.ZERO
++	angular_velocity = Vector3.ZERO
++	_collision_shape.set_deferred("disabled", true)
++	_visual_root.hide()
++
++	_damage_nearby_targets()
 +	_spawn_explosion_feedback()
++
++	_explosion_sound.pitch_scale = randfn(1.0, 0.08)
++	_explosion_sound.play()
++	await _explosion_sound.finished
 +	queue_free()
 +
 +
-+func _on_body_entered(body: Node) -> void:
-+	if body == shooter or _detonated or _impact_detonation_started or _time_alive < arm_time:
-+		return
-+
-+	_impact_detonation_started = true
-+	await get_tree().create_timer(impact_detonation_delay).timeout
-+	detonate()
-+
-+
-+func _apply_explosion_damage() -> void:
-+	var shape := SphereShape3D.new()
-+	shape.radius = explosion_radius
-+
-+	var query := PhysicsShapeQueryParameters3D.new()
-+	query.shape = shape
-+	query.transform = Transform3D(Basis(), global_position)
-+	query.collision_mask = 1
-+	query.collide_with_bodies = true
-+	query.collide_with_areas = false
-+	if shooter is CollisionObject3D:
-+		query.exclude = [shooter.get_rid()]
-+
-+	var damaged := {}
-+	var results := get_world_3d().direct_space_state.intersect_shape(query, 32)
-+	for result in results:
-+		var body := result["collider"] as Node3D
-+		if body == null:
-+			continue
-+		if body == shooter or body is Player:
-+			continue
-+		if not body.is_in_group("damageables") or not body.has_method("damage"):
-+			continue
-+		if damaged.has(body):
++func _damage_nearby_targets() -> void:
++	for target in get_tree().get_nodes_in_group("damageables"):
++		if target == shooter or not target is Node3D:
 +			continue
 +
-+		var offset := body.global_position - global_position
-+		var distance := max(offset.length(), 0.2)
-+		var direction := offset / distance
-+		var falloff := clamp(1.0 - distance / explosion_radius, 0.25, 1.0)
-+		var force := (direction + Vector3.UP * 0.35).normalized() * explosion_force * falloff
-+		var impact_point := global_position - body.global_position
-+		body.damage(impact_point, force)
-+		damaged[body] = true
++		var target_node := target as Node3D
++		if not target_node.has_method("damage"):
++			continue
++
++		var offset := target_node.global_position - global_position
++		var distance := offset.length()
++		if distance > explosion_radius:
++			continue
++
++		var force_direction := offset.normalized()
++		if force_direction.length_squared() < 0.0001:
++			force_direction = Vector3.UP
++		var falloff: float = 1.0 - clamp(distance / explosion_radius, 0.0, 1.0)
++		var force: Vector3 = (force_direction + Vector3.UP * 0.35).normalized() * explosion_force * max(falloff, 0.35)
++		var impact_point := global_position - target_node.global_position
++		target_node.damage(impact_point, force)
 +
 +
 +func _spawn_explosion_feedback() -> void:
-+	var parent := get_parent()
-+	if parent == null:
-+		parent = get_tree().current_scene
-+	if parent == null:
-+		parent = get_tree().root
-+
 +	var explosion := EXPLOSION_SCENE.instantiate()
-+	parent.add_child(explosion)
++	get_parent().add_child(explosion)
 +	explosion.global_position = global_position
-+
-+	var explosion_sound := AudioStreamPlayer3D.new()
-+	explosion_sound.stream = EXPLOSION_SOUND
-+	explosion_sound.volume_db = 4.0
-+	parent.add_child(explosion_sound)
-+	explosion_sound.global_position = global_position
-+	explosion_sound.finished.connect(explosion_sound.queue_free)
-+	explosion_sound.play()
 diff --git a/player/grenade_projectile.gd.uid b/player/grenade_projectile.gd.uid
 new file mode 100644
-index 0000000..54aa21e
+index 0000000..9354695
 --- /dev/null
 +++ b/player/grenade_projectile.gd.uid
 @@ -0,0 +1 @@
-+uid://bhydcu1446mxl
++uid://cxtoouc1w0ua7
 diff --git a/player/grenade_projectile.tscn b/player/grenade_projectile.tscn
 new file mode 100644
-index 0000000..6d2a95b
+index 0000000..eae2204
 --- /dev/null
 +++ b/player/grenade_projectile.tscn
-@@ -0,0 +1,21 @@
-+[gd_scene load_steps=4 format=3]
+@@ -0,0 +1,45 @@
++[gd_scene load_steps=7 format=3]
 +
-+[ext_resource type="Script" path="res://player/grenade_projectile.gd" id="1_1ipia"]
-+[ext_resource type="PackedScene" path="res://player/grenade_visuals/grenade/grenade.tscn" id="2_blc8x"]
++[ext_resource type="Script" path="res://player/grenade_projectile.gd" id="1_unf4v"]
++[ext_resource type="PackedScene" path="res://player/grenade_visuals/grenade/grenade.tscn" id="2_4xkpy"]
++[ext_resource type="AudioStream" path="res://player/sounds/musket-explosion-6383.wav" id="3_qa4x2"]
 +
-+[sub_resource type="SphereShape3D" id="SphereShape3D_grenade"]
-+radius = 0.28
++[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3dwcd"]
++friction = 0.85
++bounce = 0.35
++
++[sub_resource type="SphereShape3D" id="SphereShape3D_m3ui2"]
++radius = 0.25
++
++[sub_resource type="SphereMesh" id="SphereMesh_n3tdi"]
++radius = 0.25
++height = 0.5
 +
 +[node name="GrenadeProjectile" type="RigidBody3D"]
-+mass = 0.8
-+continuous_cd = true
++collision_mask = 3
++physics_material_override = SubResource("PhysicsMaterial_3dwcd")
 +contact_monitor = true
 +max_contacts_reported = 4
-+collision_layer = 1
-+collision_mask = 3
-+script = ExtResource("1_1ipia")
++script = ExtResource("1_unf4v")
 +
 +[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-+shape = SubResource("SphereShape3D_grenade")
++shape = SubResource("SphereShape3D_m3ui2")
 +
-+[node name="Visual" parent="." instance=ExtResource("2_blc8x")]
-diff --git a/player/grenade_trajectory.gd b/player/grenade_trajectory.gd
++[node name="GrenadeVisual" type="Node3D" parent="."]
++
++[node name="grenade" parent="GrenadeVisual" instance=ExtResource("2_4xkpy")]
++transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0, 0)
++
++[node name="FallbackShape" type="MeshInstance3D" parent="GrenadeVisual"]
++visible = false
++mesh = SubResource("SphereMesh_n3tdi")
++
++[node name="FuseTimer" type="Timer" parent="."]
++one_shot = true
++
++[node name="ImpactTimer" type="Timer" parent="."]
++one_shot = true
++
++[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="."]
++stream = ExtResource("3_qa4x2")
++volume_db = 4.0
+diff --git a/player/grenade_throw_math.gd b/player/grenade_throw_math.gd
 new file mode 100644
-index 0000000..63e6835
+index 0000000..22dc963
 --- /dev/null
-+++ b/player/grenade_trajectory.gd
-@@ -0,0 +1,56 @@
-+class_name GrenadeTrajectory
++++ b/player/grenade_throw_math.gd
+@@ -0,0 +1,44 @@
++class_name GrenadeThrowMath
 +extends RefCounted
 +
 +
-+static func get_default_velocity(forward: Vector3, horizontal_speed: float, vertical_speed: float) -> Vector3:
-+	return _flat_direction(forward) * horizontal_speed + Vector3.UP * vertical_speed
++static func get_default_target(origin: Vector3, forward: Vector3, ground_y: float, distance: float) -> Vector3:
++	var horizontal_forward := Vector3(forward.x, 0.0, forward.z)
++	if horizontal_forward.length_squared() < 0.0001:
++		horizontal_forward = Vector3.FORWARD
++	horizontal_forward = horizontal_forward.normalized()
++	return Vector3(origin.x, ground_y, origin.z) + horizontal_forward * distance
 +
 +
-+static func get_aimed_velocity(
-+	origin: Vector3,
-+	target: Vector3,
-+	fallback_forward: Vector3,
-+	gravity: float,
-+	arc_height: float,
-+	min_distance: float,
-+	max_distance: float,
-+) -> Vector3:
-+	var to_target := target - origin
-+	var horizontal := Vector3(to_target.x, 0.0, to_target.z)
-+	var direction := _flat_direction(fallback_forward)
-+	if horizontal.length() > 0.001:
-+		direction = horizontal.normalized()
++static func get_throw_velocity(origin: Vector3, target: Vector3, arc_height: float, gravity: float) -> Vector3:
++	var gravity_strength: float = max(abs(gravity), 0.001)
++	var apex_y: float = max(origin.y, target.y) + max(arc_height, 0.001)
++	var time_up: float = sqrt(2.0 * max(apex_y - origin.y, 0.001) / gravity_strength)
++	var time_down: float = sqrt(2.0 * max(apex_y - target.y, 0.001) / gravity_strength)
++	var flight_time: float = max(time_up + time_down, 0.001)
++	var horizontal_delta := Vector3(target.x - origin.x, 0.0, target.z - origin.z)
 +
-+	var distance := clamp(horizontal.length(), min_distance, max_distance)
-+	var landing_target := origin + direction * distance
-+	landing_target.y = target.y
-+
-+	var highest_endpoint := max(origin.y, landing_target.y)
-+	var apex_y := highest_endpoint + max(arc_height, 0.5)
-+	var vertical_speed := sqrt(max(0.0, 2.0 * gravity * (apex_y - origin.y)))
-+	var time_up := vertical_speed / gravity
-+	var time_down := sqrt(max(0.0, 2.0 * (apex_y - landing_target.y) / gravity))
-+	var flight_time := max(0.1, time_up + time_down)
-+	var horizontal_velocity := direction * (distance / flight_time)
-+
-+	return horizontal_velocity + Vector3.UP * vertical_speed
++	return horizontal_delta / flight_time + Vector3.UP * gravity_strength * time_up
 +
 +
-+static func estimate_ground_landing(origin: Vector3, velocity: Vector3, gravity: float, ground_y: float) -> Vector3:
-+	var height := origin.y - ground_y
-+	var discriminant := velocity.y * velocity.y + 2.0 * gravity * height
-+	if discriminant < 0.0:
-+		return origin
-+	var flight_time := (velocity.y + sqrt(discriminant)) / gravity
-+	return position_at_time(origin, velocity, gravity, flight_time)
-+
-+
-+static func position_at_time(origin: Vector3, velocity: Vector3, gravity: float, time: float) -> Vector3:
-+	return origin + velocity * time + Vector3.DOWN * 0.5 * gravity * time * time
-+
-+
-+static func _flat_direction(direction: Vector3) -> Vector3:
-+	var flat := Vector3(direction.x, 0.0, direction.z)
-+	if flat.length() < 0.001:
-+		return Vector3.FORWARD
-+	return flat.normalized()
-diff --git a/player/grenade_trajectory.gd.uid b/player/grenade_trajectory.gd.uid
-new file mode 100644
-index 0000000..0e954d0
---- /dev/null
-+++ b/player/grenade_trajectory.gd.uid
-@@ -0,0 +1 @@
-+uid://d4ml34vfj6gfl
-diff --git a/player/grenade_trajectory_preview.gd b/player/grenade_trajectory_preview.gd
-new file mode 100644
-index 0000000..31bd39d
---- /dev/null
-+++ b/player/grenade_trajectory_preview.gd
-@@ -0,0 +1,96 @@
-+class_name GrenadeTrajectoryPreview
-+extends Node3D
-+
-+const AIM_MATERIAL := preload("res://player/grenade_visuals/aim_material.tres")
-+const GRENADE_TRAJECTORY_SCRIPT := preload("res://player/grenade_trajectory.gd")
-+const COLLISION_MASK := 3
-+const POINT_COUNT := 18
-+const STEP_TIME := 0.08
-+
-+var _markers: Array[MeshInstance3D] = []
-+var _landing_marker: MeshInstance3D
-+var _excluded_rids: Array[RID] = []
-+
-+
-+func _ready() -> void:
-+	top_level = true
-+
-+	var point_material := StandardMaterial3D.new()
-+	point_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-+	point_material.albedo_color = Color(0.0, 0.73, 1.0, 0.82)
-+	point_material.emission_enabled = true
-+	point_material.emission = Color(0.0, 0.73, 1.0)
-+	point_material.emission_energy_multiplier = 1.5
-+	point_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-+
-+	var point_mesh := SphereMesh.new()
-+	point_mesh.radius = 0.075
-+	point_mesh.height = 0.15
-+
-+	for i in range(POINT_COUNT):
-+		var marker := MeshInstance3D.new()
-+		marker.mesh = point_mesh
-+		marker.material_override = point_material
-+		add_child(marker)
-+		_markers.append(marker)
-+
-+	var landing_mesh := CylinderMesh.new()
-+	landing_mesh.top_radius = 0.65
-+	landing_mesh.bottom_radius = 0.65
-+	landing_mesh.height = 0.025
-+	landing_mesh.radial_segments = 48
-+
-+	_landing_marker = MeshInstance3D.new()
-+	_landing_marker.mesh = landing_mesh
-+	_landing_marker.material_override = AIM_MATERIAL.duplicate()
-+	add_child(_landing_marker)
-+
-+	hide()
-+
-+
-+func set_excluded_body(body: CollisionObject3D) -> void:
-+	_excluded_rids = [body.get_rid()]
-+
-+
-+func update_preview(origin: Vector3, velocity: Vector3, gravity: float) -> void:
-+	show()
-+
-+	var points := _trace_points(origin, velocity, gravity)
-+	for i in range(_markers.size()):
-+		var marker := _markers[i]
-+		if i < points.size():
-+			marker.show()
-+			marker.global_position = points[i]
-+			marker.scale = Vector3.ONE * lerp(1.15, 0.65, float(i) / float(_markers.size()))
-+		else:
-+			marker.hide()
-+
-+	if points.is_empty():
-+		_landing_marker.hide()
-+		return
-+
-+	_landing_marker.show()
-+	_landing_marker.global_position = points[points.size() - 1] + Vector3.UP * 0.03
-+
-+
-+func _trace_points(origin: Vector3, velocity: Vector3, gravity: float) -> PackedVector3Array:
-+	var points := PackedVector3Array()
++static func sample_arc_to_ground(origin: Vector3, velocity: Vector3, gravity: float, ground_y: float, step_time: float, max_time: float) -> Array[Vector3]:
++	var samples: Array[Vector3] = [origin]
++	var gravity_strength: float = max(abs(gravity), 0.001)
++	var time: float = max(step_time, 0.01)
 +	var previous := origin
-+	points.append(previous)
 +
-+	var space_state := get_world_3d().direct_space_state
-+	for i in range(1, POINT_COUNT):
-+		var time := float(i) * STEP_TIME
-+		var current := GRENADE_TRAJECTORY_SCRIPT.position_at_time(origin, velocity, gravity, time)
-+		var query := PhysicsRayQueryParameters3D.create(previous, current, COLLISION_MASK, _excluded_rids)
-+		query.collide_with_areas = true
-+		query.collide_with_bodies = true
-+		var result := space_state.intersect_ray(query)
-+		if not result.is_empty():
-+			points.append(result["position"])
-+			return points
++	while time <= max_time:
++		var position := origin + velocity * time + Vector3.DOWN * 0.5 * gravity_strength * time * time
++		if position.y <= ground_y:
++			var segment := position - previous
++			var t := 0.0
++			if abs(segment.y) > 0.0001:
++				t = clamp((ground_y - previous.y) / segment.y, 0.0, 1.0)
++			samples.append(previous.lerp(position, t))
++			return samples
 +
-+		points.append(current)
-+		previous = current
++		samples.append(position)
++		previous = position
++		time += max(step_time, 0.01)
 +
-+	return points
-diff --git a/player/grenade_trajectory_preview.gd.uid b/player/grenade_trajectory_preview.gd.uid
++	return samples
+diff --git a/player/grenade_throw_math.gd.uid b/player/grenade_throw_math.gd.uid
 new file mode 100644
-index 0000000..ab2a5e0
+index 0000000..3bc75a3
 --- /dev/null
-+++ b/player/grenade_trajectory_preview.gd.uid
++++ b/player/grenade_throw_math.gd.uid
 @@ -0,0 +1 @@
-+uid://0e4ptwx4ggbh
-diff --git a/player/grenade_visuals/grenade/grenade.glb.import b/player/grenade_visuals/grenade/grenade.glb.import
-index d5ce2db..b3095ca 100644
---- a/player/grenade_visuals/grenade/grenade.glb.import
-+++ b/player/grenade_visuals/grenade/grenade.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/grenade.glb-54bad02076507a130214e3df61e4e1d5.
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -42,4 +40,3 @@ materials/extract_path=""
- _subresources={}
- gltf/naming_version=0
- gltf/embedded_image_handling=3
--gltf/texture_map_mode=0
-diff --git a/player/model/gdbot.glb.import b/player/model/gdbot.glb.import
-index dc493e1..6443bc6 100644
---- a/player/model/gdbot.glb.import
-+++ b/player/model/gdbot.glb.import
-@@ -16,8 +16,6 @@ dest_files=["res://.godot/imported/gdbot.glb-b2b35a66e5dbccde081b1475b5eaced5.sc
- nodes/root_type="Node3D"
- nodes/root_name="Scene Root"
- nodes/root_script=null
--mesh_library/use_node_names_as_mesh_names=false
--array_mesh/deduplicate_surfaces=true
- nodes/apply_root_scale=true
- nodes/root_scale=1.0
- nodes/import_as_skeleton_bones=false
-@@ -10325,4 +10323,3 @@ _subresources={
- }
- gltf/naming_version=0
- gltf/embedded_image_handling=3
--gltf/texture_map_mode=0
++uid://bye7iwqr82866
 diff --git a/player/player.gd b/player/player.gd
-index d89e1c4..fd2b447 100644
+index d89e1c4..1d7f39d 100644
 --- a/player/player.gd
 +++ b/player/player.gd
-@@ -5,6 +5,14 @@ signal weapon_switched(weapon_name: String)
+@@ -5,6 +5,16 @@ signal weapon_switched(weapon_name: String)
  
  const BULLET_SCENE := preload("bullet.tscn")
  const COIN_SCENE := preload("coin/coin.tscn")
 +const GRENADE_PROJECTILE_SCENE := preload("res://player/grenade_projectile.tscn")
-+const GRENADE_PREVIEW_SCRIPT := preload("res://player/grenade_trajectory_preview.gd")
-+const GRENADE_TRAJECTORY_SCRIPT := preload("res://player/grenade_trajectory.gd")
++const GRENADE_THROW_MATH := preload("res://player/grenade_throw_math.gd")
++const GRENADE_TARGET_MATERIAL := preload("res://player/grenade_visuals/aim_material.tres")
 +
-+enum WeaponMode { DEFAULT, GRENADE }
++enum WeaponMode {
++	DEFAULT,
++	GRENADE,
++}
 +
-+const WEAPON_NAME_DEFAULT := "DEFAULT"
-+const WEAPON_NAME_GRENADE := "GRENADE"
++const GRENADE_PREVIEW_POINT_COUNT := 18
  
  ## Character maximum run speed on the ground.
  @export var move_speed := 8.0
-@@ -27,6 +35,20 @@ const COIN_SCENE := preload("coin/coin.tscn")
+@@ -27,6 +37,18 @@ const COIN_SCENE := preload("coin/coin.tscn")
  @export var max_throwback_force := 15.0
  ## Projectile cooldown
  @export var shoot_cooldown := 0.5
 +## Grenade cooldown
 +@export var grenade_cooldown := 1.0
-+## Forward speed used by default non-aimed grenade throws.
-+@export var grenade_default_horizontal_speed := 10.0
-+## Upward speed used by default non-aimed grenade throws.
-+@export var grenade_default_vertical_speed := 5.2
-+## Gravity value used by grenade preview and aimed throw calculation.
-+@export var grenade_gravity := 16.0
-+## Extra height used to calculate the aimed grenade arc.
-+@export var grenade_aim_arc_height := 6.0
-+## Minimum aimed grenade landing distance.
++## Default forward grenade landing distance when not aiming.
++@export var grenade_default_distance := 8.0
++## Minimum aimed grenade throw distance.
 +@export var grenade_min_aim_distance := 4.0
-+## Maximum aimed grenade landing distance.
-+@export var grenade_max_aim_distance := 16.0
++## Maximum aimed grenade throw distance.
++@export var grenade_max_aim_distance := 14.0
++## Extra height used when solving the grenade arc.
++@export var grenade_arc_height := 4.0
++## Gravity strength used by grenade throw math and projectile physics.
++@export var grenade_gravity := 30.0
  
  @onready var _rotation_root: Node3D = $CharacterRotationRoot
  @onready var _camera_controller: CameraController = $CameraController
-@@ -47,17 +69,23 @@ const COIN_SCENE := preload("coin/coin.tscn")
+@@ -47,17 +69,26 @@ const COIN_SCENE := preload("coin/coin.tscn")
  @onready var _is_on_floor_buffer := false
  
  @onready var _shoot_cooldown_tick := shoot_cooldown
 +@onready var _grenade_cooldown_tick := grenade_cooldown
 +
-+var _current_weapon := -1
-+var _grenade_preview = null
++var _weapon_mode: int = WeaponMode.DEFAULT
++var _grenade_preview_root: Node3D = null
++var _grenade_landing_marker: MeshInstance3D = null
++var _grenade_preview_points: Array[MeshInstance3D] = []
  
  
  func _ready() -> void:
  	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
  	_camera_controller.setup(self)
 -	weapon_switched.emit("DEFAULT")
++	_create_grenade_preview()
++	_select_weapon(WeaponMode.DEFAULT, true)
  
  	# When copying this character to a new project, the project may lack required input actions.
  	# In that case, we register input actions for the user at runtime.
  	if not InputMap.has_action("move_left"):
  		_register_input_actions()
-+	_ensure_weapon_switch_action()
-+	_setup_grenade_preview()
-+	_select_weapon(WeaponMode.DEFAULT)
++	elif not InputMap.has_action("weapon_switch"):
++		_register_weapon_switch_input_action()
  
  	_character_skin.stepped.connect(play_foot_step_sound)
  
-@@ -80,6 +108,9 @@ func _physics_process(delta: float) -> void:
+@@ -80,6 +111,9 @@ func _physics_process(delta: float) -> void:
  	var is_air_boosting := Input.is_action_pressed("jump") and not is_on_floor() and velocity.y > 0.0
  	var is_just_on_floor := is_on_floor() and not _is_on_floor_buffer
  
 +	if Input.is_action_just_pressed("weapon_switch"):
-+		_toggle_weapon()
++		_toggle_weapon_mode()
 +
  	_is_on_floor_buffer = is_on_floor()
  	_move_direction = _get_camera_oriented_input()
  
-@@ -111,8 +142,18 @@ func _physics_process(delta: float) -> void:
+@@ -111,14 +145,22 @@ func _physics_process(delta: float) -> void:
  	# Update attack state and position
  
  	_shoot_cooldown_tick += delta
 +	_grenade_cooldown_tick += delta
  
 -	if is_attacking:
-+	if _current_weapon == WeaponMode.GRENADE:
-+		_update_grenade_preview(is_aiming)
-+		if is_just_attacking and _grenade_cooldown_tick >= grenade_cooldown:
+-		if is_aiming and is_on_floor():
+-			if _shoot_cooldown_tick > shoot_cooldown:
+-				_shoot_cooldown_tick = 0.0
+-				shoot()
+-		elif is_just_attacking:
+-			attack()
++	if _weapon_mode == WeaponMode.GRENADE:
++		if is_just_attacking and not _attack_animation_player.is_playing() and _grenade_cooldown_tick > grenade_cooldown:
 +			_grenade_cooldown_tick = 0.0
 +			throw_grenade(is_aiming)
 +	else:
-+		if _grenade_preview != null:
-+			_grenade_preview.hide()
++		if is_attacking:
++			if is_aiming and is_on_floor():
++				if _shoot_cooldown_tick > shoot_cooldown:
++					_shoot_cooldown_tick = 0.0
++					shoot()
++			elif is_just_attacking:
++				attack()
 +
-+	if _current_weapon == WeaponMode.DEFAULT and is_attacking:
- 		if is_aiming and is_on_floor():
- 			if _shoot_cooldown_tick > shoot_cooldown:
- 				_shoot_cooldown_tick = 0.0
-@@ -173,6 +214,17 @@ func shoot() -> void:
++	_update_grenade_preview(is_aiming)
+ 
+ 	velocity.y += _gravity * delta
+ 
+@@ -173,6 +215,16 @@ func shoot() -> void:
  	bullet.global_position = origin
  
  
 +func throw_grenade(is_aiming: bool) -> void:
-+	var origin := _get_grenade_throw_origin()
-+	var throw_velocity := _get_grenade_throw_velocity(origin, is_aiming)
++	var origin := _get_grenade_throw_origin(is_aiming)
++	var target := _get_grenade_target(is_aiming, origin)
++	var launch_velocity: Vector3 = GRENADE_THROW_MATH.get_throw_velocity(origin, target, grenade_arc_height, grenade_gravity)
 +	var grenade := GRENADE_PROJECTILE_SCENE.instantiate()
-+	grenade.shooter = self
-+	grenade.initial_velocity = throw_velocity
-+	grenade.global_position = origin
 +	get_parent().add_child(grenade)
-+	grenade.throw(origin, throw_velocity, self)
++	grenade.global_position = origin
++	grenade.call("launch", launch_velocity, self, grenade_gravity)
 +
 +
  func reset_position() -> void:
  	transform.origin = _start_position
  
-@@ -209,6 +261,65 @@ func _get_camera_oriented_input() -> Vector3:
- 	return input
+@@ -193,6 +245,129 @@ func lose_coins() -> void:
+ 	_ui_coins_container.update_coins_amount(_coins)
  
  
-+func _toggle_weapon() -> void:
-+	if _current_weapon == WeaponMode.DEFAULT:
++func _toggle_weapon_mode() -> void:
++	if _weapon_mode == WeaponMode.DEFAULT:
 +		_select_weapon(WeaponMode.GRENADE)
 +	else:
 +		_select_weapon(WeaponMode.DEFAULT)
 +
 +
-+func _select_weapon(weapon: int) -> void:
-+	if _current_weapon == weapon:
++func _select_weapon(mode: int, force_emit: bool = false) -> void:
++	if _weapon_mode == mode and not force_emit:
 +		return
 +
-+	_current_weapon = weapon
-+	weapon_switched.emit(_get_weapon_name(weapon))
-+	if _grenade_preview != null and weapon != WeaponMode.GRENADE:
-+		_grenade_preview.hide()
++	_weapon_mode = mode
++	var weapon_name := "DEFAULT"
++	if _weapon_mode == WeaponMode.GRENADE:
++		weapon_name = "GRENADE"
++	weapon_switched.emit(weapon_name)
++	_set_grenade_preview_visible(_weapon_mode == WeaponMode.GRENADE)
 +
 +
-+func _get_weapon_name(weapon: int) -> String:
-+	match weapon:
-+		WeaponMode.GRENADE:
-+			return WEAPON_NAME_GRENADE
-+		_:
-+			return WEAPON_NAME_DEFAULT
++func _create_grenade_preview() -> void:
++	_grenade_preview_root = Node3D.new()
++	_grenade_preview_root.name = "GrenadeTrajectoryPreview"
++	_grenade_preview_root.top_level = true
++	add_child(_grenade_preview_root)
++
++	var point_mesh := SphereMesh.new()
++	point_mesh.radius = 0.075
++	point_mesh.height = 0.15
++
++	var point_material := StandardMaterial3D.new()
++	point_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
++	point_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
++	point_material.albedo_color = Color(0.0, 0.73, 1.0, 0.85)
++	point_material.emission_enabled = true
++	point_material.emission = Color(0.0, 0.73, 1.0)
++	point_material.emission_energy_multiplier = 1.25
++
++	for i in range(GRENADE_PREVIEW_POINT_COUNT):
++		var point := MeshInstance3D.new()
++		point.name = "ArcPoint%d" % i
++		point.mesh = point_mesh
++		point.material_override = point_material
++		_grenade_preview_root.add_child(point)
++		_grenade_preview_points.append(point)
++
++	var marker_mesh := PlaneMesh.new()
++	marker_mesh.size = Vector2(2.1, 2.1)
++
++	_grenade_landing_marker = MeshInstance3D.new()
++	_grenade_landing_marker.name = "LandingMarker"
++	_grenade_landing_marker.mesh = marker_mesh
++	_grenade_landing_marker.material_override = GRENADE_TARGET_MATERIAL
++	_grenade_preview_root.add_child(_grenade_landing_marker)
++	_set_grenade_preview_visible(false)
 +
 +
-+func _setup_grenade_preview() -> void:
-+	_grenade_preview = GRENADE_PREVIEW_SCRIPT.new()
-+	get_parent().add_child(_grenade_preview)
-+	_grenade_preview.set_excluded_body(self)
++func _set_grenade_preview_visible(visible_state: bool) -> void:
++	if _grenade_preview_root != null:
++		_grenade_preview_root.visible = visible_state
 +
 +
 +func _update_grenade_preview(is_aiming: bool) -> void:
-+	if _grenade_preview == null:
++	if _grenade_preview_root == null:
++		return
++	if _weapon_mode != WeaponMode.GRENADE:
++		_set_grenade_preview_visible(false)
 +		return
 +
-+	var origin := _get_grenade_throw_origin()
-+	var throw_velocity := _get_grenade_throw_velocity(origin, is_aiming)
-+	_grenade_preview.update_preview(origin, throw_velocity, grenade_gravity)
++	_set_grenade_preview_visible(true)
++
++	var origin := _get_grenade_throw_origin(is_aiming)
++	var target := _get_grenade_target(is_aiming, origin)
++	var launch_velocity: Vector3 = GRENADE_THROW_MATH.get_throw_velocity(origin, target, grenade_arc_height, grenade_gravity)
++	var samples: Array[Vector3] = GRENADE_THROW_MATH.sample_arc_to_ground(origin, launch_velocity, grenade_gravity, target.y, 0.08, 3.0)
++	var sample_count: int = min(samples.size(), _grenade_preview_points.size())
++
++	for i in range(_grenade_preview_points.size()):
++		var point := _grenade_preview_points[i]
++		point.visible = i < sample_count
++		if i >= sample_count:
++			continue
++
++		var sample_index := i
++		if sample_count > 1:
++			sample_index = roundi(float(i) * float(samples.size() - 1) / float(sample_count - 1))
++		point.global_position = samples[sample_index]
++
++	_grenade_landing_marker.global_position = samples.back() + Vector3.UP * 0.04
 +
 +
-+func _get_grenade_throw_origin() -> Vector3:
-+	return global_position + Vector3.UP * 1.35 + _last_strong_direction.normalized() * 0.75
++func _get_grenade_throw_origin(is_aiming: bool) -> Vector3:
++	var forward := _get_grenade_forward(is_aiming)
++	return global_position + Vector3.UP * 1.15 + forward * 0.75
 +
 +
-+func _get_grenade_throw_velocity(origin: Vector3, is_aiming: bool) -> Vector3:
++func _get_grenade_target(is_aiming: bool, origin: Vector3) -> Vector3:
++	if not is_aiming:
++		var facing_forward := _rotation_root.global_transform.basis * Vector3.BACK
++		return GRENADE_THROW_MATH.get_default_target(origin, facing_forward, _ground_height, grenade_default_distance)
++
++	var aim_target := _camera_controller.get_aim_target()
++	var horizontal := Vector3(aim_target.x - origin.x, 0.0, aim_target.z - origin.z)
++	if horizontal.length_squared() < 0.0001:
++		horizontal = _get_grenade_forward(true) * grenade_min_aim_distance
++
++	var distance: float = clamp(horizontal.length(), grenade_min_aim_distance, grenade_max_aim_distance)
++	var target_y := _ground_height
++	if _camera_controller.get_aim_collider() != null:
++		target_y = aim_target.y
++	return Vector3(origin.x, target_y, origin.z) + horizontal.normalized() * distance
++
++
++func _get_grenade_forward(is_aiming: bool) -> Vector3:
++	var forward := _rotation_root.global_transform.basis * Vector3.BACK
 +	if is_aiming:
-+		var camera_forward := (_camera_controller.global_transform.basis * Vector3.BACK).normalized()
-+		return GRENADE_TRAJECTORY_SCRIPT.get_aimed_velocity(
-+			origin,
-+			_camera_controller.get_aim_target(),
-+			camera_forward,
-+			grenade_gravity,
-+			grenade_aim_arc_height,
-+			grenade_min_aim_distance,
-+			grenade_max_aim_distance,
-+		)
-+	return GRENADE_TRAJECTORY_SCRIPT.get_default_velocity(_last_strong_direction, grenade_default_horizontal_speed, grenade_default_vertical_speed)
++		forward = _camera_controller.global_transform.basis * Vector3.BACK
++
++	var horizontal_forward := Vector3(forward.x, 0.0, forward.z)
++	if horizontal_forward.length_squared() < 0.0001:
++		return Vector3.FORWARD
++	return horizontal_forward.normalized()
 +
 +
- func play_foot_step_sound() -> void:
- 	_step_sound.pitch_scale = randfn(1.2, 0.2)
- 	_step_sound.play()
-@@ -241,6 +352,7 @@ func _register_input_actions() -> void:
- 		"attack": MOUSE_BUTTON_LEFT,
- 		"aim": MOUSE_BUTTON_RIGHT,
- 		"pause": KEY_ESCAPE,
-+		"weapon_switch": KEY_TAB,
- 		"camera_left": KEY_Q,
- 		"camera_right": KEY_E,
- 		"camera_up": KEY_R,
-@@ -253,3 +365,17 @@ func _register_input_actions() -> void:
+ func _get_camera_oriented_input() -> Vector3:
+ 	if _attack_animation_player.is_playing():
+ 		return Vector3.ZERO
+@@ -253,3 +428,19 @@ func _register_input_actions() -> void:
  		var input_key = InputEventKey.new()
  		input_key.keycode = INPUT_ACTIONS[action]
  		InputMap.action_add_event(action, input_key)
++	_register_weapon_switch_input_action()
 +
 +
-+func _ensure_weapon_switch_action() -> void:
++func _register_weapon_switch_input_action() -> void:
 +	if InputMap.has_action("weapon_switch"):
 +		return
 +
 +	InputMap.add_action("weapon_switch")
-+	var input_key := InputEventKey.new()
-+	input_key.keycode = KEY_TAB
-+	InputMap.action_add_event("weapon_switch", input_key)
 +
-+	var input_button := InputEventJoypadButton.new()
-+	input_button.button_index = 9
-+	InputMap.action_add_event("weapon_switch", input_button)
++	var keyboard_event := InputEventKey.new()
++	keyboard_event.physical_keycode = KEY_TAB
++	InputMap.action_add_event("weapon_switch", keyboard_event)
++
++	var joypad_event := InputEventJoypadButton.new()
++	joypad_event.button_index = JOY_BUTTON_Y
++	InputMap.action_add_event("weapon_switch", joypad_event)
 diff --git a/project.godot b/project.godot
-index 6ae14a1..aef09c4 100644
+index 6ae14a1..acc0f30 100644
 --- a/project.godot
 +++ b/project.godot
 @@ -96,6 +96,12 @@ aim={
@@ -975,139 +620,136 @@ index 6ae14a1..aef09c4 100644
 +weapon_switch={
 +"deadzone": 0.5,
 +"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194306,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
-+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":9,"pressure":0.0,"pressed":false,"script":null)
++, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":3,"pressure":0.0,"pressed":false,"script":null)
 +]
 +}
  pause={
  "deadzone": 0.5,
  "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194305,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
-diff --git a/tests/grenade_feature_tests.gd b/tests/grenade_feature_tests.gd
+diff --git a/tests/grenade_math_test.gd b/tests/grenade_math_test.gd
 new file mode 100644
-index 0000000..9f79027
+index 0000000..c1b8154
 --- /dev/null
-+++ b/tests/grenade_feature_tests.gd
-@@ -0,0 +1,117 @@
-+extends SceneTree
++++ b/tests/grenade_math_test.gd
+@@ -0,0 +1,102 @@
++extends Node
 +
-+const GrenadeTrajectory := preload("res://player/grenade_trajectory.gd")
-+const GRENADE_PROJECTILE_SCENE := preload("res://player/grenade_projectile.tscn")
++const MATH_PATH := "res://player/grenade_throw_math.gd"
 +
 +var _failures: Array[String] = []
 +
 +
-+class DummyDamageable:
-+	extends StaticBody3D
-+
-+	var damage_count := 0
-+	var last_force := Vector3.ZERO
-+
-+	func _ready() -> void:
-+		add_to_group("damageables")
-+		collision_layer = 1
-+		collision_mask = 1
-+		var collision_shape := CollisionShape3D.new()
-+		var shape := SphereShape3D.new()
-+		shape.radius = 0.5
-+		collision_shape.shape = shape
-+		add_child(collision_shape)
-+
-+	func damage(_impact_point: Vector3, force: Vector3) -> void:
-+		damage_count += 1
-+		last_force = force
-+
-+
-+func _init() -> void:
-+	call_deferred("_run")
-+
-+
-+func _run() -> void:
-+	_test_default_throw_lands_at_medium_range()
-+	_test_aimed_throw_uses_target_distance()
-+	await _test_explosion_damages_only_nearby_damageables()
++func _ready() -> void:
++	_test_default_target_uses_medium_forward_range()
++	_test_throw_velocity_lands_near_flat_target()
++	_test_arc_samples_stop_at_ground()
 +
 +	if _failures.is_empty():
-+		print("Grenade feature tests passed")
-+		quit(0)
++		print("[grenade_math_test] PASS")
++		await get_tree().create_timer(5.0).timeout
++		get_tree().quit(0)
 +	else:
 +		for failure in _failures:
 +			push_error(failure)
-+		quit(1)
++		await get_tree().create_timer(5.0).timeout
++		get_tree().quit(1)
 +
 +
-+func _test_default_throw_lands_at_medium_range() -> void:
-+	var origin := Vector3(0.0, 1.35, 0.0)
-+	var velocity := GrenadeTrajectory.get_default_velocity(Vector3.FORWARD, 10.0, 5.2)
-+	var landing := GrenadeTrajectory.estimate_ground_landing(origin, velocity, 16.0, 0.0)
-+	var horizontal_distance := Vector2(landing.x, landing.z).length()
-+	_assert_between(horizontal_distance, 6.0, 12.0, "default grenade throw should land at medium combat range")
-+	_assert_true(landing.z > 0.0, "default grenade throw should land in front of the player")
++func _test_default_target_uses_medium_forward_range() -> void:
++	var math_script := load(MATH_PATH)
++	_assert_true(math_script != null, "grenade math script should load")
++	if math_script == null:
++		return
++
++	var origin := Vector3(2.0, 1.0, -3.0)
++	var forward := Vector3(0.2, 0.6, -1.0)
++	var target: Vector3 = math_script.get_default_target(origin, forward, 0.0, 8.0)
++	var horizontal_offset := Vector3(target.x - origin.x, 0.0, target.z - origin.z)
++
++	_assert_approx(horizontal_offset.length(), 8.0, 0.01, "default target should be 8 units forward")
++	_assert_approx(target.y, 0.0, 0.01, "default target should land on requested ground height")
++	_assert_true(horizontal_offset.normalized().dot(Vector3(0.2, 0.0, -1.0).normalized()) > 0.99, "default target should ignore vertical aim and keep horizontal direction")
 +
 +
-+func _test_aimed_throw_uses_target_distance() -> void:
-+	var origin := Vector3(0.0, 1.35, 0.0)
-+	var near_target := Vector3(0.0, 0.0, 7.0)
-+	var far_target := Vector3(0.0, 0.0, 14.0)
-+	var near_velocity := GrenadeTrajectory.get_aimed_velocity(origin, near_target, Vector3.FORWARD, 16.0, 6.0, 4.0, 16.0)
-+	var far_velocity := GrenadeTrajectory.get_aimed_velocity(origin, far_target, Vector3.FORWARD, 16.0, 6.0, 4.0, 16.0)
-+	var near_landing := GrenadeTrajectory.estimate_ground_landing(origin, near_velocity, 16.0, 0.0)
-+	var far_landing := GrenadeTrajectory.estimate_ground_landing(origin, far_velocity, 16.0, 0.0)
++func _test_throw_velocity_lands_near_flat_target() -> void:
++	var math_script := load(MATH_PATH)
++	if math_script == null:
++		return
 +
-+	_assert_true(far_landing.z > near_landing.z + 3.0, "aimed grenade throw should respond to farther target distances")
-+	_assert_between(near_landing.z, 4.0, 10.0, "near aimed grenade landing should stay near the requested target")
-+	_assert_between(far_landing.z, 10.0, 16.5, "far aimed grenade landing should stay near the requested target")
++	var origin := Vector3(0.0, 1.2, 0.0)
++	var target := Vector3(0.0, 0.0, -8.0)
++	var gravity := 30.0
++	var velocity: Vector3 = math_script.get_throw_velocity(origin, target, 4.0, gravity)
++	var impact: Dictionary = _simulate_to_ground(origin, velocity, gravity, 0.0)
 +
-+
-+func _test_explosion_damages_only_nearby_damageables() -> void:
-+	var shooter := CharacterBody3D.new()
-+	shooter.name = "Shooter"
-+	root.add_child(shooter)
-+	shooter.global_position = Vector3.ZERO
-+
-+	var near_target := DummyDamageable.new()
-+	root.add_child(near_target)
-+	near_target.global_position = Vector3(2.0, 0.0, 0.0)
-+
-+	var far_target := DummyDamageable.new()
-+	root.add_child(far_target)
-+	far_target.global_position = Vector3(12.0, 0.0, 0.0)
-+
-+	var grenade := GRENADE_PROJECTILE_SCENE.instantiate()
-+	root.add_child(grenade)
-+	grenade.global_position = Vector3.ZERO
-+	grenade.shooter = shooter
-+	grenade.explosion_radius = 3.5
-+
-+	await process_frame
-+	await physics_frame
-+	grenade.detonate()
-+	await process_frame
-+
-+	_assert_equal(near_target.damage_count, 1, "grenade explosion should damage nearby damageables once")
-+	_assert_equal(far_target.damage_count, 0, "grenade explosion should leave distant damageables untouched")
-+	_assert_true(near_target.last_force.length() > 0.0, "grenade explosion should apply visible knockback force")
-+
-+	shooter.queue_free()
-+	near_target.queue_free()
-+	far_target.queue_free()
++	_assert_true(velocity.y > 0.0, "throw should start upward for an arc")
++	_assert_true(float(impact.max_y) > 4.0, "arc should visibly rise before landing")
++	_assert_approx(Vector3(impact.position).distance_to(target), 0.0, 0.25, "throw should land near target")
 +
 +
-+func _assert_true(value: bool, message: String) -> void:
-+	if not value:
++func _test_arc_samples_stop_at_ground() -> void:
++	var math_script := load(MATH_PATH)
++	if math_script == null:
++		return
++
++	var origin := Vector3(0.0, 1.2, 0.0)
++	var target := Vector3(0.0, 0.0, -8.0)
++	var gravity := 30.0
++	var velocity: Vector3 = math_script.get_throw_velocity(origin, target, 4.0, gravity)
++	var samples: Array[Vector3] = math_script.sample_arc_to_ground(origin, velocity, gravity, 0.0, 0.08, 3.0)
++
++	_assert_true(samples.size() > 4, "trajectory preview should have several samples")
++	_assert_approx(samples[0].distance_to(origin), 0.0, 0.01, "trajectory samples should start at origin")
++	_assert_approx(samples.back().y, 0.0, 0.2, "trajectory samples should stop near ground")
++	_assert_approx(samples.back().distance_to(target), 0.0, 0.45, "trajectory samples should end near target")
++
++
++func _simulate_to_ground(origin: Vector3, velocity: Vector3, gravity: float, ground_y: float) -> Dictionary:
++	var position := origin
++	var max_y := origin.y
++	var previous := position
++	var step := 0.01
++
++	for i in range(600):
++		previous = position
++		position += velocity * step
++		velocity.y -= gravity * step
++		max_y = max(max_y, position.y)
++		if position.y <= ground_y:
++			var segment := position - previous
++			var t := 0.0
++			if abs(segment.y) > 0.0001:
++				t = clamp((ground_y - previous.y) / segment.y, 0.0, 1.0)
++			position = previous.lerp(position, t)
++			break
++
++	return {"position": position, "max_y": max_y}
++
++
++func _assert_true(condition: bool, message: String) -> void:
++	if not condition:
 +		_failures.append(message)
 +
 +
-+func _assert_equal(actual: Variant, expected: Variant, message: String) -> void:
-+	if actual != expected:
-+		_failures.append("%s. Expected %s, got %s" % [message, str(expected), str(actual)])
-+
-+
-+func _assert_between(actual: float, minimum: float, maximum: float, message: String) -> void:
-+	if actual < minimum or actual > maximum:
-+		_failures.append("%s. Expected %.2f through %.2f, got %.2f" % [message, minimum, maximum, actual])
-diff --git a/tests/grenade_feature_tests.gd.uid b/tests/grenade_feature_tests.gd.uid
++func _assert_approx(actual: float, expected: float, tolerance: float, message: String) -> void:
++	if abs(actual - expected) > tolerance:
++		_failures.append("%s (expected %.3f, got %.3f)" % [message, expected, actual])
+diff --git a/tests/grenade_math_test.gd.uid b/tests/grenade_math_test.gd.uid
 new file mode 100644
-index 0000000..b9bddba
+index 0000000..0781537
 --- /dev/null
-+++ b/tests/grenade_feature_tests.gd.uid
++++ b/tests/grenade_math_test.gd.uid
 @@ -0,0 +1 @@
-+uid://ddfq6u7mr2ml6
++uid://bx8umhxu7dj4i
+diff --git a/tests/grenade_math_test.tscn b/tests/grenade_math_test.tscn
+new file mode 100644
+index 0000000..501ada0
+--- /dev/null
++++ b/tests/grenade_math_test.tscn
+@@ -0,0 +1,6 @@
++[gd_scene load_steps=2 format=3]
++
++[ext_resource type="Script" path="res://tests/grenade_math_test.gd" id="1_q2kpk"]
++
++[node name="GrenadeMathTest" type="Node"]
++script = ExtResource("1_q2kpk")
