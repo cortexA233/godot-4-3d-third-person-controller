@@ -1,6 +1,6 @@
-IMPORT COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --headless --path C:\Users\corte\AppData\Local\Temp\roboblast-grenade-verifier-xm95_n0h\candidate --import
+COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --headless --path C:\Users\corte\AppData\Local\Temp\roboblast-screenshot-probe-g43rfs9y\candidate --import
 
-IMPORT STDOUT:
+STDOUT:
 Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
 
 [   0% ] [90m[1mfirst_scan_filesystem[22m | Started 项目初始化 (5 steps)[39m[0m
@@ -576,25 +576,4 @@ Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
 [92m[ DONE ][39m [1mloading_editor_layout[22m
 [0m
 
-IMPORT STDERR:
-
-
-SCRIPT COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --headless --path C:\Users\corte\AppData\Local\Temp\roboblast-grenade-verifier-xm95_n0h\candidate --script res://__verifier__/runner.gd
-
-SCRIPT STDOUT:
-Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
-
-Verifier swap input route: Tab key fallback
-Player scene instantiated in deterministic arena.
-Player scene instantiated in deterministic arena.
-Player scene instantiated in deterministic arena.
-Player scene instantiated in deterministic arena.
-Player scene instantiated in deterministic arena.
-Player scene instantiated in deterministic arena.
-Player scene instantiated in deterministic arena.
-Player scene instantiated in deterministic arena.
-Player scene instantiated in deterministic arena.
-Player scene instantiated in deterministic arena.
-Player scene instantiated in deterministic arena.
-
-SCRIPT STDERR:
+STDERR:

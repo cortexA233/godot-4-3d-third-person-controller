@@ -1,0 +1,11 @@
+COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --path C:\Users\corte\AppData\Local\Temp\roboblast-screenshot-probe-g43rfs9y\candidate --script res://__verifier__/screenshot_probe_runner.gd -- --probe-mode both
+
+STDOUT:
+Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
+Vulkan 1.4.325 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce RTX 5070 Laptop GPU
+
+Verifier debug arena ready. Open res://__verifier__/debug_arena.tscn and run this scene.
+
+STDERR:
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+   at: cleanup (core/object/object.cpp:2641)
