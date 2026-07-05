@@ -10,6 +10,9 @@
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\debug_arena\\attack_060.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\debug_arena\\attack_070.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\debug_arena\\attack_080.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\main_ready.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\main_aim.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_010.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_020.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_030.png",
@@ -17,10 +20,7 @@
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_050.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_060.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_070.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_080.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\main_aim.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\main_ready.png"
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_080.png"
     ],
     "screenshot_probe_result": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe\\result.json",
     "screenshot_probe_dir": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus\\evidence\\screenshot-probe"
@@ -336,13 +336,15 @@
       "label": "Screenshot Visual Analysis",
       "max": 10,
       "name": "screenshot_visual",
-      "notes": "debug_arena projectile visible in 7 captured frame(s); debug_arena projectile footprint 182px earns full debug footprint credit; debug_arena explosion observed at frame 80; main_scene projectile visible in 7 captured frame(s); main_scene projectile footprint 952px earns full main-scene footprint credit; main_scene explosion observed at frame 80; auxiliary screenshot score is not counted in 100-point score",
+      "notes": "debug_arena projectile visible in 7 captured frame(s); debug_arena projectile footprint 196px earns full debug footprint credit; debug_arena explosion observed at frame 80; main_scene projectile visible in 7 captured frame(s); main_scene projectile footprint 980px earns full main-scene footprint credit; main_scene explosion observed at frame 80; auxiliary screenshot score is not counted in 100-point score",
       "score": 10,
       "used_for_score": false
     }
   ],
   "screenshot_probe_summary": {
     "requested_mode": "both",
+    "ok": true,
+    "display_driver": "Windows",
     "modes": {
       "debug_arena": {
         "ok": true,

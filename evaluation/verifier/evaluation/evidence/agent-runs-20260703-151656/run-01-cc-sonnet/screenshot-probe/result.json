@@ -1,0 +1,734 @@
+{
+  "auxiliary_score_sections": [
+    {
+      "categories": [
+        "debug_arena",
+        "main_scene"
+      ],
+      "label": "Screenshot Visual Analysis",
+      "max": 10,
+      "name": "screenshot_visual",
+      "notes": "debug_arena projectile visible in 7 captured frame(s); debug_arena projectile footprint too small: 42px below 64px minimum; debug_arena explosion observed at frame 80; main_scene projectile visible in 7 captured frame(s); main_scene projectile footprint 169px earns strong main-scene footprint credit; main_scene explosion observed at frame 80; auxiliary screenshot score is not counted in 100-point score",
+      "score": 7,
+      "used_for_score": false
+    }
+  ],
+  "display_driver": "Windows",
+  "godot_version": "4.6-stable (official)",
+  "modes": {
+    "debug_arena": {
+      "artifact_dir": "debug_arena",
+      "captures": [
+        {
+          "delta_from_baseline": 0.0000948422790869423,
+          "delta_from_previous": 0.0000948422790869423,
+          "elapsed_frames": 10,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_010",
+          "path": "res://__screenshot_probe__/debug_arena/attack_010.png",
+          "projectile_visual": {
+            "area_px": 42,
+            "available": true,
+            "delta_in_rect": 0.0,
+            "screen_rect": [
+              987,
+              486,
+              7,
+              6
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/debug_arena/attack_010.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0000948422790869423,
+          "delta_from_previous": 0.0,
+          "elapsed_frames": 20,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_020",
+          "path": "res://__screenshot_probe__/debug_arena/attack_020.png",
+          "projectile_visual": {
+            "area_px": 36,
+            "available": true,
+            "delta_in_rect": 0.0,
+            "screen_rect": [
+              1003,
+              469,
+              6,
+              6
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/debug_arena/attack_020.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0000991048534279284,
+          "delta_from_previous": 0.00000426257434098617,
+          "elapsed_frames": 30,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_030",
+          "path": "res://__screenshot_probe__/debug_arena/attack_030.png",
+          "projectile_visual": {
+            "area_px": 42,
+            "available": true,
+            "delta_in_rect": 0.0,
+            "screen_rect": [
+              1016,
+              461,
+              7,
+              6
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/debug_arena/attack_030.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.000100170497013175,
+          "delta_from_previous": 0.00000106564358524654,
+          "elapsed_frames": 40,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_040",
+          "path": "res://__screenshot_probe__/debug_arena/attack_040.png",
+          "projectile_visual": {
+            "area_px": 36,
+            "available": true,
+            "delta_in_rect": 0.0,
+            "screen_rect": [
+              1029,
+              461,
+              6,
+              6
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/debug_arena/attack_040.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.000100170497013175,
+          "delta_from_previous": 0.0,
+          "elapsed_frames": 50,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_050",
+          "path": "res://__screenshot_probe__/debug_arena/attack_050.png",
+          "projectile_visual": {
+            "area_px": 36,
+            "available": true,
+            "delta_in_rect": 0.0,
+            "screen_rect": [
+              1040,
+              468,
+              6,
+              6
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/debug_arena/attack_050.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0000969735662574353,
+          "delta_from_previous": 0.00000319693075573963,
+          "elapsed_frames": 60,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_060",
+          "path": "res://__screenshot_probe__/debug_arena/attack_060.png",
+          "projectile_visual": {
+            "area_px": 42,
+            "available": true,
+            "delta_in_rect": 0.0,
+            "screen_rect": [
+              1048,
+              463,
+              6,
+              7
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/debug_arena/attack_060.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0000969735662574353,
+          "delta_from_previous": 0.0,
+          "elapsed_frames": 70,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_070",
+          "path": "res://__screenshot_probe__/debug_arena/attack_070.png",
+          "projectile_visual": {
+            "area_px": 36,
+            "available": true,
+            "delta_in_rect": 0.0,
+            "screen_rect": [
+              1057,
+              460,
+              6,
+              6
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/debug_arena/attack_070.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.00061594202466633,
+          "delta_from_previous": 0.000518968458408895,
+          "elapsed_frames": 80,
+          "explosion_nodes": [
+            "/root/VerifierDebugArena/VerifierArena/Explosion",
+            "/root/VerifierDebugArena/VerifierArena/Explosion/Shell",
+            "/root/VerifierDebugArena/VerifierArena/Explosion/Blast",
+            "/root/VerifierDebugArena/VerifierArena/Explosion/GPUParticles3D",
+            "/root/VerifierDebugArena/VerifierArena/Explosion/AnimationPlayer"
+          ],
+          "explosion_observed": true,
+          "label": "attack_080",
+          "path": "res://__screenshot_probe__/debug_arena/attack_080.png",
+          "projectile_visual": {
+            "available": true,
+            "reason": "no projectile candidate projected into screen space",
+            "visible": false
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/debug_arena/attack_080.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        }
+      ],
+      "explosion_frame": 80,
+      "ok": true,
+      "projectile_footprint": {
+        "best_frame": "attack_010",
+        "max_area_px": 42,
+        "max_delta_in_rect": 0.0,
+        "used_for_score": false,
+        "visible_frame_count": 7
+      },
+      "screenshot_interval_frames": 10,
+      "stop_reason": "explosion_observed",
+      "used_for_score": false
+    },
+    "main_scene": {
+      "artifact_dir": "main_scene",
+      "captures": [
+        {
+          "label": "main_ready",
+          "path": "res://__screenshot_probe__/main_scene/main_ready.png",
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/main_ready.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "label": "main_aim",
+          "path": "res://__screenshot_probe__/main_scene/main_aim.png",
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/main_aim.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "label": "grenade_ready",
+          "path": "res://__screenshot_probe__/main_scene/grenade_ready.png",
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/grenade_ready.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0089236999562,
+          "delta_from_previous": 0.0089236999562,
+          "elapsed_frames": 10,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_010",
+          "path": "res://__screenshot_probe__/main_scene/attack_010.png",
+          "projectile_visual": {
+            "area_px": 144,
+            "available": true,
+            "delta_in_rect": 0.00511982540289561,
+            "screen_rect": [
+              954,
+              406,
+              12,
+              12
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/attack_010.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0109516197670018,
+          "delta_from_previous": 0.00658887472464298,
+          "elapsed_frames": 20,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_020",
+          "path": "res://__screenshot_probe__/main_scene/attack_020.png",
+          "projectile_visual": {
+            "area_px": 169,
+            "available": true,
+            "delta_in_rect": 0.0167279414454242,
+            "screen_rect": [
+              953,
+              344,
+              13,
+              13
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/attack_020.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0123476128839209,
+          "delta_from_previous": 0.00823529416938191,
+          "elapsed_frames": 30,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_030",
+          "path": "res://__screenshot_probe__/main_scene/attack_030.png",
+          "projectile_visual": {
+            "area_px": 144,
+            "available": true,
+            "delta_in_rect": 0.00119825700918833,
+            "screen_rect": [
+              954,
+              335,
+              12,
+              12
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/attack_030.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0138373827975517,
+          "delta_from_previous": 0.0068009378137978,
+          "elapsed_frames": 40,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_040",
+          "path": "res://__screenshot_probe__/main_scene/attack_040.png",
+          "projectile_visual": {
+            "area_px": 110,
+            "available": true,
+            "delta_in_rect": 0.00272331191485541,
+            "screen_rect": [
+              955,
+              363,
+              10,
+              11
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/attack_040.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0159590792792859,
+          "delta_from_previous": 0.00779518335020048,
+          "elapsed_frames": 50,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_050",
+          "path": "res://__screenshot_probe__/main_scene/attack_050.png",
+          "projectile_visual": {
+            "area_px": 110,
+            "available": true,
+            "delta_in_rect": 0.00457516353991297,
+            "screen_rect": [
+              955,
+              416,
+              10,
+              11
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/attack_050.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0166506820474751,
+          "delta_from_previous": 0.00608802224147518,
+          "elapsed_frames": 60,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_060",
+          "path": "res://__screenshot_probe__/main_scene/attack_060.png",
+          "projectile_visual": {
+            "area_px": 100,
+            "available": true,
+            "delta_in_rect": 0.0160130721827348,
+            "screen_rect": [
+              953,
+              412,
+              10,
+              10
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/attack_060.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0153921568562509,
+          "delta_from_previous": 0.00670609558519968,
+          "elapsed_frames": 70,
+          "explosion_nodes": [],
+          "explosion_observed": false,
+          "label": "attack_070",
+          "path": "res://__screenshot_probe__/main_scene/attack_070.png",
+          "projectile_visual": {
+            "area_px": 100,
+            "available": true,
+            "delta_in_rect": 0.147494549966521,
+            "screen_rect": [
+              943,
+              402,
+              10,
+              10
+            ],
+            "visible": true
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/attack_070.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        },
+        {
+          "delta_from_baseline": 0.0175159846602068,
+          "delta_from_previous": 0.0105743819960322,
+          "elapsed_frames": 80,
+          "explosion_nodes": [
+            "/root/ScreenshotProbeMainScene/Explosion",
+            "/root/ScreenshotProbeMainScene/Explosion/Shell",
+            "/root/ScreenshotProbeMainScene/Explosion/Blast",
+            "/root/ScreenshotProbeMainScene/Explosion/GPUParticles3D",
+            "/root/ScreenshotProbeMainScene/Explosion/AnimationPlayer"
+          ],
+          "explosion_observed": true,
+          "label": "attack_080",
+          "path": "res://__screenshot_probe__/main_scene/attack_080.png",
+          "projectile_visual": {
+            "available": true,
+            "reason": "no projectile candidate projected into screen space",
+            "visible": false
+          },
+          "saved": {
+            "available": true,
+            "display_driver": "Windows",
+            "error": 0,
+            "height": 720,
+            "path": "res://__screenshot_probe__/main_scene/attack_080.png",
+            "saved": true,
+            "width": 1280
+          },
+          "signature": {
+            "available": true,
+            "display_driver": "Windows",
+            "height": 720,
+            "sample_count": 920,
+            "sample_step": 32,
+            "width": 1280
+          }
+        }
+      ],
+      "explosion_frame": 80,
+      "ok": true,
+      "projectile_footprint": {
+        "best_frame": "attack_070",
+        "max_area_px": 169,
+        "max_delta_in_rect": 0.147494549966521,
+        "used_for_score": false,
+        "visible_frame_count": 7
+      },
+      "resume_demo": {
+        "attempted": true,
+        "method": "resume_demo",
+        "node": "/root/ScreenshotProbeMainScene/DemoPage",
+        "paused_after": false,
+        "paused_before": true,
+        "settle_frames": 24
+      },
+      "screenshot_interval_frames": 10,
+      "stop_reason": "explosion_observed",
+      "used_for_score": false
+    }
+  },
+  "ok": true,
+  "requested_mode": "both",
+  "used_for_score": false
+}

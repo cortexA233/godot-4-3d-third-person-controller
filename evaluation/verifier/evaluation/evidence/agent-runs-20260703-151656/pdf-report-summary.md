@@ -1,18 +1,17 @@
-# PDF Report Summary
+﻿# PDF Report Summary
 
-Generated: 2026-07-04T18:19:30.653085+00:00
+Generated: 2026-07-05 05:44 America/New_York
 
-reference-main-complete plus 9 agent-run workspaces; rollout-task not rerun in this pass
-
-| Name | PDF | Bytes | Images | Screenshot section | Aux score visible |
-| --- | --- | ---: | ---: | --- | --- |
-| `reference-main-complete` | `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\reference-main-complete\evidence\score-report.pdf` | 5518312 | 4 | True | True |
-| `run-01-codex` | `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-01-codex\evidence\score-report.pdf` | 3967972 | 4 | True | True |
-| `run-02-codex` | `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-02-codex\evidence\score-report.pdf` | 5527968 | 4 | True | True |
-| `run-03-codex` | `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-03-codex\evidence\score-report.pdf` | 3960257 | 4 | True | True |
-| `run-01-cc-sonnet` | `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-01-cc-sonnet\evidence\score-report.pdf` | 3965394 | 4 | True | True |
-| `run-02-cc-sonnet` | `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-02-cc-sonnet\evidence\score-report.pdf` | 3964707 | 4 | True | True |
-| `run-03-cc-sonnet` | `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-03-cc-sonnet\evidence\score-report.pdf` | 3977574 | 4 | True | True |
-| `run-01-cc-opus` | `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-01-cc-opus\evidence\score-report.pdf` | 3966959 | 4 | True | True |
-| `run-02-cc-opus` | `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-02-cc-opus\evidence\score-report.pdf` | 3980527 | 4 | True | True |
-| `run-03-cc-opus` | `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656\run-03-cc-opus\evidence\score-report.pdf` | 3965025 | 4 | True | True |
+| Project | Score | Passed | Screenshot aux | PDF bytes | PDF |
+|---|---:|:---:|---:|---:|---|
+| `run-01-cc-opus` | 74/100 | no | 9/10 | 3968117 | `evaluation\verifier\evaluation\evidence\agent-runs-20260703-151656\run-01-cc-opus\score-report.pdf` |
+| `run-01-cc-sonnet` | 77/100 | no | 7/10 | 3967739 | `evaluation\verifier\evaluation\evidence\agent-runs-20260703-151656\run-01-cc-sonnet\score-report.pdf` |
+| `run-01-codex` | 73/100 | no | 6/10 | 3967356 | `evaluation\verifier\evaluation\evidence\agent-runs-20260703-151656\run-01-codex\score-report.pdf` |
+| `run-02-cc-opus` | 88/100 | yes | 10/10 | 3975984 | `evaluation\verifier\evaluation\evidence\agent-runs-20260703-151656\run-02-cc-opus\score-report.pdf` |
+| `run-02-cc-sonnet` | 82/100 | no | 10/10 | 3964258 | `evaluation\verifier\evaluation\evidence\agent-runs-20260703-151656\run-02-cc-sonnet\score-report.pdf` |
+| `run-02-codex` | 75/100 | no | 6/10 | 5531712 | `evaluation\verifier\evaluation\evidence\agent-runs-20260703-151656\run-02-codex\score-report.pdf` |
+| `run-03-cc-opus` | 80/100 | no | 10/10 | 3962489 | `evaluation\verifier\evaluation\evidence\agent-runs-20260703-151656\run-03-cc-opus\score-report.pdf` |
+| `run-03-cc-sonnet` | 59/100 | no | 6/10 | 3982049 | `evaluation\verifier\evaluation\evidence\agent-runs-20260703-151656\run-03-cc-sonnet\score-report.pdf` |
+| `run-03-codex` | 100/100 | yes | 6/10 | 3958813 | `evaluation\verifier\evaluation\evidence\agent-runs-20260703-151656\run-03-codex\score-report.pdf` |
+| `rollout-task` | 13/100 | no | 1/10 | 3546776 | `evaluation\verifier\evaluation\evidence\agent-runs-20260703-151656\rollout-task\score-report.pdf` |
+| `reference-main-complete-run` | 91/100 | yes | 10/10 | 5521136 | `evaluation\verifier\evaluation\evidence\agent-runs-20260703-151656\reference-main-complete-run\score-report.pdf` |

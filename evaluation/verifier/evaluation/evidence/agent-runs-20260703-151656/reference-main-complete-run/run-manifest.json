@@ -1,0 +1,26 @@
+{
+  "agent": "reference",
+  "agent_record_path": "",
+  "artifact_paths": [],
+  "attempt_commit_created": false,
+  "baseline_sha": "b8336f2f0433781f5e46df4216a25397f1d2e7fa",
+  "created_at": "2026-07-05T09:19:58+00:00",
+  "diff_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\reference-main-complete-run\\evidence\\diff.patch",
+  "evidence_dir": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\reference-main-complete-run\\evidence",
+  "final_sha": "b8336f2f0433781f5e46df4216a25397f1d2e7fa",
+  "finalized_at": "2026-07-05T09:44:36+00:00",
+  "git_status_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\reference-main-complete-run\\evidence\\git-status.txt",
+  "godot_mcp": "not_applicable",
+  "grader_command": "python C:\\recent_project\\roboblast-grenade-verifier\\run_grader.py --project C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\reference-main-complete-run\\workspace --godot C:\\Godot_v4.6\\Godot_v4.6-stable_win64_console.exe --verifier-root C:\\recent_project\\roboblast-grenade-verifier --out C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\_full-rerun-temp-20260705-052000\\reference-main-complete-run-score.json --pdf-report C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\reference-main-complete-run\\evidence\\score-report.pdf --log C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\reference-main-complete-run\\evidence\\godot-verifier.log",
+  "model": "reference-main-complete",
+  "profile": "roboblast",
+  "run_root": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\reference-main-complete-run",
+  "score_path": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\reference-main-complete-run\\evidence\\score.json",
+  "source": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\reference-main-complete",
+  "source_branch": "main",
+  "source_sha": "1cf08f7c9ff11cf3d9617b611c2447a04dc79fe4",
+  "tools": [
+    "Reference implementation wrapper for collect-agent-run-evidence"
+  ],
+  "workspace": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\reference-main-complete-run\\workspace"
+}

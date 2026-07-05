@@ -1,4 +1,4 @@
-IMPORT COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --headless --path C:\Users\corte\AppData\Local\Temp\roboblast-grenade-verifier-5pfu9k3y\candidate --import
+IMPORT COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --headless --path C:\Users\corte\AppData\Local\Temp\roboblast-grenade-verifier-1_n3blam\candidate --import
 
 IMPORT STDOUT:
 Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
@@ -578,31 +578,8 @@ Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
 
 IMPORT STDERR:
 
-================================================================
-CrashHandlerException: Program crashed with signal 11
-Engine version: Godot Engine v4.6.stable.official (89cea143987d564363e15d207438530651d943ac)
-Dumping the backtrace. 
-[1] error(-1): no debug info in PE/COFF executable
-[2] error(-1): no debug info in PE/COFF executable
-[3] error(-1): no debug info in PE/COFF executable
-[4] error(-1): no debug info in PE/COFF executable
-[5] error(-1): no debug info in PE/COFF executable
-[6] error(-1): no debug info in PE/COFF executable
-[7] error(-1): no debug info in PE/COFF executable
-[8] error(-1): no debug info in PE/COFF executable
-[9] error(-1): no debug info in PE/COFF executable
-[10] error(-1): no debug info in PE/COFF executable
-[11] error(-1): no debug info in PE/COFF executable
-[12] error(-1): no debug info in PE/COFF executable
-[13] error(-1): no debug info in PE/COFF executable
-[14] error(-1): no debug info in PE/COFF executable
-[15] error(-1): no debug info in PE/COFF executable
-[16] error(-1): no debug info in PE/COFF executable
--- END OF C++ BACKTRACE --
-================================================================
 
-
-SCRIPT COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --headless --path C:\Users\corte\AppData\Local\Temp\roboblast-grenade-verifier-5pfu9k3y\candidate --script res://__verifier__/runner.gd
+SCRIPT COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --headless --path C:\Users\corte\AppData\Local\Temp\roboblast-grenade-verifier-1_n3blam\candidate --script res://__verifier__/runner.gd
 
 SCRIPT STDOUT:
 Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org

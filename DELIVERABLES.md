@@ -29,10 +29,10 @@ anti-cheat probes, and report.
   analysis artifacts. This snapshot also includes the seven materialized probe
   fixtures used for review.
 - `evaluation/verifier/evaluation/evidence/agent-runs-20260703-151656/`: the
-  official retained reference, ablated, and rollout-attempt evidence from
+  official retained reference wrapper, ablated, and rollout-attempt evidence from
   `C:\recent_project\godot-4-3d-third-person-controller-agent-runs-20260703-151656`,
   including branch-captured score JSONs, PDF reports, logs, manifests, and
-  auxiliary screenshot-analysis artifacts where available.
+  auxiliary screenshot-analysis artifacts for every retained project.
 - `evaluation/verifier/evaluation/evidence/probes/`: retained score JSONs for
   the seven anti-cheat probe candidates.
 - `evaluation/verifier/evaluation/probes/`: materialized fake near-miss
@@ -76,4 +76,5 @@ preview files. The verifier
 workspace, reference implementation, hidden branches, calibration artifacts, and
 probe notes were kept outside agent-accessible workspaces. The verifier is
 copied into this branch only for final review.
+
 

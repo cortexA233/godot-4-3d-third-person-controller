@@ -1,4 +1,4 @@
-IMPORT COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --headless --path C:\Users\corte\AppData\Local\Temp\roboblast-grenade-verifier-8pz9e3w4\candidate --import
+IMPORT COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --headless --path C:\Users\corte\AppData\Local\Temp\roboblast-grenade-verifier-0dgv3566\candidate --import
 
 IMPORT STDOUT:
 Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
@@ -579,7 +579,7 @@ Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org
 IMPORT STDERR:
 
 
-SCRIPT COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --headless --path C:\Users\corte\AppData\Local\Temp\roboblast-grenade-verifier-8pz9e3w4\candidate --script res://__verifier__/runner.gd
+SCRIPT COMMAND: C:\Godot_v4.6\Godot_v4.6-stable_win64_console.exe --headless --path C:\Users\corte\AppData\Local\Temp\roboblast-grenade-verifier-0dgv3566\candidate --script res://__verifier__/runner.gd
 
 SCRIPT STDOUT:
 Godot Engine v4.6.stable.official.89cea1439 - https://godotengine.org

@@ -1,0 +1,101 @@
+﻿[
+    {
+        "name":  "run-01-cc-opus",
+        "score":  74,
+        "passed":  false,
+        "screenshot_aux_score":  9,
+        "screenshot_count":  13,
+        "pdf_bytes":  3968117,
+        "probe_exit":  0
+    },
+    {
+        "name":  "run-01-cc-sonnet",
+        "score":  77,
+        "passed":  false,
+        "screenshot_aux_score":  7,
+        "screenshot_count":  19,
+        "pdf_bytes":  3967739,
+        "probe_exit":  0
+    },
+    {
+        "name":  "run-01-codex",
+        "score":  73,
+        "passed":  false,
+        "screenshot_aux_score":  6,
+        "screenshot_count":  17,
+        "pdf_bytes":  3967356,
+        "probe_exit":  0
+    },
+    {
+        "name":  "run-02-cc-opus",
+        "score":  88,
+        "passed":  true,
+        "screenshot_aux_score":  10,
+        "screenshot_count":  13,
+        "pdf_bytes":  3975984,
+        "probe_exit":  0
+    },
+    {
+        "name":  "run-02-cc-sonnet",
+        "score":  82,
+        "passed":  false,
+        "screenshot_aux_score":  10,
+        "screenshot_count":  19,
+        "pdf_bytes":  3964258,
+        "probe_exit":  0
+    },
+    {
+        "name":  "run-02-codex",
+        "score":  75,
+        "passed":  false,
+        "screenshot_aux_score":  6,
+        "screenshot_count":  5,
+        "pdf_bytes":  5531712,
+        "probe_exit":  0
+    },
+    {
+        "name":  "run-03-cc-opus",
+        "score":  80,
+        "passed":  false,
+        "screenshot_aux_score":  10,
+        "screenshot_count":  19,
+        "pdf_bytes":  3962489,
+        "probe_exit":  0
+    },
+    {
+        "name":  "run-03-cc-sonnet",
+        "score":  59,
+        "passed":  false,
+        "screenshot_aux_score":  6,
+        "screenshot_count":  24,
+        "pdf_bytes":  3982049,
+        "probe_exit":  0
+    },
+    {
+        "name":  "run-03-codex",
+        "score":  100,
+        "passed":  true,
+        "screenshot_aux_score":  6,
+        "screenshot_count":  19,
+        "pdf_bytes":  3958813,
+        "probe_exit":  0
+    },
+    {
+        "name":  "rollout-task",
+        "score":  13,
+        "passed":  false,
+        "screenshot_aux_score":  1,
+        "screenshot_count":  51,
+        "pdf_bytes":  3546776,
+        "probe_exit":  0
+    },
+    {
+        "name":  "reference-main-complete-run",
+        "score":  91,
+        "passed":  true,
+        "screenshot_aux_score":  10,
+        "screenshot_count":  5,
+        "pdf_bytes":  5521136,
+        "probe_exit":  0
+    }
+]

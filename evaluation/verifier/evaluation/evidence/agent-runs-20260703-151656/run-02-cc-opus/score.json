@@ -7,15 +7,14 @@
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\debug_arena\\attack_030.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\debug_arena\\attack_040.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\debug_arena\\attack_050.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\main_ready.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\main_aim.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_010.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_020.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_030.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_040.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_050.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_060.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\main_aim.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\main_ready.png"
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\main_scene\\attack_050.png"
     ],
     "screenshot_probe_result": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe\\result.json",
     "screenshot_probe_dir": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus\\evidence\\screenshot-probe"
@@ -331,13 +330,15 @@
       "label": "Screenshot Visual Analysis",
       "max": 10,
       "name": "screenshot_visual",
-      "notes": "debug_arena projectile visible in 4 captured frame(s); debug_arena projectile footprint 182px earns full debug footprint credit; debug_arena explosion observed at frame 50; main_scene projectile visible in 4 captured frame(s); main_scene projectile footprint 1036px earns full main-scene footprint credit; main_scene explosion observed at frame 60; auxiliary screenshot score is not counted in 100-point score",
+      "notes": "debug_arena projectile visible in 4 captured frame(s); debug_arena projectile footprint 182px earns full debug footprint credit; debug_arena explosion observed at frame 50; main_scene projectile visible in 4 captured frame(s); main_scene projectile footprint 1036px earns full main-scene footprint credit; main_scene explosion observed at frame 50; auxiliary screenshot score is not counted in 100-point score",
       "score": 10,
       "used_for_score": false
     }
   ],
   "screenshot_probe_summary": {
     "requested_mode": "both",
+    "ok": true,
+    "display_driver": "Windows",
     "modes": {
       "debug_arena": {
         "ok": true,
@@ -348,8 +349,8 @@
       "main_scene": {
         "ok": true,
         "stop_reason": "explosion_observed",
-        "screenshots": 9,
-        "explosion_frame": 60
+        "screenshots": 8,
+        "explosion_frame": 50
       }
     }
   }

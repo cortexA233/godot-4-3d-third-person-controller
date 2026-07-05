@@ -10,6 +10,9 @@
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\debug_arena\\attack_060.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\debug_arena\\attack_070.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\debug_arena\\attack_080.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\main_ready.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\main_aim.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\attack_010.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\attack_020.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\attack_030.png",
@@ -17,10 +20,7 @@
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\attack_050.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\attack_060.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\attack_070.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\attack_080.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\main_aim.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\main_ready.png"
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\main_scene\\attack_080.png"
     ],
     "screenshot_probe_result": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe\\result.json",
     "screenshot_probe_dir": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet\\evidence\\screenshot-probe"
@@ -175,7 +175,7 @@
         {
           "label": "Nearby target damage across angles",
           "max": 5,
-          "notes": "default throw calibration full at 11.75 units: default throw calibration measured 11.75 units from ThrownGrenade after 10.70 units of horizontal travel; nearby target damage averaged across explosion trials: Seed 17031 throw raw nearby hit score 0/10; Seed 27059 throw raw nearby hit score 0/10; Seed 37087 throw raw nearby hit score 0/10",
+          "notes": "default throw calibration full at 11.62 units: default throw calibration measured 11.62 units from ThrownGrenade after 10.57 units of horizontal travel; nearby target damage averaged across explosion trials: Seed 17031 throw raw nearby hit score 0/10; Seed 27059 throw raw nearby hit score 0/10; Seed 37087 throw raw nearby hit score 0/10",
           "score": 0,
           "status": "missed"
         },
@@ -217,7 +217,7 @@
       ],
       "max": 20,
       "name": "explosion_gameplay",
-      "notes": "default throw calibration full at 11.75 units: default throw calibration measured 11.75 units from ThrownGrenade after 10.70 units of horizontal travel; nearby target damage averaged across explosion trials: Seed 17031 throw raw nearby hit score 0/10; Seed 27059 throw raw nearby hit score 0/10; Seed 37087 throw raw nearby hit score 0/10; nearby damageable-only destructible damage averaged across explosion trials: Seed 17031 throw nearby damageable-only destructible was not damaged; Seed 27059 throw nearby damageable-only destructible was not damaged; Seed 37087 throw nearby damageable-only destructible was not damaged; blast locality averaged across explosion trials: Seed 17031 throw locality not credited because no detonation was observed; Seed 27059 throw locality not credited because no detonation was observed; Seed 37087 throw locality not credited because no detonation was observed; not all explosion trials detonated; player safety averaged across explosion trials: Seed 17031 throw player safety not credited because no detonation was observed; Seed 27059 throw player safety not credited because no detonation was observed; Seed 37087 throw player safety not credited because no detonation was observed; detonation effects averaged across explosion trials: Seed 17031 throw no runtime detonation effects observed; Seed 27059 throw no runtime detonation effects observed; Seed 37087 throw no runtime detonation effects observed; default throw calibration is full quality inside the 6-12 unit envelope",
+      "notes": "default throw calibration full at 11.62 units: default throw calibration measured 11.62 units from ThrownGrenade after 10.57 units of horizontal travel; nearby target damage averaged across explosion trials: Seed 17031 throw raw nearby hit score 0/10; Seed 27059 throw raw nearby hit score 0/10; Seed 37087 throw raw nearby hit score 0/10; nearby damageable-only destructible damage averaged across explosion trials: Seed 17031 throw nearby damageable-only destructible was not damaged; Seed 27059 throw nearby damageable-only destructible was not damaged; Seed 37087 throw nearby damageable-only destructible was not damaged; blast locality averaged across explosion trials: Seed 17031 throw locality not credited because no detonation was observed; Seed 27059 throw locality not credited because no detonation was observed; Seed 37087 throw locality not credited because no detonation was observed; not all explosion trials detonated; player safety averaged across explosion trials: Seed 17031 throw player safety not credited because no detonation was observed; Seed 27059 throw player safety not credited because no detonation was observed; Seed 37087 throw player safety not credited because no detonation was observed; detonation effects averaged across explosion trials: Seed 17031 throw no runtime detonation effects observed; Seed 27059 throw no runtime detonation effects observed; Seed 37087 throw no runtime detonation effects observed; default throw calibration is full quality inside the 6-12 unit envelope",
       "score": 2
     },
     {
@@ -338,13 +338,15 @@
       "label": "Screenshot Visual Analysis",
       "max": 10,
       "name": "screenshot_visual",
-      "notes": "debug_arena projectile visible in 7 captured frame(s); debug_arena projectile footprint 144px earns full debug footprint credit; debug_arena explosion observed at frame 80; main_scene projectile visible in 7 captured frame(s); main_scene projectile footprint 1240px earns full main-scene footprint credit; main_scene explosion observed at frame 80; auxiliary screenshot score is not counted in 100-point score",
+      "notes": "debug_arena projectile visible in 7 captured frame(s); debug_arena projectile footprint 144px earns full debug footprint credit; debug_arena explosion observed at frame 80; main_scene projectile visible in 7 captured frame(s); main_scene projectile footprint 1271px earns full main-scene footprint credit; main_scene explosion observed at frame 80; auxiliary screenshot score is not counted in 100-point score",
       "score": 10,
       "used_for_score": false
     }
   ],
   "screenshot_probe_summary": {
     "requested_mode": "both",
+    "ok": true,
+    "display_driver": "Windows",
     "modes": {
       "debug_arena": {
         "ok": true,

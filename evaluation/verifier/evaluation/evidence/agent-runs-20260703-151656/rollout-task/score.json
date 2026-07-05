@@ -1,7 +1,61 @@
 {
   "artifacts": {
     "log": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\godot-verifier.log",
-    "screenshots": []
+    "screenshots": [
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_010.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_020.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_030.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_040.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_050.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_060.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_070.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_080.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_090.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_100.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_110.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_120.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_130.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_140.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_150.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_160.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_170.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_180.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_190.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_200.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_210.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_220.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_230.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\debug_arena\\attack_240.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\main_ready.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\main_aim.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_010.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_020.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_030.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_040.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_050.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_060.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_070.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_080.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_090.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_100.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_110.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_120.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_130.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_140.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_150.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_160.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_170.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_180.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_190.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_200.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_210.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_220.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_230.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\main_scene\\attack_240.png"
+    ],
+    "screenshot_probe_result": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe\\result.json",
+    "screenshot_probe_dir": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\rollout-task\\evidence\\screenshot-probe"
   },
   "breakdown": [
     {
@@ -201,15 +255,22 @@
     {
       "details": [
         {
-          "label": "Visible effect nodes",
+          "label": "Thrown grenade model",
           "max": 2,
+          "notes": "no moving projectile candidates were available for model inspection",
+          "score": 0,
+          "status": "missed"
+        },
+        {
+          "label": "Visible effect nodes",
+          "max": 1,
           "notes": "no visible grenade or explosion nodes appeared",
           "score": 0,
           "status": "missed"
         },
         {
           "label": "Detonation audio",
-          "max": 2,
+          "max": 1,
           "notes": "detonation audio not observed during visible detonation window",
           "score": 0,
           "status": "missed"
@@ -224,7 +285,7 @@
       ],
       "max": 5,
       "name": "visual_audio_polish",
-      "notes": "no visible grenade or explosion nodes appeared; detonation audio not observed during visible detonation window; no temporary visual nodes were created",
+      "notes": "no moving projectile candidates were available for model inspection; no visible grenade or explosion nodes appeared; detonation audio not observed during visible detonation window; no temporary visual nodes were created",
       "score": 0
     },
     {
@@ -271,8 +332,69 @@
       "score": 4
     }
   ],
+  "category_floor_failures": [
+    "trajectory_preview below pass floor 15",
+    "projectile_physics below pass floor 8",
+    "explosion_gameplay below pass floor 10",
+    "visual_audio_polish below pass floor 4"
+  ],
   "godot_version": "4.6-stable (official)",
+  "logic_max_score": 100,
+  "logic_score": 13,
   "max_score": 100,
+  "pass_threshold": 85,
   "passed": false,
-  "score": 13
+  "score": 13,
+  "score_sections": [
+    {
+      "categories": [
+        "weapon_controls",
+        "hud_feedback",
+        "trajectory_preview",
+        "projectile_physics",
+        "explosion_gameplay",
+        "visual_audio_polish",
+        "stability_repeatability"
+      ],
+      "label": "Logic Score",
+      "max": 100,
+      "name": "logic",
+      "score": 13
+    }
+  ],
+  "suspect": false,
+  "suspect_reasons": [],
+  "auxiliary_score_sections": [
+    {
+      "categories": [
+        "debug_arena",
+        "main_scene"
+      ],
+      "label": "Screenshot Visual Analysis",
+      "max": 10,
+      "name": "screenshot_visual",
+      "notes": "no rendered screenshot visual evidence was observed; auxiliary screenshot score is not counted in 100-point score",
+      "score": 1,
+      "used_for_score": false
+    }
+  ],
+  "screenshot_probe_summary": {
+    "requested_mode": "both",
+    "ok": true,
+    "display_driver": "Windows",
+    "modes": {
+      "debug_arena": {
+        "ok": true,
+        "stop_reason": "max_frames",
+        "screenshots": 24,
+        "explosion_frame": -1
+      },
+      "main_scene": {
+        "ok": true,
+        "stop_reason": "max_frames",
+        "screenshots": 27,
+        "explosion_frame": -1
+      }
+    }
+  }
 }

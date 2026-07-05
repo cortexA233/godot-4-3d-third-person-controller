@@ -1,0 +1,82 @@
+﻿[
+    {
+        "run":  "run-01-cc-opus",
+        "run_root":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-opus",
+        "exit_code":  0,
+        "output":  "{\n  \"agent_record_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-cc-opus\\\\evidence\\\\AGENT_RUN_RECORD.md\",\n  \"artifact_paths\": [],\n  \"attempt_commit_created\": false,\n  \"diff_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-cc-opus\\\\evidence\\\\diff.patch\",\n  \"evidence_dir\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-cc-opus\\\\evidence\",\n  \"final_sha\": \"075b9178f3e4dcf8f2bdae478931d80293241032\",\n  \"score_path\": \"\",\n  \"workspace\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-cc-opus\\\\workspace\"\n}",
+        "final_sha":  "075b9178f3e4dcf8f2bdae478931d80293241032",
+        "attempt_commit_created":  false
+    },
+    {
+        "run":  "run-01-cc-sonnet",
+        "run_root":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-cc-sonnet",
+        "exit_code":  0,
+        "output":  "{\n  \"agent_record_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-cc-sonnet\\\\evidence\\\\AGENT_RUN_RECORD.md\",\n  \"artifact_paths\": [],\n  \"attempt_commit_created\": true,\n  \"diff_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-cc-sonnet\\\\evidence\\\\diff.patch\",\n  \"evidence_dir\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-cc-sonnet\\\\evidence\",\n  \"final_sha\": \"9efaf3cd81f3ac42894690110a002c605fd383a8\",\n  \"score_path\": \"\",\n  \"workspace\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-cc-sonnet\\\\workspace\"\n}",
+        "final_sha":  "9efaf3cd81f3ac42894690110a002c605fd383a8",
+        "attempt_commit_created":  true
+    },
+    {
+        "run":  "run-01-codex",
+        "run_root":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex",
+        "exit_code":  0,
+        "output":  "{\n  \"agent_record_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-codex\\\\evidence\\\\AGENT_RUN_RECORD.md\",\n  \"artifact_paths\": [],\n  \"attempt_commit_created\": true,\n  \"diff_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-codex\\\\evidence\\\\diff.patch\",\n  \"evidence_dir\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-codex\\\\evidence\",\n  \"final_sha\": \"5027154fb0128abad3b78fe1a0232e1fa83dd199\",\n  \"score_path\": \"\",\n  \"workspace\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-01-codex\\\\workspace\"\n}",
+        "final_sha":  "5027154fb0128abad3b78fe1a0232e1fa83dd199",
+        "attempt_commit_created":  true
+    },
+    {
+        "run":  "run-02-cc-opus",
+        "run_root":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-opus",
+        "exit_code":  0,
+        "output":  "{\n  \"agent_record_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-cc-opus\\\\evidence\\\\AGENT_RUN_RECORD.md\",\n  \"artifact_paths\": [],\n  \"attempt_commit_created\": false,\n  \"diff_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-cc-opus\\\\evidence\\\\diff.patch\",\n  \"evidence_dir\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-cc-opus\\\\evidence\",\n  \"final_sha\": \"9554e94d052f7c7ccc82a83abe776e8eb248fe1f\",\n  \"score_path\": \"\",\n  \"workspace\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-cc-opus\\\\workspace\"\n}",
+        "final_sha":  "9554e94d052f7c7ccc82a83abe776e8eb248fe1f",
+        "attempt_commit_created":  false
+    },
+    {
+        "run":  "run-02-cc-sonnet",
+        "run_root":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-cc-sonnet",
+        "exit_code":  0,
+        "output":  "{\n  \"agent_record_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-cc-sonnet\\\\evidence\\\\AGENT_RUN_RECORD.md\",\n  \"artifact_paths\": [],\n  \"attempt_commit_created\": false,\n  \"diff_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-cc-sonnet\\\\evidence\\\\diff.patch\",\n  \"evidence_dir\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-cc-sonnet\\\\evidence\",\n  \"final_sha\": \"d4850dd760dda952d5e6f67a0ece516765470766\",\n  \"score_path\": \"\",\n  \"workspace\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-cc-sonnet\\\\workspace\"\n}",
+        "final_sha":  "d4850dd760dda952d5e6f67a0ece516765470766",
+        "attempt_commit_created":  false
+    },
+    {
+        "run":  "run-02-codex",
+        "run_root":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-02-codex",
+        "exit_code":  0,
+        "output":  "{\n  \"agent_record_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-codex\\\\evidence\\\\AGENT_RUN_RECORD.md\",\n  \"artifact_paths\": [],\n  \"attempt_commit_created\": true,\n  \"diff_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-codex\\\\evidence\\\\diff.patch\",\n  \"evidence_dir\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-codex\\\\evidence\",\n  \"final_sha\": \"151ae134255a3cf6775967b314507ad5c4a6a561\",\n  \"score_path\": \"\",\n  \"workspace\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-02-codex\\\\workspace\"\n}",
+        "final_sha":  "151ae134255a3cf6775967b314507ad5c4a6a561",
+        "attempt_commit_created":  true
+    },
+    {
+        "run":  "run-03-cc-opus",
+        "run_root":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-opus",
+        "exit_code":  0,
+        "output":  "{\n  \"agent_record_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-cc-opus\\\\evidence\\\\AGENT_RUN_RECORD.md\",\n  \"artifact_paths\": [],\n  \"attempt_commit_created\": true,\n  \"diff_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-cc-opus\\\\evidence\\\\diff.patch\",\n  \"evidence_dir\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-cc-opus\\\\evidence\",\n  \"final_sha\": \"7e13eb8593f858a5b1c569c6f735074a10def786\",\n  \"score_path\": \"\",\n  \"workspace\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-cc-opus\\\\workspace\"\n}",
+        "final_sha":  "7e13eb8593f858a5b1c569c6f735074a10def786",
+        "attempt_commit_created":  true
+    },
+    {
+        "run":  "run-03-cc-sonnet",
+        "run_root":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-cc-sonnet",
+        "exit_code":  0,
+        "output":  "{\n  \"agent_record_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-cc-sonnet\\\\evidence\\\\AGENT_RUN_RECORD.md\",\n  \"artifact_paths\": [],\n  \"attempt_commit_created\": false,\n  \"diff_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-cc-sonnet\\\\evidence\\\\diff.patch\",\n  \"evidence_dir\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-cc-sonnet\\\\evidence\",\n  \"final_sha\": \"223356ab717271144f929f6fae4d5838ba127c4e\",\n  \"score_path\": \"\",\n  \"workspace\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-cc-sonnet\\\\workspace\"\n}",
+        "final_sha":  "223356ab717271144f929f6fae4d5838ba127c4e",
+        "attempt_commit_created":  false
+    },
+    {
+        "run":  "run-03-codex",
+        "run_root":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-03-codex",
+        "exit_code":  0,
+        "output":  "{\n  \"agent_record_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-codex\\\\evidence\\\\AGENT_RUN_RECORD.md\",\n  \"artifact_paths\": [],\n  \"attempt_commit_created\": true,\n  \"diff_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-codex\\\\evidence\\\\diff.patch\",\n  \"evidence_dir\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-codex\\\\evidence\",\n  \"final_sha\": \"5226a3467f38bfa8d997f61314dfd1f26f960bf9\",\n  \"score_path\": \"\",\n  \"workspace\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\run-03-codex\\\\workspace\"\n}",
+        "final_sha":  "5226a3467f38bfa8d997f61314dfd1f26f960bf9",
+        "attempt_commit_created":  true
+    },
+    {
+        "run":  "reference-main-complete-run",
+        "run_root":  "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\reference-main-complete-run",
+        "exit_code":  0,
+        "output":  "{\n  \"agent_record_path\": \"\",\n  \"artifact_paths\": [],\n  \"attempt_commit_created\": false,\n  \"diff_path\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\reference-main-complete-run\\\\evidence\\\\diff.patch\",\n  \"evidence_dir\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\reference-main-complete-run\\\\evidence\",\n  \"final_sha\": \"b8336f2f0433781f5e46df4216a25397f1d2e7fa\",\n  \"score_path\": \"\",\n  \"workspace\": \"C:\\\\recent_project\\\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\\\reference-main-complete-run\\\\workspace\"\n}",
+        "final_sha":  "b8336f2f0433781f5e46df4216a25397f1d2e7fa",
+        "attempt_commit_created":  false
+    }
+]
