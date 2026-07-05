@@ -9,16 +9,16 @@
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\debug_arena\\attack_050.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\debug_arena\\attack_060.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\debug_arena\\attack_070.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\main_ready.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\main_aim.png",
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\attack_010.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\attack_020.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\attack_030.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\attack_040.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\attack_050.png",
       "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\attack_060.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\attack_070.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\grenade_ready.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\main_aim.png",
-      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\main_ready.png"
+      "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\main_scene\\attack_070.png"
     ],
     "screenshot_probe_result": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe\\result.json",
     "screenshot_probe_dir": "C:\\recent_project\\godot-4-3d-third-person-controller-agent-runs-20260703-151656\\run-01-codex\\evidence\\screenshot-probe"
@@ -343,6 +343,8 @@
   ],
   "screenshot_probe_summary": {
     "requested_mode": "both",
+    "ok": true,
+    "display_driver": "Windows",
     "modes": {
       "debug_arena": {
         "ok": true,
